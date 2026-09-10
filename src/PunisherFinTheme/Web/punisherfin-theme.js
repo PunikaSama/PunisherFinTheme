@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    const runtimeKey = "__punisherFinThemeV111";
+    const runtimeKey = "__punisherFinThemeV112";
     if (window[runtimeKey]) {
         return;
     }
@@ -126,22 +126,9 @@
         return null;
     }
 
-    function episodeLabel(item) {
-        const season = Number.isInteger(item.ParentIndexNumber) ? `S${item.ParentIndexNumber}` : "";
-        const episode = Number.isInteger(item.IndexNumber) ? `E${item.IndexNumber}` : "";
-        return season && episode ? `${season}:${episode}` : season || episode;
-    }
-
-    function runtimeLabel(item) {
-        if (!item.RunTimeTicks) {
-            return "";
-        }
-        return `${Math.max(1, Math.round(item.RunTimeTicks / 600000000))} min`;
-    }
-
-    function createPreview(card, item, url) {
+    function createPreview(card, url) {
         const imageHost = card.querySelector(".cardImageContainer, .cardContent");
-        if (!imageHost || imageHost.querySelector(".pft-hover-details")) {
+        if (!imageHost || imageHost.querySelector(".pft-hover-artwork")) {
             return Promise.resolve(Boolean(card.classList.contains("pft-preview-ready")));
         }
 
@@ -150,46 +137,9 @@
         image.alt = "";
         image.decoding = "async";
 
-        const details = document.createElement("div");
-        details.className = "pft-hover-details";
-
-        const title = document.createElement("div");
-        title.className = "pft-hover-title";
-        title.textContent = item.SeriesName || item.Name || "";
-        details.appendChild(title);
-
-        const subtitleParts = [];
-        const episode = episodeLabel(item);
-        if (episode) {
-            subtitleParts.push(episode);
-        }
-        if (item.Type === "Episode" && item.Name) {
-            subtitleParts.push(item.Name);
-        }
-        if (item.ProductionYear) {
-            subtitleParts.push(String(item.ProductionYear));
-        }
-        const duration = runtimeLabel(item);
-        if (duration) {
-            subtitleParts.push(duration);
-        }
-        if (subtitleParts.length) {
-            const subtitle = document.createElement("div");
-            subtitle.className = "pft-hover-meta";
-            subtitle.textContent = subtitleParts.join(" · ");
-            details.appendChild(subtitle);
-        }
-
-        if (item.Overview) {
-            const overview = document.createElement("div");
-            overview.className = "pft-hover-overview";
-            overview.textContent = item.Overview;
-            details.appendChild(overview);
-        }
-
         return new Promise(resolve => {
             image.addEventListener("load", () => {
-                imageHost.append(image, details);
+                imageHost.appendChild(image);
                 card.classList.add("pft-preview-ready");
                 resolve(true);
             }, { once: true });
@@ -228,7 +178,7 @@
             return false;
         }
         const url = imageUrl(api, item);
-        return url ? createPreview(card, item, url) : false;
+        return url ? createPreview(card, url) : false;
     }
 
     function previewCardFrom(target) {
@@ -244,12 +194,6 @@
             }
             runtime.activeCard?.classList.remove("pft-preview-expanded");
             runtime.activeCard = card;
-            const imageArea = card.querySelector(".cardScalable, .cardImageContainer, .cardContent");
-            const previewHeight = Math.max(140, Math.round(imageArea?.getBoundingClientRect().height || 220));
-            const maximumWidth = Math.max(320, Math.min(544, Math.round(window.innerWidth * .72)));
-            const previewWidth = Math.min(maximumWidth, Math.max(320, Math.round(previewHeight * 16 / 9)));
-            card.style.setProperty("--pft-preview-height", `${previewHeight}px`);
-            card.style.setProperty("--pft-preview-width", `${previewWidth}px`);
             card.classList.add("pft-preview-loading");
             const ready = await preparePreview(card);
             card.classList.remove("pft-preview-loading");
