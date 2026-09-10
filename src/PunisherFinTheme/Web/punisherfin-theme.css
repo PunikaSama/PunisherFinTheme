@@ -17,7 +17,8 @@
 /* Keep Jellyfin's top navigation transparent when its scrolled state is applied. */
 :root.pft-enabled .skinHeader,
 :root.pft-enabled .skinHeader-withBackground,
-:root.pft-enabled .skinHeader.semiTransparent {
+:root.pft-enabled .skinHeader.semiTransparent,
+:root.pft-enabled .headerTop {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -25,6 +26,14 @@
     box-shadow: none !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
+}
+
+:root.pft-enabled :is(.skinHeader, .skinHeader-withBackground, .headerTop)::before,
+:root.pft-enabled :is(.skinHeader, .skinHeader-withBackground, .headerTop)::after {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
 }
 
 /* Isolated rotating backdrop. It stays behind Jellyfin and never receives input. */

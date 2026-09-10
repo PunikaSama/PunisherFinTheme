@@ -193,6 +193,10 @@
                     }
                 }
 
+                function syncRangeDisplays() {
+                    ranges.forEach(range => updateRange(...range));
+                }
+
                 function normalizeLibraries(items) {
                     const choices = new Map();
                     (items || []).forEach(item => {
@@ -355,6 +359,14 @@
                 form.addEventListener("input", handleRangeEvent, { signal: bindings.signal });
                 form.addEventListener("change", handleRangeEvent, { signal: bindings.signal });
                 element("ResetBackgroundSettings").addEventListener("click", resetBackgroundSettings, { signal: bindings.signal });
+                const rangeSyncTimer = window.setInterval(() => {
+                    if (!view.isConnected) {
+                        window.clearInterval(rangeSyncTimer);
+                        return;
+                    }
+                    syncRangeDisplays();
+                }, 100);
+                bindings.signal.addEventListener("abort", () => window.clearInterval(rangeSyncTimer), { once: true });
             }());
         </script>
     </div>

@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV135";
+    const runtimeKey = "__punisherFinThemeV136";
     if (window[runtimeKey]) {
         return;
     }
@@ -30,7 +30,8 @@
         backgroundGeneration: 0,
         backgroundItems: [],
         backgroundLayer: 0,
-        lastBackgroundItem: null
+        lastBackgroundItem: null,
+        headerStyles: new Map()
     };
 
     function jellyfinApi() {
@@ -97,6 +98,47 @@
         libraryViews.forEach(element => element.classList.add("pft-library-view"));
     }
 
+    const transparentHeaderProperties = [
+        "background",
+        "background-color",
+        "background-image",
+        "backdrop-filter",
+        "-webkit-backdrop-filter",
+        "box-shadow"
+    ];
+
+    function syncTransparentHeader() {
+        if (!runtime.config?.enabled) {
+            return;
+        }
+        document.querySelectorAll(".skinHeader, .skinHeader-withBackground, .headerTop").forEach(header => {
+            if (!runtime.headerStyles.has(header)) {
+                runtime.headerStyles.set(header, transparentHeaderProperties.map(property => ({
+                    property,
+                    value: header.style.getPropertyValue(property),
+                    priority: header.style.getPropertyPriority(property)
+                })));
+            }
+            transparentHeaderProperties.forEach(property => {
+                const value = property === "background" || property === "background-color" ? "transparent" : "none";
+                header.style.setProperty(property, value, "important");
+            });
+        });
+    }
+
+    function restoreTransparentHeader() {
+        runtime.headerStyles.forEach((declarations, header) => {
+            declarations.forEach(({ property, value, priority }) => {
+                if (value) {
+                    header.style.setProperty(property, value, priority);
+                } else {
+                    header.style.removeProperty(property);
+                }
+            });
+        });
+        runtime.headerStyles.clear();
+    }
+
     function applyConfig(config) {
         runtime.config = config;
         root.classList.remove(...markerClasses);
@@ -111,7 +153,9 @@
             root.classList.toggle("pft-card-previews", config.cardPreviews === true);
             root.classList.toggle("pft-player-controls", config.playerControls === true);
             root.classList.toggle("pft-random-background", config.randomBackground === true);
+            syncTransparentHeader();
         } else {
+            restoreTransparentHeader();
             restoreDetailButtonTitles();
         }
 
@@ -583,6 +627,7 @@
 
     function reconcile() {
         markSupportedViews();
+        syncTransparentHeader();
         syncDetailButtonLabels();
         updateBackgroundVisibility();
     }
@@ -629,6 +674,7 @@
             window.clearTimeout(runtime.previewTimer);
             closePreview(runtime.activeCard);
             removeRandomBackground();
+            restoreTransparentHeader();
             restoreDetailButtonTitles();
             root.classList.remove(...markerClasses);
             document.querySelectorAll(".pft-home-view, .pft-library-view").forEach(element => {

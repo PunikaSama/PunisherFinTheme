@@ -46,6 +46,8 @@ for (const required of [
     "AbortController",
     "document.currentScript",
     "view.querySelector",
+    "syncRangeDisplays",
+    "rangeSyncTimer",
     "/PunisherFinTheme/libraries",
     "/PunisherFinTheme/dependency"
 ]) {
@@ -55,6 +57,7 @@ for (const required of [
 }
 
 for (const required of [
+    "__punisherFinThemeV136",
     "__punisherFinThemeV135",
     "__punisherFinThemeV134",
     "__punisherFinThemeV130",
@@ -76,6 +79,8 @@ for (const required of [
     "getItems",
     "backgroundAllowedForCurrentView",
     "videoPlayerContainer-onTop",
+    "syncTransparentHeader",
+    "restoreTransparentHeader",
     "pft-preview-expanded",
     "pft-season-card",
     "item.Type !== \"Season\"",
@@ -101,6 +106,7 @@ for (const required of [
     ".pft-preview-expanded",
     ".videoPlayerContainer",
     ".skinHeader-withBackground",
+    ".headerTop",
     "--jf-palette-AppBar-defaultBg: transparent",
     "#punisherFinRandomBackdrop",
     ":root:has(.videoPlayerContainer-onTop)",
@@ -116,7 +122,6 @@ for (const required of [
 }
 
 for (const forbidden of [
-    ".headerTop",
     ".headerTabs",
     ".mainDrawer",
     ".itemBackdrop",
