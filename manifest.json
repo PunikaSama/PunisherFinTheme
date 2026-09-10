@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
+        "version": "1.6.0.0",
+        "changelog": "Adds dedicated accent-color integration for Namo2's InPlayerEpisodePreview plugin. Episode progress bars, centered play actions, played and favorite states, selected and hovered rows, popup controls, the player preview button, and popup scrollbars now follow the configured PunisherFinTheme accent color.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.6.0.0/PunisherFinTheme_1.6.0.0.zip",
+        "checksum": "5b15230b1816291fe4a40e5bc813ac59",
+        "timestamp": "2026-09-10 21:04:13"
+      },
+      {
         "version": "1.5.3.0",
         "changelog": "Removes the oversized solid accent block shown when hovering the volume slider in some Jellyfin clients. The volume tooltip bubble is now suppressed while the volume track and thumb retain the configured accent color.",
         "targetAbi": "12.0.0.0",

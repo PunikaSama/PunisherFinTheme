@@ -600,6 +600,62 @@
     border-color: var(--pft-accent) !important;
 }
 
+/* InPlayerEpisodePreview compatibility (Namo2/InPlayerEpisodePreview). */
+:root.pft-enabled #previewPopup {
+    --jf-palette-primary-main: var(--pft-accent) !important;
+    --theme-primary-color: var(--pft-accent) !important;
+    --primary-accent-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled #previewPopup :is(.previewListItem:hover, .previewListItem:focus-within) {
+    background: color-mix(in srgb, var(--pft-accent) 12%, rgba(255, 255, 255, .08)) !important;
+    box-shadow: inset 3px 0 var(--pft-accent);
+}
+
+:root.pft-enabled #previewPopup .previewListItem.selectedListItem {
+    background: color-mix(in srgb, var(--pft-accent) 16%, rgba(255, 255, 255, .08)) !important;
+    box-shadow: inset 3px 0 var(--pft-accent);
+}
+
+:root.pft-enabled #previewPopup .itemProgressBarForeground {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled #previewPopup .cardOverlayFab-primary,
+:root.pft-enabled #previewPopup .cardOverlayFab-primary:is(:hover, :focus-visible) {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+    color: #fff !important;
+}
+
+:root.pft-enabled #previewPopup :is(.previewQuickActionContainer, .previewItemContainer) .paper-icon-button-light:is(:hover, :focus-visible),
+:root.pft-enabled #popupPreviewButton:is(:hover, :focus-visible) {
+    background: color-mix(in srgb, var(--pft-accent) 24%, rgba(0, 0, 0, .58)) !important;
+    border-color: var(--pft-accent) !important;
+    color: var(--pft-accent) !important;
+    outline: 2px solid var(--pft-accent) !important;
+    outline-offset: 2px;
+}
+
+:root.pft-enabled #previewPopup [data-played="true"] .playstatebutton-icon-played,
+:root.pft-enabled #previewPopup .playstatebutton-icon-played,
+:root.pft-enabled #previewPopup [data-isfavorite="true"] .favorite,
+:root.pft-enabled #previewPopup .ratingbutton-icon-withrating,
+:root.pft-enabled #previewPopup .previewItemTitle > .material-icons.check {
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled #previewPopup .previewPopupScroller {
+    scrollbar-color: color-mix(in srgb, var(--pft-accent) 70%, #fff) transparent !important;
+}
+
+:root.pft-enabled #previewPopup .previewPopupScroller::-webkit-scrollbar-thumb,
+:root.pft-enabled #previewPopup .previewPopupScroller::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--pft-accent) 70%, #fff) !important;
+}
+
 @media (max-width: 600px) {
     :root.pft-enabled .homeSectionsContainer.pft-home-view > .verticalSection {
         margin-bottom: 1.5rem;
