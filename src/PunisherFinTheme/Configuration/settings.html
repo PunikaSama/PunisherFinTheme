@@ -144,14 +144,16 @@
                 "use strict";
 
                 const pluginId = "4763374d-d1ce-4404-b769-3625dacdcb84";
-                const scriptElement = document.currentScript;
-                const view = scriptElement?.closest("#PunisherFinThemeSettings")
-                    || Array.from(document.querySelectorAll("#PunisherFinThemeSettings")).at(-1);
+                const settingsViews = Array.from(document.querySelectorAll("#PunisherFinThemeSettings"));
+                const view = settingsViews.find(candidate => !candidate.classList.contains("hide") && candidate.getClientRects().length)
+                    || settingsViews[settingsViews.length - 1];
+                if (!view) {
+                    console.error("PunisherFinTheme: Die Einstellungsseite wurde nicht gefunden.");
+                    return;
+                }
                 const form = view.querySelector("#PunisherFinThemeSettingsForm");
                 const previousBindings = view.punisherFinThemeSettingsBindings;
                 previousBindings?.abort();
-                const bindings = new AbortController();
-                view.punisherFinThemeSettingsBindings = bindings;
                 let loading = false;
 
                 function element(id) {
@@ -350,15 +352,17 @@
                     }
                 }
 
-                view.addEventListener("pageshow", showSettings, { signal: bindings.signal });
-                view.addEventListener("viewshow", showSettings, { signal: bindings.signal });
-                form.addEventListener("submit", event => {
+                const submitHandler = event => {
                     event.stopImmediatePropagation();
                     void storeSettings(event);
-                }, { capture: true, signal: bindings.signal });
-                form.addEventListener("input", handleRangeEvent, { signal: bindings.signal });
-                form.addEventListener("change", handleRangeEvent, { signal: bindings.signal });
-                element("ResetBackgroundSettings").addEventListener("click", resetBackgroundSettings, { signal: bindings.signal });
+                };
+                const resetButton = element("ResetBackgroundSettings");
+                view.addEventListener("pageshow", showSettings);
+                view.addEventListener("viewshow", showSettings);
+                form.addEventListener("submit", submitHandler, true);
+                form.addEventListener("input", handleRangeEvent);
+                form.addEventListener("change", handleRangeEvent);
+                resetButton.addEventListener("click", resetBackgroundSettings);
                 const rangeSyncTimer = window.setInterval(() => {
                     if (!view.isConnected) {
                         window.clearInterval(rangeSyncTimer);
@@ -366,7 +370,18 @@
                     }
                     syncRangeDisplays();
                 }, 100);
-                bindings.signal.addEventListener("abort", () => window.clearInterval(rangeSyncTimer), { once: true });
+                view.punisherFinThemeSettingsBindings = {
+                    abort: function () {
+                        window.clearInterval(rangeSyncTimer);
+                        view.removeEventListener("pageshow", showSettings);
+                        view.removeEventListener("viewshow", showSettings);
+                        form.removeEventListener("submit", submitHandler, true);
+                        form.removeEventListener("input", handleRangeEvent);
+                        form.removeEventListener("change", handleRangeEvent);
+                        resetButton.removeEventListener("click", resetBackgroundSettings);
+                    }
+                };
+                void showSettings();
             }());
         </script>
     </div>
