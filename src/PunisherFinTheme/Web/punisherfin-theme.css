@@ -69,7 +69,8 @@
 }
 
 :root.pft-enabled .homeSectionsContainer.pft-home-view .card .itemProgressBar,
-:root.pft-enabled .pft-library-view .card .itemProgressBar {
+:root.pft-enabled .pft-library-view .card .itemProgressBar,
+:root.pft-enabled #itemDetailPage .card .itemProgressBar {
     height: 4px !important;
     max-height: 4px !important;
     min-height: 4px !important;
@@ -77,7 +78,8 @@
 }
 
 :root.pft-enabled .homeSectionsContainer.pft-home-view .card .itemProgressBar.itemLinearProgress,
-:root.pft-enabled .pft-library-view .card .itemProgressBar.itemLinearProgress {
+:root.pft-enabled .pft-library-view .card .itemProgressBar.itemLinearProgress,
+:root.pft-enabled #itemDetailPage .card .itemProgressBar.itemLinearProgress {
     bottom: 0 !important;
     left: 0 !important;
     position: absolute !important;
@@ -88,7 +90,8 @@
 }
 
 :root.pft-enabled .homeSectionsContainer.pft-home-view .card .itemProgressBarForeground,
-:root.pft-enabled .pft-library-view .card .itemProgressBarForeground {
+:root.pft-enabled .pft-library-view .card .itemProgressBarForeground,
+:root.pft-enabled #itemDetailPage .card .itemProgressBarForeground {
     bottom: 0 !important;
     height: 100% !important;
     max-height: 4px !important;
@@ -173,6 +176,11 @@
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton {
     align-items: center;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #fff !important;
     height: 52px;
     justify-content: center;
     margin: 0 !important;
@@ -180,6 +188,13 @@
     overflow: visible;
     padding: 0 !important;
     width: auto;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton::before,
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton::after {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton .detailButton-content {
@@ -271,6 +286,7 @@
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:focus-visible {
+    box-shadow: none !important;
     outline: 0 !important;
 }
 

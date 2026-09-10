@@ -39,7 +39,7 @@ for (const required of [
 }
 
 for (const required of [
-    "__punisherFinThemeV120",
+    "__punisherFinThemeV121",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
     "MutationObserver",
@@ -52,6 +52,7 @@ for (const required of [
     "pft-player-controls",
     "pft-preview-expanded",
     "pft-detail-button-label",
+    "removeAttribute(\"title\")",
     "homeSectionsContainer",
     "itemDetailPage"
 ]) {
@@ -67,6 +68,7 @@ for (const required of [
     ".pft-library-view",
     "#itemDetailPage .mainDetailButtons .btnPlay",
     "#itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible)",
+    "#itemDetailPage .card .itemProgressBar",
     ".pft-preview-expanded",
     ".videoPlayerContainer",
     "@media (max-width: 600px)",

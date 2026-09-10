@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    const runtimeKey = "__punisherFinThemeV120";
+    const runtimeKey = "__punisherFinThemeV121";
     if (window[runtimeKey]) {
         return;
     }
@@ -91,6 +91,8 @@
             root.classList.toggle("pft-compact-episodes", config.compactEpisodes === true);
             root.classList.toggle("pft-card-previews", config.cardPreviews === true);
             root.classList.toggle("pft-player-controls", config.playerControls === true);
+        } else {
+            restoreDetailButtonTitles();
         }
 
         markSupportedViews();
@@ -176,6 +178,12 @@
         const id = currentDetailItemId();
         const savedMinutes = id ? runtime.resumeMinutes.get(id) : null;
         buttons.forEach(button => {
+            const currentTitle = button.getAttribute("title");
+            if (currentTitle) {
+                button.dataset.pftTitle = currentTitle;
+                button.setAttribute("aria-label", currentTitle);
+                button.removeAttribute("title");
+            }
             const content = button.querySelector(".detailButton-content");
             if (!content) {
                 return;
@@ -186,7 +194,7 @@
                 label.className = "pft-detail-button-label";
                 content.appendChild(label);
             }
-            const base = button.getAttribute("title") || button.getAttribute("aria-label") || "";
+            const base = button.dataset.pftTitle || button.getAttribute("aria-label") || "";
             const language = document.documentElement.lang || navigator.language || "";
             const connector = language.toLowerCase().startsWith("de") ? "ab" : "at";
             const desired = button.classList.contains("btnPlay") && savedMinutes
@@ -209,7 +217,7 @@
             runtime.resumeMinutes.set(id, minutes);
             document.querySelectorAll("#itemDetailPage:not(.hide) .mainDetailButtons .btnPlay").forEach(button => {
                 const label = button.querySelector(".pft-detail-button-label");
-                const base = button.getAttribute("title") || "";
+                const base = button.dataset.pftTitle || button.getAttribute("aria-label") || "";
                 if (label && base) {
                     const language = document.documentElement.lang || navigator.language || "";
                     const connector = language.toLowerCase().startsWith("de") ? "ab" : "at";
@@ -219,6 +227,14 @@
                     }
                 }
             });
+        });
+    }
+
+    function restoreDetailButtonTitles() {
+        document.querySelectorAll("#itemDetailPage .mainDetailButtons .detailButton[data-pft-title]").forEach(button => {
+            button.setAttribute("title", button.dataset.pftTitle);
+            delete button.dataset.pftTitle;
+            button.querySelector(".pft-detail-button-label")?.remove();
         });
     }
 
@@ -388,6 +404,7 @@
             window.clearTimeout(runtime.timer);
             window.clearTimeout(runtime.previewTimer);
             closePreview(runtime.activeCard);
+            restoreDetailButtonTitles();
             root.classList.remove(...markerClasses);
             document.querySelectorAll(".pft-home-view, .pft-library-view").forEach(element => {
                 element.classList.remove(...pageClasses);
