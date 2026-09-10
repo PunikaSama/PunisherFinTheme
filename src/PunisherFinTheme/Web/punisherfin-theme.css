@@ -413,18 +413,31 @@
         gap: .65rem;
     }
 
+    :root.pft-enabled .pft-library-view .itemsContainer > .card {
+        box-sizing: border-box;
+        flex: 0 0 calc((100% - 1.3rem) / 3) !important;
+        max-width: calc((100% - 1.3rem) / 3) !important;
+        min-width: 0 !important;
+        width: calc((100% - 1.3rem) / 3) !important;
+    }
+
+    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons {
+        justify-content: center;
+    }
+
     :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
         height: 50px;
-        max-width: none;
-        min-width: 100%;
+        max-width: min(15rem, calc(100vw - 3rem));
+        min-width: 0;
         padding-inline: 10px !important;
-        width: 100%;
+        width: min(15rem, calc(100vw - 3rem));
     }
 
     :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
-        flex: 1 0 100%;
+        flex: 0 0 auto;
         height: 50px;
-        width: 100%;
+        min-width: 0;
+        width: min(15rem, calc(100vw - 3rem));
     }
 
     :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay :is(.detailButton-text, .pft-detail-button-label) {
