@@ -44,6 +44,8 @@ for (const required of [
     "BackgroundImageQuality",
     "HideRandomBackgroundOnDetails",
     "HideRandomBackgroundInPlayer",
+    "ResetBackgroundSettings",
+    "AbortController",
     "/PunisherFinTheme/libraries",
     "/PunisherFinTheme/dependency"
 ]) {

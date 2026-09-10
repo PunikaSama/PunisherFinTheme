@@ -125,6 +125,10 @@
                                 <input is="emby-checkbox" id="HideRandomBackgroundInPlayer" type="checkbox">
                                 <span>Während der Wiedergabe ausblenden</span>
                             </label>
+
+                            <button is="emby-button" id="ResetBackgroundSettings" type="button" class="raised emby-button" style="margin-top:1em">
+                                <span>Hintergrundeinstellungen zurücksetzen</span>
+                            </button>
                         </div>
 
                         <div style="margin:1.5em 0;padding:1em;border-radius:.35em;background:rgba(255,255,255,.05)">
@@ -151,6 +155,10 @@
                 const pluginId = "4763374d-d1ce-4404-b769-3625dacdcb84";
                 const view = document.getElementById("PunisherFinThemeSettings");
                 const form = document.getElementById("PunisherFinThemeSettingsForm");
+                const previousBindings = view.punisherFinThemeSettingsBindings;
+                previousBindings?.abort();
+                const bindings = new AbortController();
+                view.punisherFinThemeSettingsBindings = bindings;
                 let loading = false;
 
                 function element(id) {
@@ -227,6 +235,24 @@
                     const byId = libraries.find(library => library.id.toLowerCase() === String(selectedId || "").toLowerCase());
                     const byName = libraries.find(library => library.name.toLowerCase() === String(selectedName || "Anime").toLowerCase());
                     select.value = (byId || byName)?.id || "";
+                }
+
+                function resetBackgroundSettings() {
+                    element("EnableRandomBackground").checked = true;
+                    const librarySelect = element("BackgroundLibraryId");
+                    const animeOption = Array.from(librarySelect.options).find(option => option.textContent.toLowerCase() === "anime");
+                    librarySelect.value = animeOption?.value || "";
+                    setRange("BackgroundOpacityPercent", 100, 100);
+                    setRange("BackgroundBrightnessPercent", 68, 68);
+                    setRange("BackgroundBlurPixels", 5, 5);
+                    setRange("BackgroundSaturationPercent", 110, 110);
+                    setRange("BackgroundContrastPercent", 105, 105);
+                    setRange("BackgroundOverlayPercent", 22, 22);
+                    setRange("BackgroundChangeIntervalSeconds", 30, 30);
+                    setRange("BackgroundCrossfadeMilliseconds", 2500, 2500);
+                    setRange("BackgroundImageQuality", 90, 90);
+                    element("HideRandomBackgroundOnDetails").checked = true;
+                    element("HideRandomBackgroundInPlayer").checked = true;
                 }
 
                 async function requestJson(path) {
@@ -326,13 +352,17 @@
                     }
                 }
 
-                if (!view.dataset.bound) {
-                    view.dataset.bound = "true";
-                    view.addEventListener("pageshow", showSettings);
-                    view.addEventListener("viewshow", showSettings);
-                    form.addEventListener("submit", storeSettings);
-                    ranges.forEach(range => element(range[0]).addEventListener("input", () => updateRange(...range)));
-                }
+                view.addEventListener("pageshow", showSettings, { signal: bindings.signal });
+                view.addEventListener("viewshow", showSettings, { signal: bindings.signal });
+                form.addEventListener("submit", event => {
+                    event.stopImmediatePropagation();
+                    void storeSettings(event);
+                }, { capture: true, signal: bindings.signal });
+                ranges.forEach(range => {
+                    element(range[0]).addEventListener("input", () => updateRange(...range), { signal: bindings.signal });
+                    element(range[0]).addEventListener("change", () => updateRange(...range), { signal: bindings.signal });
+                });
+                element("ResetBackgroundSettings").addEventListener("click", resetBackgroundSettings, { signal: bindings.signal });
             }());
         </script>
     </div>
