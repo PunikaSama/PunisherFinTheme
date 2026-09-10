@@ -128,9 +128,14 @@
     box-shadow: 0 .45rem 1.35rem rgba(0, 0, 0, .38), 0 0 0 1px var(--pft-accent);
 }
 
-:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:is(:hover, :focus-within) .cardOverlayButtonIcon,
-:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:is(:hover, :focus-within) .cardOverlayFab-primary,
-:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardOverlayButton:is(:hover, :focus-visible) .cardOverlayButtonIcon,
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardOverlayFab-primary,
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardOverlayFab-primary .cardOverlayButtonIcon {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
 :root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardOverlayFab-primary:is(:hover, :focus-visible) {
     background: var(--pft-accent) !important;
     background-color: var(--pft-accent) !important;
@@ -623,6 +628,13 @@
 }
 
 :root.pft-enabled #previewPopup .cardOverlayFab-primary,
+:root.pft-enabled #previewPopup .cardOverlayFab-primary .cardOverlayButtonIcon {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
 :root.pft-enabled #previewPopup .cardOverlayFab-primary:is(:hover, :focus-visible) {
     background: var(--pft-accent) !important;
     background-color: var(--pft-accent) !important;

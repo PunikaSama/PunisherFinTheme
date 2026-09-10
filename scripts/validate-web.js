@@ -146,6 +146,8 @@ for (const required of [
     ".previewListItem.selectedListItem",
     "#previewPopup .itemProgressBarForeground",
     "#previewPopup .cardOverlayFab-primary",
+    ".cardOverlayFab-primary .cardOverlayButtonIcon",
+    "background: transparent !important",
     "#popupPreviewButton:is(:hover, :focus-visible)",
     "[data-played=\"true\"] .playstatebutton-icon-played",
     "[data-isfavorite=\"true\"] .favorite",
@@ -195,4 +197,8 @@ if (/pft-player-controls[^\{]*\{[\s\S]{0,250}accent-color:\s*var\(--pft-accent\)
 
 if (/:is\([^)]*\.sliderBubble(?![\w-])[^)]*\)[^{]*\{[^}]*background(?:-color)?:\s*var\(--pft-accent\)/i.test(styles)) {
     throw new Error("Slider tooltip bubbles must not be painted as solid accent blocks.");
+}
+
+if (/\.card:is\([^)]*:hover[^)]*\)\s+\.cardOverlayFab-primary/i.test(styles)) {
+    throw new Error("Preview play buttons must only receive the accent when the button itself is hovered.");
 }
