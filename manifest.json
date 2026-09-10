@@ -1,0 +1,20 @@
+[
+  {
+    "guid": "4763374d-d1ce-4404-b769-3625dacdcb84",
+    "name": "PunisherFinTheme",
+    "overview": "PunisherFin-inspired styling for Jellyfin Web.",
+    "description": "Restyles home and library cards, episode rows, and detail actions while preserving Jellyfin's native behavior.",
+    "owner": "PunisherSama",
+    "category": "General",
+    "versions": [
+      {
+        "version": "1.0.0.0",
+        "changelog": "Initial release with responsive PunisherFin-style home and library cards, episode rows, detail action buttons, configurable accent color, and protected Jellyfin header and hero areas.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.0.0.0/PunisherFinTheme_1.0.0.0.zip",
+        "checksum": "4f9ab1c8881bd51ca710c0d141bf3fa0",
+        "timestamp": "2026-09-10 16:27:43"
+      }
+    ]
+  }
+]

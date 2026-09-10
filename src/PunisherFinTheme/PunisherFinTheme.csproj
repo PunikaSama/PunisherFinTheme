@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Jellyfin.Plugin.PunisherFinTheme</AssemblyName>
+    <RootNamespace>PunisherFinTheme</RootNamespace>
+    <Version>1.0.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Description>PunisherFin-inspired styling for Jellyfin 12 Web.</Description>
+    <RepositoryUrl>https://github.com/PunikaSama/PunisherFinTheme</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Jellyfin.Controller" Version="12.0.0">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Jellyfin.Model" Version="12.0.0">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Jellyfin.Common" Version="12.0.0">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\settings.html" />
+    <EmbeddedResource Include="Web\punisherfin-theme.css" />
+    <EmbeddedResource Include="Web\punisherfin-theme.js" />
+  </ItemGroup>
+</Project>
+

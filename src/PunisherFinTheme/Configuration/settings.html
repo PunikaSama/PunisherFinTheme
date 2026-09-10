@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PunisherFinTheme</title>
+</head>
+<body>
+    <div id="PunisherFinThemeSettings"
+         data-role="page"
+         class="page type-interior pluginConfigurationPage"
+         data-require="emby-input,emby-button,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="PunisherFinThemeSettingsForm">
+                    <div class="verticalSection">
+                        <h2 class="sectionTitle">PunisherFinTheme <small id="PluginVersion" style="font-size:.55em;opacity:.7"></small></h2>
+                        <p>Überträgt das PunisherFin-Design auf ausgewählte Bereiche von Jellyfin Web. Header, Hero-Bereich und PunisherBanna bleiben unverändert.</p>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="Enabled" type="checkbox">
+                            <span>PunisherFinTheme aktivieren</span>
+                        </label>
+
+                        <div class="inputContainer">
+                            <label class="inputLabel inputLabelUnfocused" for="AccentColor">Akzentfarbe</label>
+                            <input is="emby-input" id="AccentColor" type="color" value="#FF5F87">
+                            <div class="fieldDescription">Wird für Fokusrahmen, Fortschritt und primäre Aktionen verwendet.</div>
+                        </div>
+
+                        <h3 class="sectionTitle">Bereiche</h3>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="StyleHome" type="checkbox">
+                            <span>Startseitenkarten gestalten</span>
+                        </label>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="StyleLibraries" type="checkbox">
+                            <span>Bibliotheksansichten gestalten</span>
+                        </label>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="StyleActionButtons" type="checkbox">
+                            <span>Aktionsknöpfe auf Detailseiten gestalten</span>
+                        </label>
+
+                        <h3 class="sectionTitle">Episoden</h3>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="ShowEpisodeOverview" type="checkbox">
+                            <span>Episodenbeschreibung anzeigen</span>
+                        </label>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="CompactEpisodes" type="checkbox">
+                            <span>Kompakte Episodenkarten verwenden</span>
+                        </label>
+
+                        <div style="margin:1.5em 0;padding:1em;border-radius:.35em;background:rgba(255,255,255,.05)">
+                            <div style="font-weight:600;margin-bottom:.35em">File Transformation</div>
+                            <div id="DependencyMessage" class="fieldDescription">Status wird geladen …</div>
+                        </div>
+
+                        <div class="fieldDescription" style="margin-bottom:1.2em">
+                            Änderungen werden beim nächsten Laden oder Wechsel einer Jellyfin-Seite übernommen.
+                        </div>
+
+                        <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                            <span>Speichern</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            (function () {
+                "use strict";
+
+                const pluginId = "4763374d-d1ce-4404-b769-3625dacdcb84";
+                const view = document.getElementById("PunisherFinThemeSettings");
+                const form = document.getElementById("PunisherFinThemeSettingsForm");
+                let loading = false;
+
+                function element(id) {
+                    return document.getElementById(id);
+                }
+
+                function validColor(value) {
+                    return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : "#FF5F87";
+                }
+
+                async function requestJson(path) {
+                    const response = await ApiClient.fetch({ url: ApiClient.getUrl(path), type: "GET" });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.json();
+                }
+
+                async function refreshDependencyState() {
+                    const label = element("DependencyMessage");
+                    try {
+                        const state = await requestJson("/PunisherFinTheme/dependency");
+                        element("PluginVersion").textContent = state.version || "";
+                        label.textContent = state.message;
+                        label.style.color = state.connected ? "#57d47b" : "#ffb74d";
+                    } catch (error) {
+                        label.textContent = "Status nicht verfügbar. File Transformation 3.0.0 muss installiert und aktiv sein.";
+                        label.style.color = "#ffb74d";
+                    }
+                }
+
+                async function showSettings() {
+                    if (loading) {
+                        return;
+                    }
+
+                    loading = true;
+                    Dashboard.showLoadingMsg();
+                    try {
+                        const settings = await ApiClient.getPluginConfiguration(pluginId);
+                        element("Enabled").checked = settings.Enabled !== false;
+                        element("AccentColor").value = validColor(settings.AccentColor);
+                        element("ShowEpisodeOverview").checked = settings.ShowEpisodeOverview !== false;
+                        element("CompactEpisodes").checked = settings.CompactEpisodes === true;
+                        element("StyleActionButtons").checked = settings.StyleActionButtons !== false;
+                        element("StyleHome").checked = settings.StyleHome !== false;
+                        element("StyleLibraries").checked = settings.StyleLibraries !== false;
+                        await refreshDependencyState();
+                    } catch (error) {
+                        console.error("PunisherFinTheme: Einstellungen konnten nicht geladen werden.", error);
+                        Dashboard.alert("Die PunisherFinTheme-Einstellungen konnten nicht geladen werden.");
+                    } finally {
+                        loading = false;
+                        Dashboard.hideLoadingMsg();
+                    }
+                }
+
+                async function storeSettings(event) {
+                    event.preventDefault();
+                    Dashboard.showLoadingMsg();
+                    try {
+                        const settings = await ApiClient.getPluginConfiguration(pluginId);
+                        settings.Enabled = element("Enabled").checked;
+                        settings.AccentColor = validColor(element("AccentColor").value);
+                        settings.ShowEpisodeOverview = element("ShowEpisodeOverview").checked;
+                        settings.CompactEpisodes = element("CompactEpisodes").checked;
+                        settings.StyleActionButtons = element("StyleActionButtons").checked;
+                        settings.StyleHome = element("StyleHome").checked;
+                        settings.StyleLibraries = element("StyleLibraries").checked;
+                        const result = await ApiClient.updatePluginConfiguration(pluginId, settings);
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    } catch (error) {
+                        console.error("PunisherFinTheme: Einstellungen konnten nicht gespeichert werden.", error);
+                        Dashboard.hideLoadingMsg();
+                        Dashboard.alert("Die PunisherFinTheme-Einstellungen konnten nicht gespeichert werden.");
+                    }
+                }
+
+                if (!view.dataset.bound) {
+                    view.dataset.bound = "true";
+                    view.addEventListener("pageshow", showSettings);
+                    view.addEventListener("viewshow", showSettings);
+                    form.addEventListener("submit", storeSettings);
+                }
+            }());
+        </script>
+    </div>
+</body>
+</html>

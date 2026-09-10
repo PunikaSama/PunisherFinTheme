@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="src/PunisherFinTheme/PunisherFinTheme.csproj" />
+  <Project Path="tests/PunisherFinTheme.Tests/PunisherFinTheme.Tests.csproj" />
+</Solution>
+

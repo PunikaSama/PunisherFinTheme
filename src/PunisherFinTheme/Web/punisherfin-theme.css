@@ -1,0 +1,300 @@
+:root.pft-enabled {
+    --pft-background: #101010;
+    --pft-surface: #1a1a1a;
+    --pft-surface-raised: #252525;
+    --pft-accent: #ff5f87;
+    --pft-text: #fff;
+    --pft-text-muted: rgba(255, 255, 255, .7);
+    --pft-card: rgba(255, 255, 255, .06);
+    --pft-border: rgba(255, 255, 255, .12);
+    --pft-radius: 8px;
+    --pft-transition: 150ms ease;
+}
+
+/* Home media sections. PunisherBanna is a shadow component and is intentionally untouched. */
+:root.pft-enabled .homeSectionsContainer.pft-home-view > .verticalSection {
+    margin-bottom: clamp(1.5rem, 3vw, 2.6rem);
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .sectionTitle,
+:root.pft-enabled .homeSectionsContainer.pft-home-view .sectionTitleTextButton {
+    color: var(--pft-text) !important;
+    font-weight: 700;
+    letter-spacing: .01em;
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .itemsContainer {
+    gap: clamp(.65rem, 1.1vw, 1rem);
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .cardBox,
+:root.pft-enabled .pft-library-view .cardBox {
+    border: 1px solid var(--pft-border);
+    border-radius: var(--pft-radius) !important;
+    background: var(--pft-card);
+    box-shadow: 0 .35rem 1rem rgba(0, 0, 0, .24);
+    overflow: hidden;
+    transition: border-color var(--pft-transition), box-shadow var(--pft-transition), transform var(--pft-transition);
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .cardImageContainer,
+:root.pft-enabled .pft-library-view .cardImageContainer,
+:root.pft-enabled .homeSectionsContainer.pft-home-view .cardContent,
+:root.pft-enabled .pft-library-view .cardContent {
+    border-radius: calc(var(--pft-radius) - 1px) !important;
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .card:hover .cardBox,
+:root.pft-enabled .homeSectionsContainer.pft-home-view .card:focus-within .cardBox,
+:root.pft-enabled .pft-library-view .card:hover .cardBox,
+:root.pft-enabled .pft-library-view .card:focus-within .cardBox {
+    border-color: var(--pft-accent);
+    box-shadow: 0 .45rem 1.35rem rgba(0, 0, 0, .38), 0 0 0 1px var(--pft-accent);
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .cardText,
+:root.pft-enabled .pft-library-view .cardText {
+    color: var(--pft-text);
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .cardText-secondary,
+:root.pft-enabled .pft-library-view .cardText-secondary {
+    color: var(--pft-text-muted);
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .itemProgressBarForeground,
+:root.pft-enabled .pft-library-view .itemProgressBarForeground,
+:root.pft-enabled #itemDetailPage .itemProgressBarForeground {
+    background: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .homeSectionsContainer.pft-home-view .playedIndicator,
+:root.pft-enabled .pft-library-view .playedIndicator,
+:root.pft-enabled #itemDetailPage .playedIndicator,
+:root.pft-enabled .homeSectionsContainer.pft-home-view .countIndicator,
+:root.pft-enabled .pft-library-view .countIndicator {
+    background: var(--pft-accent) !important;
+    color: #fff !important;
+}
+
+/* Library browse surfaces and controls. */
+:root.pft-enabled .pft-library-view .itemsContainer {
+    gap: clamp(.7rem, 1.15vw, 1.1rem);
+}
+
+:root.pft-enabled .pft-library-view .sectionTitle,
+:root.pft-enabled .pft-library-view .pageTitle {
+    color: var(--pft-text) !important;
+    font-weight: 700;
+}
+
+:root.pft-enabled .pft-library-view :is(.emby-select, .emby-input, .emby-textarea) {
+    border: 1px solid var(--pft-border) !important;
+    border-radius: var(--pft-radius) !important;
+    background: var(--pft-surface) !important;
+    color: var(--pft-text) !important;
+}
+
+:root.pft-enabled .pft-library-view :is(.emby-select, .emby-input, .emby-textarea):focus {
+    border-color: var(--pft-accent) !important;
+    box-shadow: 0 0 0 1px var(--pft-accent);
+}
+
+:root.pft-enabled .pft-library-view :is(.alphaPickerButton, .paper-icon-button-light, .button-flat):focus-visible {
+    outline: 2px solid var(--pft-accent) !important;
+    outline-offset: 2px;
+}
+
+/* Detail action buttons: original Jellyfin elements and click handlers remain in place. */
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton {
+    margin: 0 !important;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
+    align-items: center;
+    background: var(--pft-accent) !important;
+    border: 2px solid transparent !important;
+    border-radius: 999px !important;
+    color: #fff !important;
+    display: inline-flex;
+    justify-content: center;
+    min-height: 3.35rem;
+    min-width: 12.5rem;
+    padding: .65rem 1.35rem !important;
+    transition: filter var(--pft-transition), border-color var(--pft-transition), transform var(--pft-transition);
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: .35rem;
+    justify-content: center;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay :is(.detailButton-icon, .detailButton-text) {
+    color: #fff !important;
+    margin: 0 !important;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay:hover {
+    filter: brightness(1.08);
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay:focus-visible {
+    border-color: #fff !important;
+    outline: 2px solid var(--pft-accent) !important;
+    outline-offset: 3px;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:not(.btnPlay) .detailButton-content {
+    align-items: center;
+    background: var(--pft-card);
+    border: 1.5px solid rgba(255, 255, 255, .35);
+    border-radius: 50%;
+    display: flex;
+    height: 3.25rem;
+    justify-content: center;
+    margin-inline: auto;
+    transition: background var(--pft-transition), border-color var(--pft-transition);
+    width: 3.25rem;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:not(.btnPlay):is(:hover, :focus-visible) .detailButton-content {
+    background: color-mix(in srgb, var(--pft-accent) 18%, transparent);
+    border-color: var(--pft-accent);
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:not(.btnPlay):focus-visible {
+    outline: 0 !important;
+}
+
+/* Episode rows on series and season detail pages. */
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .vertical-list {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+}
+
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-withContentWrapper {
+    background: var(--pft-card) !important;
+    border: 1px solid var(--pft-border);
+    border-radius: var(--pft-radius) !important;
+    margin: 0 !important;
+    overflow: hidden;
+    padding: 0 !important;
+    transition: border-color var(--pft-transition), box-shadow var(--pft-transition);
+}
+
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-withContentWrapper:is(:hover, :focus-within) {
+    border-color: var(--pft-accent);
+    box-shadow: 0 0 0 1px var(--pft-accent), 0 .35rem 1rem rgba(0, 0, 0, .3);
+}
+
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-content {
+    align-items: stretch;
+    min-height: 7rem;
+    padding: 0 !important;
+}
+
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemImage {
+    align-self: stretch;
+    border-radius: 0 !important;
+    flex: 0 0 clamp(10rem, 20vw, 13.25rem);
+    height: auto !important;
+    margin: 0 !important;
+    min-height: 7rem;
+    object-fit: cover;
+    width: clamp(10rem, 20vw, 13.25rem) !important;
+}
+
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBody {
+    align-self: center;
+    min-width: 0;
+    padding: .8rem 1rem !important;
+}
+
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBodyText:first-child {
+    color: var(--pft-text) !important;
+    font-weight: 600;
+}
+
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .secondary {
+    color: var(--pft-text-muted) !important;
+}
+
+:root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-overview {
+    line-height: 1.4;
+    max-width: 80ch;
+}
+
+:root.pft-enabled.pft-hide-episode-overview #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-overview {
+    display: none !important;
+}
+
+:root.pft-enabled.pft-compact-episodes #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-content {
+    min-height: 5.5rem;
+}
+
+:root.pft-enabled.pft-compact-episodes #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemImage {
+    flex-basis: 9.75rem;
+    min-height: 5.5rem;
+    width: 9.75rem !important;
+}
+
+@media (max-width: 600px) {
+    :root.pft-enabled .homeSectionsContainer.pft-home-view > .verticalSection {
+        margin-bottom: 1.5rem;
+    }
+
+    :root.pft-enabled .pft-library-view .itemsContainer {
+        gap: .65rem;
+    }
+
+    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
+        flex: 1 0 100%;
+        width: 100%;
+    }
+
+    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:not(.btnPlay) {
+        min-width: 4rem;
+    }
+
+    :root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-content {
+        min-height: 5.75rem;
+    }
+
+    :root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemImage {
+        flex-basis: min(42vw, 10.25rem);
+        min-height: 5.75rem;
+        width: min(42vw, 10.25rem) !important;
+    }
+
+    :root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBody {
+        padding: .55rem .7rem !important;
+    }
+
+    :root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-overview {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root.pft-enabled .pft-home-view *,
+    :root.pft-enabled .pft-library-view *,
+    :root.pft-enabled #itemDetailPage .mainDetailButtons *,
+    :root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) * {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
