@@ -30,6 +30,7 @@ for (const required of [
     "StyleHome",
     "StyleLibraries",
     "EnableCardPreviews",
+    "EnableVideoPreviews",
     "StylePlayerControls",
     "EnableRandomBackground",
     "BackgroundLibraryId",
@@ -85,6 +86,14 @@ for (const required of [
     "pft-hide-episode-overview",
     "pft-compact-episodes",
     "pft-card-previews",
+    "pft-video-previews",
+    "firstEpisodeForPreview",
+    "previewStartTicks",
+    "videoPreviewUrl",
+    "stopVideoPreview",
+    "stream.mp4",
+    "video.muted = true",
+    "video.playsInline = true",
     "pft-player-controls",
     "pft-random-background",
     "punisherFinRandomBackdrop",
@@ -97,7 +106,8 @@ for (const required of [
     "restoreTransparentHeader",
     "pft-preview-expanded",
     "pft-season-card",
-    "item.Type !== \"Season\"",
+    "pft-media-preview-card",
+    "[\"Episode\", \"Movie\", \"Series\", \"Season\", \"Video\"].includes(item.Type)",
     "pft-detail-button-label",
     "removeAttribute(\"title\")",
     "homeSectionsContainer",
@@ -118,6 +128,8 @@ for (const required of [
     "#itemDetailPage .card .itemProgressBar",
     "#itemDetailPage .countIndicator",
     ".pft-preview-expanded",
+    ".pft-preview-video",
+    ".pft-preview-video-playing",
     ".pft-preview-expanded .cardBox",
     "0 0 0 1px var(--pft-accent) !important",
     ".videoPlayerContainer",
@@ -135,6 +147,10 @@ for (const required of [
     if (!styles.includes(required)) {
         throw new Error(`Missing theme behavior: ${required}`);
     }
+}
+
+if (client.includes("video.loop = true")) {
+    throw new Error("Video previews must be bounded clips, not unlimited looping streams.");
 }
 
 for (const forbidden of [

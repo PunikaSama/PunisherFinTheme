@@ -68,6 +68,7 @@ public sealed class ThemeController : ControllerBase
             Home = settings.StyleHome,
             Libraries = settings.StyleLibraries,
             CardPreviews = settings.EnableCardPreviews,
+            VideoPreviews = settings.EnableVideoPreviews,
             PlayerControls = settings.StylePlayerControls,
             RandomBackground = settings.EnableRandomBackground,
             BackgroundLibraryId = settings.BackgroundLibraryId,

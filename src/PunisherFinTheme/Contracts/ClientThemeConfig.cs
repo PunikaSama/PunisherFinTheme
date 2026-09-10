@@ -28,6 +28,9 @@ public sealed class ClientThemeConfig
     [JsonPropertyName("cardPreviews")]
     public bool CardPreviews { get; init; }
 
+    [JsonPropertyName("videoPreviews")]
+    public bool VideoPreviews { get; init; }
+
     [JsonPropertyName("playerControls")]
     public bool PlayerControls { get; init; }
 

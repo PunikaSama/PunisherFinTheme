@@ -11,7 +11,7 @@
     }
 
     const root = document.documentElement;
-    const markerClasses = ["pft-enabled", "pft-action-buttons", "pft-hide-episode-overview", "pft-compact-episodes", "pft-card-previews", "pft-player-controls", "pft-random-background"];
+    const markerClasses = ["pft-enabled", "pft-action-buttons", "pft-hide-episode-overview", "pft-compact-episodes", "pft-card-previews", "pft-video-previews", "pft-player-controls", "pft-random-background"];
     const pageClasses = ["pft-home-view", "pft-library-view"];
     const runtime = {
         config: null,
@@ -21,8 +21,13 @@
         stylesheet: null,
         observer: null,
         previewCache: new Map(),
+        previewVideoItemCache: new Map(),
         resumeMinutes: new Map(),
         previewTimer: null,
+        videoPreviewTimer: null,
+        previewClipTimer: null,
+        previewVideoGeneration: 0,
+        activePreviewVideo: null,
         activeCard: null,
         backgroundContainer: null,
         backgroundInterval: null,
@@ -151,12 +156,17 @@
             root.classList.toggle("pft-hide-episode-overview", config.episodeOverview === false);
             root.classList.toggle("pft-compact-episodes", config.compactEpisodes === true);
             root.classList.toggle("pft-card-previews", config.cardPreviews === true);
+            root.classList.toggle("pft-video-previews", config.videoPreviews === true);
             root.classList.toggle("pft-player-controls", config.playerControls === true);
             root.classList.toggle("pft-random-background", config.randomBackground === true);
             syncTransparentHeader();
         } else {
             restoreTransparentHeader();
             restoreDetailButtonTitles();
+        }
+
+        if (config?.enabled !== true || config.videoPreviews !== true) {
+            stopVideoPreview();
         }
 
         markSupportedViews();
@@ -328,20 +338,170 @@
         });
     }
 
+    function firstEpisodeForPreview(api, item) {
+        if (!["Series", "Season"].includes(item.Type)) {
+            return Promise.resolve(item);
+        }
+
+        let request = runtime.previewVideoItemCache.get(item.Id);
+        if (!request) {
+            const userId = api.getCurrentUserId?.();
+            request = userId ? api.fetch({
+                url: api.getUrl("/Items", {
+                    UserId: userId,
+                    ParentId: item.Id,
+                    Recursive: true,
+                    IncludeItemTypes: "Episode",
+                    SortBy: "ParentIndexNumber,IndexNumber",
+                    SortOrder: "Ascending",
+                    Limit: 1,
+                    Fields: "RunTimeTicks",
+                    EnableUserData: true,
+                    EnableImages: false,
+                    EnableTotalRecordCount: false
+                }),
+                type: "GET"
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                return response.json();
+            }).then(result => (result.Items || result.items || [])[0] || null).catch(error => {
+                console.debug("PunisherFinTheme: Keine Episode für die Videovorschau gefunden.", error);
+                return null;
+            }) : Promise.resolve(null);
+            runtime.previewVideoItemCache.set(item.Id, request);
+        }
+        return request;
+    }
+
+    function previewStartTicks(item) {
+        const duration = Math.max(0, Number(item.RunTimeTicks) || 0);
+        const resume = Math.max(0, Number(item.UserData?.PlaybackPositionTicks) || 0);
+        if (resume > 0 && (!duration || resume < duration * .9)) {
+            return Math.floor(resume);
+        }
+        if (!duration) {
+            return 600000000;
+        }
+        return Math.floor(Math.min(duration * .08, 1800000000));
+    }
+
+    function videoPreviewUrl(api, item) {
+        const token = typeof api.accessToken === "function" ? api.accessToken() : api.accessToken;
+        const parameters = {
+            Static: false,
+            VideoCodec: "h264",
+            AudioCodec: "aac",
+            VideoBitrate: 1200000,
+            AudioBitrate: 64000,
+            MaxAudioChannels: 2,
+            Width: 640,
+            Height: 360,
+            StartTimeTicks: previewStartTicks(item),
+            SubtitleStreamIndex: -1,
+            EnableAutoStreamCopy: false,
+            AllowVideoStreamCopy: false,
+            AllowAudioStreamCopy: false
+        };
+        if (token) {
+            parameters.ApiKey = token;
+        }
+        return api.getUrl(`/Videos/${item.Id}/stream.mp4`, parameters);
+    }
+
+    function stopVideoPreview(card) {
+        window.clearTimeout(runtime.videoPreviewTimer);
+        window.clearTimeout(runtime.previewClipTimer);
+        runtime.videoPreviewTimer = null;
+        runtime.previewClipTimer = null;
+        runtime.previewVideoGeneration += 1;
+        const video = runtime.activePreviewVideo;
+        if (!video || (card && !card.contains(video))) {
+            return;
+        }
+        runtime.activePreviewVideo = null;
+        video.closest(".card")?.classList.remove("pft-preview-video-playing");
+        try {
+            video.pause();
+            video.removeAttribute("src");
+            video.load();
+        } catch (error) {
+            console.debug("PunisherFinTheme: Videovorschau konnte nicht vollständig beendet werden.", error);
+        }
+        video.remove();
+    }
+
+    async function startVideoPreview(card, item) {
+        if (runtime.config?.videoPreviews !== true
+                || runtime.activeCard !== card
+                || !card.isConnected
+                || !window.matchMedia("(hover: hover) and (pointer: fine), (min-width: 900px)").matches) {
+            return;
+        }
+        stopVideoPreview();
+        const generation = runtime.previewVideoGeneration;
+        const api = jellyfinApi();
+        const playable = api ? await firstEpisodeForPreview(api, item) : null;
+        if (!playable || generation !== runtime.previewVideoGeneration || runtime.activeCard !== card || !card.isConnected) {
+            return;
+        }
+
+        const imageHost = card.querySelector(".cardImageContainer, .cardContent");
+        if (!imageHost) {
+            return;
+        }
+        const video = document.createElement("video");
+        video.className = "pft-preview-video";
+        video.autoplay = true;
+        video.controls = false;
+        video.defaultMuted = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        video.disablePictureInPicture = true;
+        video.setAttribute("muted", "");
+        video.setAttribute("playsinline", "");
+        video.addEventListener("playing", () => {
+            if (runtime.activePreviewVideo !== video || runtime.activeCard !== card) {
+                return;
+            }
+            card.classList.add("pft-preview-video-playing");
+            runtime.previewClipTimer = window.setTimeout(() => stopVideoPreview(card), 12000);
+        }, { once: true });
+        video.addEventListener("error", () => {
+            if (runtime.activePreviewVideo === video) {
+                stopVideoPreview(card);
+            }
+        }, { once: true });
+        runtime.activePreviewVideo = video;
+        imageHost.appendChild(video);
+        video.src = videoPreviewUrl(api, playable);
+        video.load();
+        try {
+            await video.play();
+        } catch (error) {
+            if (runtime.activePreviewVideo === video) {
+                console.debug("PunisherFinTheme: Browser hat die stumme Videovorschau abgelehnt.", error);
+                stopVideoPreview(card);
+            }
+        }
+    }
+
     async function preparePreview(card) {
         const id = cardId(card);
         const api = jellyfinApi();
         if (!id || !api) {
-            return false;
+            return null;
         }
         const item = await loadItem(id);
-        const homeCard = Boolean(card.closest(".pft-home-view"));
-        if (!item || (!homeCard && item.Type !== "Season") || !["Episode", "Movie", "Series", "Season", "Video"].includes(item.Type)) {
-            return false;
+        if (!item || !["Episode", "Movie", "Series", "Season", "Video"].includes(item.Type)) {
+            return null;
         }
+        card.classList.add("pft-media-preview-card");
         card.classList.toggle("pft-season-card", item.Type === "Season");
         const url = imageUrl(api, item);
-        return url ? createPreview(card, url) : false;
+        return url && await createPreview(card, url) ? item : null;
     }
 
     function previewCardFrom(target) {
@@ -357,13 +517,19 @@
             if (!card.isConnected) {
                 return;
             }
-            runtime.activeCard?.classList.remove("pft-preview-expanded");
+            stopVideoPreview();
+            runtime.activeCard?.classList.remove("pft-preview-expanded", "pft-preview-video-playing");
             runtime.activeCard = card;
             card.classList.add("pft-preview-loading");
-            const ready = await preparePreview(card);
+            const previewItem = await preparePreview(card);
             card.classList.remove("pft-preview-loading");
-            if (ready && runtime.activeCard === card) {
+            if (previewItem && runtime.activeCard === card) {
                 card.classList.add("pft-preview-expanded");
+                if (runtime.config?.videoPreviews === true) {
+                    runtime.videoPreviewTimer = window.setTimeout(() => {
+                        void startVideoPreview(card, previewItem);
+                    }, 500);
+                }
             }
         }, 140);
     }
@@ -373,7 +539,8 @@
         if (runtime.activeCard === card) {
             runtime.activeCard = null;
         }
-        card?.classList.remove("pft-preview-expanded", "pft-preview-loading");
+        stopVideoPreview(card);
+        card?.classList.remove("pft-preview-expanded", "pft-preview-loading", "pft-preview-video-playing");
     }
 
     function bindPreviewEvents() {

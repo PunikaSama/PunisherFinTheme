@@ -21,6 +21,8 @@ public sealed partial class Settings : BasePluginConfiguration
 
     public bool EnableCardPreviews { get; set; } = true;
 
+    public bool EnableVideoPreviews { get; set; } = true;
+
     public bool StylePlayerControls { get; set; } = true;
 
     public bool EnableRandomBackground { get; set; } = true;

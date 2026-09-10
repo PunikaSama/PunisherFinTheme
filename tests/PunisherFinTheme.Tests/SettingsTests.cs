@@ -17,6 +17,7 @@ public sealed class SettingsTests
         Assert.True(settings.StyleHome);
         Assert.True(settings.StyleLibraries);
         Assert.True(settings.EnableCardPreviews);
+        Assert.True(settings.EnableVideoPreviews);
         Assert.True(settings.StylePlayerControls);
         Assert.True(settings.EnableRandomBackground);
         Assert.Equal("Anime", settings.BackgroundLibraryName);

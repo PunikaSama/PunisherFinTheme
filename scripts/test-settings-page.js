@@ -89,6 +89,7 @@ async function main() {
         StyleHome: true,
         StyleLibraries: true,
         EnableCardPreviews: true,
+        EnableVideoPreviews: true,
         StylePlayerControls: true,
         EnableRandomBackground: true,
         BackgroundLibraryId: "11111111-1111-1111-1111-111111111111",
@@ -156,6 +157,7 @@ async function main() {
 
     assert.equal(elements.Enabled.checked, true, "Saved enabled state must be restored");
     assert.equal(elements.CompactEpisodes.checked, true, "Saved checkbox state must be restored");
+    assert.equal(elements.EnableVideoPreviews.checked, true, "Video previews must be enabled by default and restored");
     assert.equal(elements.BackgroundOpacityPercent.value, 77, "Saved slider position must be restored");
     assert.equal(elements.BackgroundOpacityPercentValue.textContent, "77 %", "Saved slider label must be restored");
     assert.equal(elements.BackgroundLibraryId.value, expected.BackgroundLibraryId, "Saved library must survive a failed library lookup");
@@ -167,6 +169,7 @@ async function main() {
 
     elements.Enabled.checked = false;
     elements.StyleHome.checked = false;
+    elements.EnableVideoPreviews.checked = false;
     elements.PunisherFinThemeSettingsForm.dispatch("submit");
     await settle();
 
@@ -174,6 +177,7 @@ async function main() {
     assert.equal(saved.pluginId, "4763374d-d1ce-4404-b769-3625dacdcb84");
     assert.equal(saved.settings.Enabled, false, "Changed checkbox state must be saved");
     assert.equal(saved.settings.StyleHome, false, "Every changed checkbox state must be saved");
+    assert.equal(saved.settings.EnableVideoPreviews, false, "Video preview preference must be saved");
     assert.equal(saved.settings.BackgroundOpacityPercent, 42, "Changed slider value must be saved");
 }
 

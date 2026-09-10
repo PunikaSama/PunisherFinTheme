@@ -44,6 +44,14 @@
                         </label>
 
                         <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="EnableVideoPreviews" type="checkbox">
+                            <span>Stumme Videoausschnitte in Kartenvorschauen abspielen</span>
+                        </label>
+                        <div class="fieldDescription" style="margin-bottom:1em">
+                            Gilt für Episoden, Staffeln, Serien, „Weiterschauen“ und neue Medien. Deaktiviert bleibt die bisherige statische Bildvorschau erhalten.
+                        </div>
+
+                        <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="StyleActionButtons" type="checkbox">
                             <span>Aktionsknöpfe auf Detailseiten gestalten</span>
                         </label>
@@ -368,6 +376,7 @@
                     element("StyleHome").checked = settings.StyleHome !== false;
                     element("StyleLibraries").checked = settings.StyleLibraries !== false;
                     element("EnableCardPreviews").checked = settings.EnableCardPreviews !== false;
+                    element("EnableVideoPreviews").checked = settings.EnableVideoPreviews !== false;
                     element("StylePlayerControls").checked = settings.StylePlayerControls !== false;
                     element("EnableRandomBackground").checked = settings.EnableRandomBackground !== false;
                     populateLibraries([], settings.BackgroundLibraryId, settings.BackgroundLibraryName);
@@ -440,6 +449,7 @@
                     settings.StyleHome = element("StyleHome").checked;
                     settings.StyleLibraries = element("StyleLibraries").checked;
                     settings.EnableCardPreviews = element("EnableCardPreviews").checked;
+                    settings.EnableVideoPreviews = element("EnableVideoPreviews").checked;
                     settings.StylePlayerControls = element("StylePlayerControls").checked;
                     settings.EnableRandomBackground = element("EnableRandomBackground").checked;
                     librarySelect = element("BackgroundLibraryId");
