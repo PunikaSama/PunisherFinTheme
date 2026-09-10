@@ -125,6 +125,7 @@ for (const required of [
     ".pft-library-view",
     ".MuiButtonGroup-root",
     ".MuiButton-contained",
+    ".MuiButton-containedPrimary",
     ".btnPlayAll, .btnShuffle",
     "#itemDetailPage .mainDetailButtons .btnPlay",
     "#itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible)",
@@ -207,4 +208,8 @@ if (/:is\([^)]*\.sliderBubble(?![\w-])[^)]*\)[^{]*\{[^}]*background(?:-color)?:\
 
 if (/\.card:is\([^)]*:hover[^)]*\)\s+\.cardOverlayFab-primary/i.test(styles)) {
     throw new Error("Preview play buttons must only receive the accent when the button itself is hovered.");
+}
+
+if (/\.pft-library-view\s+:is\(\.MuiButtonGroup-root/i.test(styles)) {
+    throw new Error("Primary MUI button groups must receive the accent even when optional library styling is disabled.");
 }

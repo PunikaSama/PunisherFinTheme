@@ -9,6 +9,9 @@
     --pft-border: rgba(255, 255, 255, .12);
     --pft-radius: 8px;
     --pft-transition: 150ms ease;
+    --jf-palette-primary-main: var(--pft-accent);
+    --theme-primary-color: var(--pft-accent);
+    --primary-accent-color: var(--pft-accent);
     --jf-palette-AppBar-defaultBg: transparent;
     --jf-palette-AppBar-transparentBg: transparent;
     --jf-palette-AppBar-gradient: none;
@@ -306,16 +309,16 @@
 }
 
 /* Library play-all, shuffle, and queue actions: modern MUI and legacy Jellyfin views. */
-:root.pft-enabled .pft-library-view :is(.MuiButtonGroup-root, [class*="MuiButtonGroup-root"]) :is(.MuiButton-contained, [class*="MuiButton-contained"]),
-:root.pft-enabled .pft-library-view :is(.btnPlayAll, .btnShuffle) {
+:root.pft-enabled :is(.MuiButtonGroup-root, [class*="MuiButtonGroup-root"]) :is(.MuiButton-contained, .MuiButton-containedPrimary, [class*="MuiButton-contained"]),
+:root.pft-enabled :is(.pft-library-view, .libraryPage) :is(.btnPlayAll, .btnShuffle) {
     background: var(--pft-accent) !important;
     background-color: var(--pft-accent) !important;
     border-color: color-mix(in srgb, var(--pft-accent) 76%, #000) !important;
     color: #fff !important;
 }
 
-:root.pft-enabled .pft-library-view :is(.MuiButtonGroup-root, [class*="MuiButtonGroup-root"]) :is(.MuiButton-contained, [class*="MuiButton-contained"]):is(:hover, :focus-visible),
-:root.pft-enabled .pft-library-view :is(.btnPlayAll, .btnShuffle):is(:hover, :focus-visible) {
+:root.pft-enabled :is(.MuiButtonGroup-root, [class*="MuiButtonGroup-root"]) :is(.MuiButton-contained, .MuiButton-containedPrimary, [class*="MuiButton-contained"]):is(:hover, :focus-visible),
+:root.pft-enabled :is(.pft-library-view, .libraryPage) :is(.btnPlayAll, .btnShuffle):is(:hover, :focus-visible) {
     background: color-mix(in srgb, var(--pft-accent) 84%, #000) !important;
     background-color: color-mix(in srgb, var(--pft-accent) 84%, #000) !important;
     border-color: var(--pft-accent) !important;

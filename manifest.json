@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
+        "version": "1.6.3.0",
+        "changelog": "Fixes the two mobile library action buttons remaining blue when optional library styling is disabled. Material UI primary button groups now receive the configured accent directly at theme level, while legacy play-all and shuffle controls remain scoped to library pages.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.6.3.0/PunisherFinTheme_1.6.3.0.zip",
+        "checksum": "b255328227d50369f7fbf46db8c2800b",
+        "timestamp": "2026-09-11 01:47:05"
+      },
+      {
         "version": "1.6.2.0",
         "changelog": "Applies the configured accent color to the mobile library play-all, shuffle, and queue button group in both modern and legacy Jellyfin views. Video startup loading indicators now also use the selected accent color, including Jellyfin's MDL spinner and modern CircularProgress variants.",
         "targetAbi": "12.0.0.0",
