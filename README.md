@@ -4,13 +4,11 @@ PunisherFinTheme brings a focused PunisherFin-inspired design to Jellyfin 12 Web
 
 ## Features
 
-- Restyled home and library media cards
-- Wide artwork and metadata previews on hover or keyboard/TV focus
-- Responsive episode rows for desktop and mobile
-- PunisherFin-style detail and player controls
-- Configurable rotating library backdrops with visual controls
-- Configurable accent color and display options
-- Leaves the Jellyfin header, detail hero, and PunisherBanna unchanged
+- Modern home and library layouts for desktop and mobile
+- Wide artwork previews with media information on hover or TV focus
+- Responsive episode lists and redesigned playback controls
+- Rotating backgrounds from a selectable media library
+- Adjustable background appearance, transitions, and accent color
 
 ## Requirements
 
