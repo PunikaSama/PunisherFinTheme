@@ -85,8 +85,8 @@
     }
 
     :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded {
-        flex-basis: clamp(22rem, 30vw, 34rem) !important;
-        width: clamp(22rem, 30vw, 34rem) !important;
+        flex-basis: var(--pft-preview-width, 28rem) !important;
+        width: var(--pft-preview-width, 28rem) !important;
         z-index: 20;
     }
 
@@ -95,13 +95,14 @@
         box-shadow: 0 .65rem 1.8rem rgba(0, 0, 0, .52), 0 0 0 1px #fff;
     }
 
-    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardPadder {
-        padding-bottom: 56.25% !important;
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardScalable {
+        aspect-ratio: auto !important;
+        height: var(--pft-preview-height, 220px) !important;
     }
 
-    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardImageContainer,
-    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardContent {
-        aspect-ratio: 16 / 9;
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardPadder {
+        height: 100% !important;
+        padding-bottom: 0 !important;
     }
 
     :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .pft-hover-artwork {
@@ -114,11 +115,6 @@
         transition: opacity 140ms ease;
         width: 100%;
         z-index: 3;
-    }
-
-    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .cardImageContainer,
-    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .cardContent {
-        position: relative;
     }
 
     :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .pft-hover-artwork {
@@ -134,10 +130,16 @@
     }
 
     :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .pft-hover-details {
-        background: color-mix(in srgb, var(--pft-surface) 92%, transparent);
+        background: linear-gradient(transparent, rgba(0, 0, 0, .9));
+        bottom: 0;
         color: var(--pft-text);
         display: block;
-        padding: .65rem .75rem .75rem;
+        left: 0;
+        padding: 2.8rem .8rem .75rem;
+        pointer-events: none;
+        position: absolute;
+        right: 0;
+        z-index: 4;
     }
 
     :root.pft-enabled.pft-card-previews .pft-hover-title {
@@ -162,7 +164,7 @@
         margin-top: .45rem;
         overflow: hidden;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 1;
     }
 }
 

@@ -39,7 +39,7 @@ for (const required of [
 }
 
 for (const required of [
-    "__punisherFinThemeV110",
+    "__punisherFinThemeV111",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
     "MutationObserver",

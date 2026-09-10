@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    const runtimeKey = "__punisherFinThemeV110";
+    const runtimeKey = "__punisherFinThemeV111";
     if (window[runtimeKey]) {
         return;
     }
@@ -140,9 +140,8 @@
     }
 
     function createPreview(card, item, url) {
-        const box = card.querySelector(".cardBox") || card;
         const imageHost = card.querySelector(".cardImageContainer, .cardContent");
-        if (!imageHost || box.querySelector(":scope > .pft-hover-details")) {
+        if (!imageHost || imageHost.querySelector(".pft-hover-details")) {
             return Promise.resolve(Boolean(card.classList.contains("pft-preview-ready")));
         }
 
@@ -190,8 +189,7 @@
 
         return new Promise(resolve => {
             image.addEventListener("load", () => {
-                imageHost.appendChild(image);
-                box.appendChild(details);
+                imageHost.append(image, details);
                 card.classList.add("pft-preview-ready");
                 resolve(true);
             }, { once: true });
@@ -246,6 +244,12 @@
             }
             runtime.activeCard?.classList.remove("pft-preview-expanded");
             runtime.activeCard = card;
+            const imageArea = card.querySelector(".cardScalable, .cardImageContainer, .cardContent");
+            const previewHeight = Math.max(140, Math.round(imageArea?.getBoundingClientRect().height || 220));
+            const maximumWidth = Math.max(320, Math.min(544, Math.round(window.innerWidth * .72)));
+            const previewWidth = Math.min(maximumWidth, Math.max(320, Math.round(previewHeight * 16 / 9)));
+            card.style.setProperty("--pft-preview-height", `${previewHeight}px`);
+            card.style.setProperty("--pft-preview-width", `${previewWidth}px`);
             card.classList.add("pft-preview-loading");
             const ready = await preparePreview(card);
             card.classList.remove("pft-preview-loading");
