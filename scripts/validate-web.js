@@ -31,6 +31,20 @@ for (const required of [
     "StyleLibraries",
     "EnableCardPreviews",
     "StylePlayerControls",
+    "EnableRandomBackground",
+    "BackgroundLibraryId",
+    "BackgroundOpacityPercent",
+    "BackgroundBrightnessPercent",
+    "BackgroundBlurPixels",
+    "BackgroundSaturationPercent",
+    "BackgroundContrastPercent",
+    "BackgroundOverlayPercent",
+    "BackgroundChangeIntervalSeconds",
+    "BackgroundCrossfadeMilliseconds",
+    "BackgroundImageQuality",
+    "HideRandomBackgroundOnDetails",
+    "HideRandomBackgroundInPlayer",
+    "/PunisherFinTheme/libraries",
     "/PunisherFinTheme/dependency"
 ]) {
     if (!html.includes(required)) {
@@ -39,7 +53,7 @@ for (const required of [
 }
 
 for (const required of [
-    "__punisherFinThemeV121",
+    "__punisherFinThemeV130",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
     "MutationObserver",
@@ -50,6 +64,11 @@ for (const required of [
     "pft-compact-episodes",
     "pft-card-previews",
     "pft-player-controls",
+    "pft-random-background",
+    "punisherFinRandomBackdrop",
+    "BackdropImageTags",
+    "getUserViews",
+    "getItems",
     "pft-preview-expanded",
     "pft-detail-button-label",
     "removeAttribute(\"title\")",
@@ -71,6 +90,10 @@ for (const required of [
     "#itemDetailPage .card .itemProgressBar",
     ".pft-preview-expanded",
     ".videoPlayerContainer",
+    "#punisherFinRandomBackdrop",
+    ".pft-backdrop-layer",
+    ".backgroundContainer",
+    "pointer-events: none",
     "@media (max-width: 600px)",
     "@media (prefers-reduced-motion: reduce)"
 ]) {

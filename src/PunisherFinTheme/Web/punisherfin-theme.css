@@ -11,6 +11,46 @@
     --pft-transition: 150ms ease;
 }
 
+/* Isolated rotating backdrop. It stays behind Jellyfin and never receives input. */
+#punisherFinRandomBackdrop {
+    background: #101010;
+    inset: -20px;
+    overflow: hidden;
+    pointer-events: none;
+    position: fixed;
+    z-index: 0;
+}
+
+#punisherFinRandomBackdrop .pft-backdrop-layer {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(var(--pft-bg-blur, 5px)) brightness(var(--pft-bg-brightness, 68%)) saturate(var(--pft-bg-saturation, 110%)) contrast(var(--pft-bg-contrast, 105%));
+    inset: 0;
+    opacity: 0;
+    position: absolute;
+    transform: scale(1.025);
+    transition: opacity var(--pft-bg-crossfade, 2500ms) ease;
+}
+
+#punisherFinRandomBackdrop .pft-backdrop-layer.pft-backdrop-active {
+    opacity: var(--pft-bg-opacity, 1);
+}
+
+#punisherFinRandomBackdrop .pft-backdrop-overlay {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, var(--pft-bg-overlay-top, .11)), rgba(0, 0, 0, var(--pft-bg-overlay-bottom, .32)));
+    inset: 0;
+    position: absolute;
+}
+
+#punisherFinRandomBackdrop.pft-background-suspended {
+    display: none !important;
+}
+
+:root.pft-enabled.pft-random-background .backgroundContainer {
+    background-color: transparent !important;
+}
+
 /* Home media sections. PunisherBanna is a shadow component and is intentionally untouched. */
 :root.pft-enabled .homeSectionsContainer.pft-home-view > .verticalSection {
     margin-bottom: clamp(1.5rem, 3vw, 2.6rem);

@@ -7,7 +7,7 @@
     <div id="PunisherFinThemeSettings"
          data-role="page"
          class="page type-interior pluginConfigurationPage"
-         data-require="emby-input,emby-button,emby-checkbox">
+         data-require="emby-input,emby-button,emby-checkbox,emby-select">
         <div data-role="content">
             <div class="content-primary">
                 <form id="PunisherFinThemeSettingsForm">
@@ -65,6 +65,68 @@
                             <span>Kompakte Episodenkarten verwenden</span>
                         </label>
 
+                        <div style="margin:2em 0 1.5em;padding:1.25em;border:1px solid rgba(255,255,255,.12);border-radius:.5em;background:rgba(255,255,255,.035)">
+                            <h3 class="sectionTitle" style="margin-top:0">Zufälliger Hintergrund</h3>
+                            <p class="fieldDescription" style="margin-bottom:1.2em">Zeigt wechselnde backdrop.jpg-Bilder aus genau einer Bibliothek. Die Einbindung erfolgt automatisch und benötigt keine Änderung an Jellyfins index.html.</p>
+
+                            <label class="emby-checkbox-label">
+                                <input is="emby-checkbox" id="EnableRandomBackground" type="checkbox">
+                                <span>Zufälligen Hintergrund aktivieren</span>
+                            </label>
+
+                            <div class="selectContainer">
+                                <label class="selectLabel" for="BackgroundLibraryId">Bibliothek</label>
+                                <select is="emby-select" id="BackgroundLibraryId" class="emby-select-withcolor emby-select"></select>
+                                <div class="fieldDescription">Es werden Filme und Serien mit vorhandenem backdrop.jpg verwendet.</div>
+                            </div>
+
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundOpacityPercent">Deckkraft: <output id="BackgroundOpacityPercentValue">100 %</output></label>
+                                <input id="BackgroundOpacityPercent" type="range" min="0" max="100" step="1" value="100" style="width:100%">
+                            </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundBrightnessPercent">Helligkeit: <output id="BackgroundBrightnessPercentValue">68 %</output></label>
+                                <input id="BackgroundBrightnessPercent" type="range" min="20" max="150" step="1" value="68" style="width:100%">
+                            </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundBlurPixels">Unschärfe: <output id="BackgroundBlurPixelsValue">5 px</output></label>
+                                <input id="BackgroundBlurPixels" type="range" min="0" max="30" step="1" value="5" style="width:100%">
+                            </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundSaturationPercent">Sättigung: <output id="BackgroundSaturationPercentValue">110 %</output></label>
+                                <input id="BackgroundSaturationPercent" type="range" min="0" max="200" step="1" value="110" style="width:100%">
+                            </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundContrastPercent">Kontrast: <output id="BackgroundContrastPercentValue">105 %</output></label>
+                                <input id="BackgroundContrastPercent" type="range" min="50" max="200" step="1" value="105" style="width:100%">
+                            </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundOverlayPercent">Abdunklung: <output id="BackgroundOverlayPercentValue">22 %</output></label>
+                                <input id="BackgroundOverlayPercent" type="range" min="0" max="80" step="1" value="22" style="width:100%">
+                            </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundChangeIntervalSeconds">Bildwechsel: <output id="BackgroundChangeIntervalSecondsValue">30 s</output></label>
+                                <input id="BackgroundChangeIntervalSeconds" type="range" min="10" max="300" step="5" value="30" style="width:100%">
+                            </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundCrossfadeMilliseconds">Überblendung: <output id="BackgroundCrossfadeMillisecondsValue">2,5 s</output></label>
+                                <input id="BackgroundCrossfadeMilliseconds" type="range" min="0" max="10000" step="250" value="2500" style="width:100%">
+                            </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel" for="BackgroundImageQuality">Bildqualität: <output id="BackgroundImageQualityValue">90 %</output></label>
+                                <input id="BackgroundImageQuality" type="range" min="30" max="100" step="1" value="90" style="width:100%">
+                            </div>
+
+                            <label class="emby-checkbox-label">
+                                <input is="emby-checkbox" id="HideRandomBackgroundOnDetails" type="checkbox">
+                                <span>Auf Detailseiten ausblenden</span>
+                            </label>
+                            <label class="emby-checkbox-label">
+                                <input is="emby-checkbox" id="HideRandomBackgroundInPlayer" type="checkbox">
+                                <span>Während der Wiedergabe ausblenden</span>
+                            </label>
+                        </div>
+
                         <div style="margin:1.5em 0;padding:1em;border-radius:.35em;background:rgba(255,255,255,.05)">
                             <div style="font-weight:600;margin-bottom:.35em">File Transformation</div>
                             <div id="DependencyMessage" class="fieldDescription">Status wird geladen …</div>
@@ -99,6 +161,74 @@
                     return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : "#FF5F87";
                 }
 
+                const ranges = [
+                    ["BackgroundOpacityPercent", "%"],
+                    ["BackgroundBrightnessPercent", "%"],
+                    ["BackgroundBlurPixels", "px"],
+                    ["BackgroundSaturationPercent", "%"],
+                    ["BackgroundContrastPercent", "%"],
+                    ["BackgroundOverlayPercent", "%"],
+                    ["BackgroundChangeIntervalSeconds", "s"],
+                    ["BackgroundCrossfadeMilliseconds", "s", value => (Number(value) / 1000).toLocaleString("de-DE", { maximumFractionDigits: 2 })],
+                    ["BackgroundImageQuality", "%"]
+                ];
+
+                function updateRange(id, suffix, formatter) {
+                    const input = element(id);
+                    const output = element(`${id}Value`);
+                    output.textContent = `${formatter ? formatter(input.value) : input.value} ${suffix}`;
+                }
+
+                function setRange(id, value, fallback) {
+                    element(id).value = Number.isFinite(Number(value)) ? value : fallback;
+                    const entry = ranges.find(range => range[0] === id);
+                    updateRange(...entry);
+                }
+
+                function normalizeLibraries(items) {
+                    const choices = new Map();
+                    (items || []).forEach(item => {
+                        const id = item.id || item.Id || item.ItemId;
+                        const name = item.name || item.Name;
+                        if (id && name) {
+                            choices.set(String(id).toLowerCase(), { id: String(id), name: String(name) });
+                        }
+                    });
+                    return Array.from(choices.values()).sort((left, right) => left.name.localeCompare(right.name));
+                }
+
+                async function loadLibraries() {
+                    try {
+                        return normalizeLibraries(await requestJson("/PunisherFinTheme/libraries"));
+                    } catch (error) {
+                        try {
+                            return normalizeLibraries(await ApiClient.getVirtualFolders());
+                        } catch (fallbackError) {
+                            const userId = ApiClient.getCurrentUserId?.();
+                            const result = userId ? await ApiClient.getUserViews({ userId }) : null;
+                            return normalizeLibraries(result?.Items);
+                        }
+                    }
+                }
+
+                function populateLibraries(libraries, selectedId, selectedName) {
+                    const select = element("BackgroundLibraryId");
+                    select.replaceChildren();
+                    const placeholder = document.createElement("option");
+                    placeholder.value = "";
+                    placeholder.textContent = libraries.length ? "Bitte auswählen" : "Keine Bibliothek gefunden";
+                    select.appendChild(placeholder);
+                    libraries.forEach(library => {
+                        const option = document.createElement("option");
+                        option.value = library.id;
+                        option.textContent = library.name;
+                        select.appendChild(option);
+                    });
+                    const byId = libraries.find(library => library.id.toLowerCase() === String(selectedId || "").toLowerCase());
+                    const byName = libraries.find(library => library.name.toLowerCase() === String(selectedName || "Anime").toLowerCase());
+                    select.value = (byId || byName)?.id || "";
+                }
+
                 async function requestJson(path) {
                     const response = await ApiClient.fetch({ url: ApiClient.getUrl(path), type: "GET" });
                     if (!response.ok) {
@@ -128,7 +258,10 @@
                     loading = true;
                     Dashboard.showLoadingMsg();
                     try {
-                        const settings = await ApiClient.getPluginConfiguration(pluginId);
+                        const [settings, libraries] = await Promise.all([
+                            ApiClient.getPluginConfiguration(pluginId),
+                            loadLibraries()
+                        ]);
                         element("Enabled").checked = settings.Enabled !== false;
                         element("AccentColor").value = validColor(settings.AccentColor);
                         element("ShowEpisodeOverview").checked = settings.ShowEpisodeOverview !== false;
@@ -138,6 +271,19 @@
                         element("StyleLibraries").checked = settings.StyleLibraries !== false;
                         element("EnableCardPreviews").checked = settings.EnableCardPreviews !== false;
                         element("StylePlayerControls").checked = settings.StylePlayerControls !== false;
+                        element("EnableRandomBackground").checked = settings.EnableRandomBackground !== false;
+                        populateLibraries(libraries, settings.BackgroundLibraryId, settings.BackgroundLibraryName);
+                        setRange("BackgroundOpacityPercent", settings.BackgroundOpacityPercent, 100);
+                        setRange("BackgroundBrightnessPercent", settings.BackgroundBrightnessPercent, 68);
+                        setRange("BackgroundBlurPixels", settings.BackgroundBlurPixels, 5);
+                        setRange("BackgroundSaturationPercent", settings.BackgroundSaturationPercent, 110);
+                        setRange("BackgroundContrastPercent", settings.BackgroundContrastPercent, 105);
+                        setRange("BackgroundOverlayPercent", settings.BackgroundOverlayPercent, 22);
+                        setRange("BackgroundChangeIntervalSeconds", settings.BackgroundChangeIntervalSeconds, 30);
+                        setRange("BackgroundCrossfadeMilliseconds", settings.BackgroundCrossfadeMilliseconds, 2500);
+                        setRange("BackgroundImageQuality", settings.BackgroundImageQuality, 90);
+                        element("HideRandomBackgroundOnDetails").checked = settings.HideRandomBackgroundOnDetails !== false;
+                        element("HideRandomBackgroundInPlayer").checked = settings.HideRandomBackgroundInPlayer !== false;
                         await refreshDependencyState();
                     } catch (error) {
                         console.error("PunisherFinTheme: Einstellungen konnten nicht geladen werden.", error);
@@ -162,6 +308,15 @@
                         settings.StyleLibraries = element("StyleLibraries").checked;
                         settings.EnableCardPreviews = element("EnableCardPreviews").checked;
                         settings.StylePlayerControls = element("StylePlayerControls").checked;
+                        settings.EnableRandomBackground = element("EnableRandomBackground").checked;
+                        const librarySelect = element("BackgroundLibraryId");
+                        settings.BackgroundLibraryId = librarySelect.value;
+                        settings.BackgroundLibraryName = librarySelect.value
+                            ? (librarySelect.selectedOptions[0]?.textContent || "Anime")
+                            : (settings.BackgroundLibraryName || "Anime");
+                        ranges.forEach(range => { settings[range[0]] = Number(element(range[0]).value); });
+                        settings.HideRandomBackgroundOnDetails = element("HideRandomBackgroundOnDetails").checked;
+                        settings.HideRandomBackgroundInPlayer = element("HideRandomBackgroundInPlayer").checked;
                         const result = await ApiClient.updatePluginConfiguration(pluginId, settings);
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     } catch (error) {
@@ -176,6 +331,7 @@
                     view.addEventListener("pageshow", showSettings);
                     view.addEventListener("viewshow", showSettings);
                     form.addEventListener("submit", storeSettings);
+                    ranges.forEach(range => element(range[0]).addEventListener("input", () => updateRange(...range)));
                 }
             }());
         </script>

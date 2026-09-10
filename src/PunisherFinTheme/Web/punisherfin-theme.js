@@ -1,13 +1,13 @@
 (function () {
     "use strict";
 
-    const runtimeKey = "__punisherFinThemeV121";
+    const runtimeKey = "__punisherFinThemeV130";
     if (window[runtimeKey]) {
         return;
     }
 
     const root = document.documentElement;
-    const markerClasses = ["pft-enabled", "pft-action-buttons", "pft-hide-episode-overview", "pft-compact-episodes", "pft-card-previews", "pft-player-controls"];
+    const markerClasses = ["pft-enabled", "pft-action-buttons", "pft-hide-episode-overview", "pft-compact-episodes", "pft-card-previews", "pft-player-controls", "pft-random-background"];
     const pageClasses = ["pft-home-view", "pft-library-view"];
     const runtime = {
         config: null,
@@ -19,7 +19,14 @@
         previewCache: new Map(),
         resumeMinutes: new Map(),
         previewTimer: null,
-        activeCard: null
+        activeCard: null,
+        backgroundContainer: null,
+        backgroundInterval: null,
+        backgroundSignature: null,
+        backgroundGeneration: 0,
+        backgroundItems: [],
+        backgroundLayer: 0,
+        lastBackgroundItem: null
     };
 
     function jellyfinApi() {
@@ -91,10 +98,12 @@
             root.classList.toggle("pft-compact-episodes", config.compactEpisodes === true);
             root.classList.toggle("pft-card-previews", config.cardPreviews === true);
             root.classList.toggle("pft-player-controls", config.playerControls === true);
+            root.classList.toggle("pft-random-background", config.randomBackground === true);
         } else {
             restoreDetailButtonTitles();
         }
 
+        configureRandomBackground(config);
         markSupportedViews();
         syncDetailButtonLabels();
     }
@@ -334,6 +343,196 @@
         });
     }
 
+    function removeRandomBackground() {
+        window.clearInterval(runtime.backgroundInterval);
+        runtime.backgroundInterval = null;
+        runtime.backgroundSignature = null;
+        runtime.backgroundItems = [];
+        runtime.lastBackgroundItem = null;
+        runtime.backgroundGeneration += 1;
+        runtime.backgroundContainer?.remove();
+        runtime.backgroundContainer = null;
+        [
+            "--pft-bg-opacity",
+            "--pft-bg-brightness",
+            "--pft-bg-blur",
+            "--pft-bg-saturation",
+            "--pft-bg-contrast",
+            "--pft-bg-crossfade",
+            "--pft-bg-overlay-top",
+            "--pft-bg-overlay-bottom"
+        ].forEach(property => root.style.removeProperty(property));
+    }
+
+    function ensureBackgroundContainer() {
+        if (runtime.backgroundContainer?.isConnected) {
+            return runtime.backgroundContainer;
+        }
+
+        const container = document.createElement("div");
+        container.id = "punisherFinRandomBackdrop";
+        container.setAttribute("aria-hidden", "true");
+        container.innerHTML = [
+            '<div id="punisherFinBackdropLayer1" class="pft-backdrop-layer"></div>',
+            '<div id="punisherFinBackdropLayer2" class="pft-backdrop-layer"></div>',
+            '<div class="pft-backdrop-overlay"></div>'
+        ].join("");
+        const reactRoot = document.getElementById("reactRoot");
+        if (reactRoot?.parentNode) {
+            reactRoot.parentNode.insertBefore(container, reactRoot);
+        } else {
+            document.body.prepend(container);
+        }
+        runtime.backgroundContainer = container;
+        return container;
+    }
+
+    function setBackgroundVariables(config) {
+        const opacity = Math.max(0, Math.min(100, Number(config.backgroundOpacity) || 0)) / 100;
+        const overlay = Math.max(0, Math.min(80, Number(config.backgroundOverlay) || 0)) / 100;
+        root.style.setProperty("--pft-bg-opacity", String(opacity));
+        root.style.setProperty("--pft-bg-brightness", `${Number(config.backgroundBrightness) || 68}%`);
+        root.style.setProperty("--pft-bg-blur", `${Number(config.backgroundBlur) || 0}px`);
+        root.style.setProperty("--pft-bg-saturation", `${Number(config.backgroundSaturation) || 100}%`);
+        root.style.setProperty("--pft-bg-contrast", `${Number(config.backgroundContrast) || 100}%`);
+        root.style.setProperty("--pft-bg-crossfade", `${Math.max(0, Number(config.backgroundCrossfade) || 0)}ms`);
+        root.style.setProperty("--pft-bg-overlay-top", String(overlay * .5));
+        root.style.setProperty("--pft-bg-overlay-bottom", String(Math.min(.95, overlay * 1.45)));
+    }
+
+    function backgroundHiddenForCurrentView() {
+        const config = runtime.config;
+        return Boolean(
+            (config?.hideBackgroundOnDetails && visible(document.querySelector("#itemDetailPage:not(.hide)")))
+            || (config?.hideBackgroundInPlayer && visible(document.querySelector(".videoPlayerContainer:not(.hide)")))
+        );
+    }
+
+    function updateBackgroundVisibility() {
+        runtime.backgroundContainer?.classList.toggle("pft-background-suspended", backgroundHiddenForCurrentView());
+    }
+
+    async function resolveBackgroundLibrary(api, config) {
+        const userId = api.getCurrentUserId?.();
+        if (!userId) {
+            return null;
+        }
+        const response = await api.getUserViews({ userId });
+        const views = response?.Items || [];
+        return views.find(view => String(view.Id).toLowerCase() === String(config.backgroundLibraryId || "").toLowerCase())
+            || views.find(view => String(view.Name).toLowerCase() === String(config.backgroundLibraryName || "Anime").toLowerCase())
+            || null;
+    }
+
+    async function loadBackgroundItems(api, libraryId) {
+        const userId = api.getCurrentUserId?.();
+        const options = {
+            ParentId: libraryId,
+            Recursive: true,
+            IncludeItemTypes: "Series,Movie",
+            Fields: "BackdropImageTags",
+            Limit: 10000
+        };
+        if (typeof api.getItems === "function") {
+            const result = await api.getItems(userId, options);
+            return result?.Items || [];
+        }
+        const response = await api.fetch({ url: api.getUrl("/Items", { UserId: userId, ...options }), type: "GET" });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return (await response.json())?.Items || [];
+    }
+
+    function showNextRandomBackground(api, config) {
+        if (!runtime.backgroundItems.length || !runtime.backgroundContainer?.isConnected) {
+            return;
+        }
+        const alternatives = runtime.backgroundItems.length > 1
+            ? runtime.backgroundItems.filter(item => item.Id !== runtime.lastBackgroundItem)
+            : runtime.backgroundItems;
+        const item = alternatives[Math.floor(Math.random() * alternatives.length)];
+        const tags = item.BackdropImageTags || [];
+        const index = Math.floor(Math.random() * tags.length);
+        const imageUrl = api.getUrl(`/Items/${item.Id}/Images/Backdrop/${index}`, {
+            quality: Math.max(30, Math.min(100, Number(config.backgroundQuality) || 90))
+        });
+        const preload = new Image();
+        preload.decoding = "async";
+        preload.addEventListener("load", () => {
+            if (!runtime.backgroundContainer?.isConnected) {
+                return;
+            }
+            const nextLayer = runtime.backgroundLayer === 0 ? 1 : 0;
+            const layers = runtime.backgroundContainer.querySelectorAll(".pft-backdrop-layer");
+            layers[nextLayer].style.backgroundImage = `url("${imageUrl.replaceAll('"', '%22')}")`;
+            layers[nextLayer].classList.add("pft-backdrop-active");
+            layers[runtime.backgroundLayer].classList.remove("pft-backdrop-active");
+            runtime.backgroundLayer = nextLayer;
+            runtime.lastBackgroundItem = item.Id;
+        }, { once: true });
+        preload.addEventListener("error", () => {
+            console.debug("PunisherFinTheme: Ein Hintergrundbild konnte nicht geladen werden.");
+        }, { once: true });
+        preload.src = imageUrl;
+    }
+
+    async function startRandomBackground(api, config, generation) {
+        try {
+            const library = await resolveBackgroundLibrary(api, config);
+            if (!library || generation !== runtime.backgroundGeneration) {
+                if (!library) {
+                    console.warn("PunisherFinTheme: Die gewählte Hintergrund-Bibliothek wurde nicht gefunden.");
+                }
+                return;
+            }
+            const items = (await loadBackgroundItems(api, library.Id)).filter(item => item.BackdropImageTags?.length);
+            if (generation !== runtime.backgroundGeneration) {
+                return;
+            }
+            runtime.backgroundItems = items;
+            if (!items.length) {
+                console.warn("PunisherFinTheme: In der Hintergrund-Bibliothek wurden keine backdrop.jpg-Bilder gefunden.");
+                return;
+            }
+            showNextRandomBackground(api, config);
+            runtime.backgroundInterval = window.setInterval(
+                () => showNextRandomBackground(api, runtime.config || config),
+                Math.max(10, Number(config.backgroundInterval) || 30) * 1000
+            );
+        } catch (error) {
+            console.warn("PunisherFinTheme: Zufällige Hintergründe konnten nicht geladen werden.", error);
+        }
+    }
+
+    function configureRandomBackground(config) {
+        const api = jellyfinApi();
+        if (!config?.enabled || config.randomBackground !== true || !api) {
+            removeRandomBackground();
+            return;
+        }
+        setBackgroundVariables(config);
+        ensureBackgroundContainer();
+        updateBackgroundVisibility();
+        const signature = [
+            api.getCurrentUserId?.(),
+            config.backgroundLibraryId,
+            config.backgroundLibraryName,
+            config.backgroundInterval,
+            config.backgroundQuality
+        ].join("|");
+        if (runtime.backgroundSignature === signature) {
+            return;
+        }
+        window.clearInterval(runtime.backgroundInterval);
+        runtime.backgroundInterval = null;
+        runtime.backgroundItems = [];
+        runtime.lastBackgroundItem = null;
+        runtime.backgroundSignature = signature;
+        const generation = ++runtime.backgroundGeneration;
+        void startRandomBackground(api, config, generation);
+    }
+
     async function loadConfig() {
         const api = jellyfinApi();
         if (!api || runtime.loading) {
@@ -361,6 +560,7 @@
     function reconcile() {
         markSupportedViews();
         syncDetailButtonLabels();
+        updateBackgroundVisibility();
     }
 
     function schedule(reloadConfig) {
@@ -404,6 +604,7 @@
             window.clearTimeout(runtime.timer);
             window.clearTimeout(runtime.previewTimer);
             closePreview(runtime.activeCard);
+            removeRandomBackground();
             restoreDetailButtonTitles();
             root.classList.remove(...markerClasses);
             document.querySelectorAll(".pft-home-view, .pft-library-view").forEach(element => {

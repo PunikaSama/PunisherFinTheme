@@ -31,6 +31,48 @@ public sealed class ClientThemeConfig
     [JsonPropertyName("playerControls")]
     public bool PlayerControls { get; init; }
 
+    [JsonPropertyName("randomBackground")]
+    public bool RandomBackground { get; init; }
+
+    [JsonPropertyName("backgroundLibraryId")]
+    public required string BackgroundLibraryId { get; init; }
+
+    [JsonPropertyName("backgroundLibraryName")]
+    public required string BackgroundLibraryName { get; init; }
+
+    [JsonPropertyName("backgroundInterval")]
+    public int BackgroundInterval { get; init; }
+
+    [JsonPropertyName("backgroundOpacity")]
+    public int BackgroundOpacity { get; init; }
+
+    [JsonPropertyName("backgroundBrightness")]
+    public int BackgroundBrightness { get; init; }
+
+    [JsonPropertyName("backgroundBlur")]
+    public int BackgroundBlur { get; init; }
+
+    [JsonPropertyName("backgroundSaturation")]
+    public int BackgroundSaturation { get; init; }
+
+    [JsonPropertyName("backgroundContrast")]
+    public int BackgroundContrast { get; init; }
+
+    [JsonPropertyName("backgroundOverlay")]
+    public int BackgroundOverlay { get; init; }
+
+    [JsonPropertyName("backgroundCrossfade")]
+    public int BackgroundCrossfade { get; init; }
+
+    [JsonPropertyName("backgroundQuality")]
+    public int BackgroundQuality { get; init; }
+
+    [JsonPropertyName("hideBackgroundOnDetails")]
+    public bool HideBackgroundOnDetails { get; init; }
+
+    [JsonPropertyName("hideBackgroundInPlayer")]
+    public bool HideBackgroundInPlayer { get; init; }
+
     [JsonPropertyName("version")]
     public required string Version { get; init; }
 }
