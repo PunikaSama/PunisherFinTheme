@@ -90,6 +90,7 @@ for (const required of [
     "#itemDetailPage .mainDetailButtons .btnPlay",
     "#itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible)",
     "#itemDetailPage .card .itemProgressBar",
+    "#itemDetailPage .countIndicator",
     ".pft-preview-expanded",
     ".videoPlayerContainer",
     ".skinHeader.skinHeader-withBackground",

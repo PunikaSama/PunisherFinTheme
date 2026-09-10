@@ -152,7 +152,8 @@
 :root.pft-enabled .pft-library-view .playedIndicator,
 :root.pft-enabled #itemDetailPage .playedIndicator,
 :root.pft-enabled .homeSectionsContainer.pft-home-view .countIndicator,
-:root.pft-enabled .pft-library-view .countIndicator {
+:root.pft-enabled .pft-library-view .countIndicator,
+:root.pft-enabled #itemDetailPage .countIndicator {
     background: var(--pft-accent) !important;
     color: #fff !important;
 }
