@@ -77,6 +77,95 @@
     color: #fff !important;
 }
 
+/* Desktop and TV focus preview: keep Jellyfin's card/link and layer a landscape image over it. */
+@media (hover: hover) and (pointer: fine), (min-width: 900px) {
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-ready {
+        flex-shrink: 0;
+        transition: flex-basis 180ms ease, width 180ms ease;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded {
+        flex-basis: clamp(22rem, 30vw, 34rem) !important;
+        width: clamp(22rem, 30vw, 34rem) !important;
+        z-index: 20;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardBox {
+        border-color: #fff;
+        box-shadow: 0 .65rem 1.8rem rgba(0, 0, 0, .52), 0 0 0 1px #fff;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardPadder {
+        padding-bottom: 56.25% !important;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardImageContainer,
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardContent {
+        aspect-ratio: 16 / 9;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .pft-hover-artwork {
+        height: 100%;
+        inset: 0;
+        object-fit: cover;
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        transition: opacity 140ms ease;
+        width: 100%;
+        z-index: 3;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .cardImageContainer,
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .cardContent {
+        position: relative;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .pft-hover-artwork {
+        opacity: 1;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .pft-hover-details {
+        display: none;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardText {
+        display: none !important;
+    }
+
+    :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .pft-hover-details {
+        background: color-mix(in srgb, var(--pft-surface) 92%, transparent);
+        color: var(--pft-text);
+        display: block;
+        padding: .65rem .75rem .75rem;
+    }
+
+    :root.pft-enabled.pft-card-previews .pft-hover-title {
+        font-size: 1rem;
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    :root.pft-enabled.pft-card-previews .pft-hover-meta {
+        color: var(--pft-text-muted);
+        font-size: .88rem;
+        margin-top: .18rem;
+    }
+
+    :root.pft-enabled.pft-card-previews .pft-hover-overview {
+        color: var(--pft-text-muted);
+        display: -webkit-box;
+        font-size: .84rem;
+        line-height: 1.35;
+        margin-top: .45rem;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+}
+
 /* Library browse surfaces and controls. */
 :root.pft-enabled .pft-library-view .itemsContainer {
     gap: clamp(.7rem, 1.15vw, 1.1rem);
@@ -107,7 +196,7 @@
 
 /* Detail action buttons: original Jellyfin elements and click handlers remain in place. */
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons {
-    align-items: flex-start;
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: .75rem;
@@ -117,62 +206,74 @@
     margin: 0 !important;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton .detailButton-content {
     align-items: center;
-    background: var(--pft-accent) !important;
-    border: 2px solid transparent !important;
-    border-radius: 999px !important;
-    color: #fff !important;
-    display: inline-flex;
+    background: rgba(20, 20, 20, .42);
+    border: 1.5px solid rgba(255, 255, 255, .55);
+    border-radius: 999px;
+    display: flex;
+    flex-direction: row;
+    height: 3.45rem;
     justify-content: center;
-    min-height: 3.35rem;
-    min-width: 12.5rem;
-    padding: .65rem 1.35rem !important;
-    transition: filter var(--pft-transition), border-color var(--pft-transition), transform var(--pft-transition);
+    margin-inline: auto;
+    overflow: hidden;
+    padding: 0 !important;
+    transition: background var(--pft-transition), border-color var(--pft-transition), color var(--pft-transition), min-width var(--pft-transition), transform var(--pft-transition);
+    width: 3.45rem;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton .detailButton-icon {
+    flex: 0 0 auto;
+    font-size: 1.85rem !important;
+    margin: 0 !important;
+    transition: font-size var(--pft-transition), transform var(--pft-transition);
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton .detailButton-text {
+    font-size: .92rem;
+    font-weight: 700;
+    margin: 0 !important;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: margin var(--pft-transition), max-width var(--pft-transition), opacity var(--pft-transition);
+    white-space: nowrap;
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    gap: .35rem;
-    justify-content: center;
+    background: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay :is(.detailButton-icon, .detailButton-text) {
     color: #fff !important;
-    margin: 0 !important;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay:hover {
-    filter: brightness(1.08);
-}
-
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay:focus-visible {
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) .detailButton-content {
+    background: #fff !important;
     border-color: #fff !important;
-    outline: 2px solid var(--pft-accent) !important;
-    outline-offset: 3px;
+    color: var(--pft-accent) !important;
+    min-width: 7.8rem;
+    padding-inline: 1rem !important;
+    transform: scale(1.08);
+    width: auto;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:not(.btnPlay) .detailButton-content {
-    align-items: center;
-    background: var(--pft-card);
-    border: 1.5px solid rgba(255, 255, 255, .35);
-    border-radius: 50%;
-    display: flex;
-    height: 3.25rem;
-    justify-content: center;
-    margin-inline: auto;
-    transition: background var(--pft-transition), border-color var(--pft-transition);
-    width: 3.25rem;
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) :is(.detailButton-icon, .detailButton-text) {
+    color: var(--pft-accent) !important;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:not(.btnPlay):is(:hover, :focus-visible) .detailButton-content {
-    background: color-mix(in srgb, var(--pft-accent) 18%, transparent);
-    border-color: var(--pft-accent);
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) .detailButton-icon {
+    font-size: 2rem !important;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:not(.btnPlay):focus-visible {
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) .detailButton-text {
+    margin-left: .45rem !important;
+    max-width: 9rem;
+    opacity: 1;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:focus-visible {
     outline: 0 !important;
 }
 
@@ -249,6 +350,47 @@
     width: 9.75rem !important;
 }
 
+/* Jellyfin Web player controls. All native buttons and handlers remain untouched. */
+:root.pft-enabled.pft-player-controls .videoPlayerContainer :is(.videoOsdBottom, .videoOsd-centerButtons, .osdControls) button,
+:root.pft-enabled.pft-player-controls .videoPlayerContainer [class*="videoOsd"] .paper-icon-button-light {
+    align-items: center;
+    border: 1.5px solid rgba(255, 255, 255, .5) !important;
+    border-radius: 50% !important;
+    display: inline-flex;
+    height: clamp(3rem, 4vw, 3.7rem);
+    justify-content: center;
+    margin-inline: .2rem;
+    min-height: clamp(3rem, 4vw, 3.7rem);
+    min-width: clamp(3rem, 4vw, 3.7rem);
+    transition: background var(--pft-transition), border-color var(--pft-transition), color var(--pft-transition), transform var(--pft-transition);
+    width: clamp(3rem, 4vw, 3.7rem);
+}
+
+:root.pft-enabled.pft-player-controls .videoPlayerContainer :is(.videoOsdBottom, .videoOsd-centerButtons, .osdControls) button :is(.material-icons, .material-symbols-rounded, .material-symbols-outlined),
+:root.pft-enabled.pft-player-controls .videoPlayerContainer [class*="videoOsd"] .paper-icon-button-light :is(.material-icons, .material-symbols-rounded, .material-symbols-outlined) {
+    font-size: clamp(1.6rem, 2.2vw, 2.15rem) !important;
+}
+
+:root.pft-enabled.pft-player-controls .videoPlayerContainer :is(.videoOsdBottom, .videoOsd-centerButtons, .osdControls) button:is(:hover, :focus-visible),
+:root.pft-enabled.pft-player-controls .videoPlayerContainer [class*="videoOsd"] .paper-icon-button-light:is(:hover, :focus-visible) {
+    background: color-mix(in srgb, var(--pft-accent) 24%, rgba(0, 0, 0, .58)) !important;
+    border-color: var(--pft-accent) !important;
+    color: #fff !important;
+    outline: 2px solid var(--pft-accent) !important;
+    outline-offset: 2px;
+    transform: scale(1.16);
+    z-index: 4;
+}
+
+:root.pft-enabled.pft-player-controls .videoPlayerContainer :is(.btnPlay, .btnPause) {
+    background: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled.pft-player-controls .videoPlayerContainer :is(.mdl-slider-background-lower, .sliderBubble) {
+    background: var(--pft-accent) !important;
+}
+
 @media (max-width: 600px) {
     :root.pft-enabled .homeSectionsContainer.pft-home-view > .verticalSection {
         margin-bottom: 1.5rem;
@@ -258,13 +400,16 @@
         gap: .65rem;
     }
 
-    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
-        flex: 1 0 100%;
-        width: 100%;
+    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
+        min-width: 7.8rem;
+        padding-inline: 1rem !important;
+        width: auto;
     }
 
-    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:not(.btnPlay) {
-        min-width: 4rem;
+    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-text {
+        margin-left: .45rem !important;
+        max-width: 9rem;
+        opacity: 1;
     }
 
     :root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-content {
@@ -295,6 +440,10 @@
     :root.pft-enabled #itemDetailPage .mainDetailButtons *,
     :root.pft-enabled #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) * {
         scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+
+    :root.pft-enabled .videoPlayerContainer [class*="videoOsd"] * {
         transition-duration: .01ms !important;
     }
 }

@@ -29,6 +29,8 @@ for (const required of [
     "StyleActionButtons",
     "StyleHome",
     "StyleLibraries",
+    "EnableCardPreviews",
+    "StylePlayerControls",
     "/PunisherFinTheme/dependency"
 ]) {
     if (!html.includes(required)) {
@@ -37,7 +39,7 @@ for (const required of [
 }
 
 for (const required of [
-    "__punisherFinThemeV100",
+    "__punisherFinThemeV110",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
     "MutationObserver",
@@ -46,6 +48,9 @@ for (const required of [
     "pft-action-buttons",
     "pft-hide-episode-overview",
     "pft-compact-episodes",
+    "pft-card-previews",
+    "pft-player-controls",
+    "pft-preview-expanded",
     "homeSectionsContainer",
     "itemDetailPage"
 ]) {
@@ -61,6 +66,8 @@ for (const required of [
     ".pft-library-view",
     "#itemDetailPage .mainDetailButtons .btnPlay",
     "#itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible)",
+    ".pft-preview-expanded",
+    ".videoPlayerContainer",
     "@media (max-width: 600px)",
     "@media (prefers-reduced-motion: reduce)"
 ]) {
@@ -82,4 +89,3 @@ for (const forbidden of [
         throw new Error(`Protected Jellyfin or PunisherBanna selector found: ${forbidden}`);
     }
 }
-

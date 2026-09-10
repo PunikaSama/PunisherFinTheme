@@ -39,8 +39,18 @@
                         </label>
 
                         <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="EnableCardPreviews" type="checkbox">
+                            <span>Karten bei Mauszeiger oder Fokus als breite Vorschau anzeigen</span>
+                        </label>
+
+                        <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="StyleActionButtons" type="checkbox">
                             <span>Aktionsknöpfe auf Detailseiten gestalten</span>
+                        </label>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="StylePlayerControls" type="checkbox">
+                            <span>Größere Wiedergabesteuerung mit Hover-Effekt verwenden</span>
                         </label>
 
                         <h3 class="sectionTitle">Episoden</h3>
@@ -126,6 +136,8 @@
                         element("StyleActionButtons").checked = settings.StyleActionButtons !== false;
                         element("StyleHome").checked = settings.StyleHome !== false;
                         element("StyleLibraries").checked = settings.StyleLibraries !== false;
+                        element("EnableCardPreviews").checked = settings.EnableCardPreviews !== false;
+                        element("StylePlayerControls").checked = settings.StylePlayerControls !== false;
                         await refreshDependencyState();
                     } catch (error) {
                         console.error("PunisherFinTheme: Einstellungen konnten nicht geladen werden.", error);
@@ -148,6 +160,8 @@
                         settings.StyleActionButtons = element("StyleActionButtons").checked;
                         settings.StyleHome = element("StyleHome").checked;
                         settings.StyleLibraries = element("StyleLibraries").checked;
+                        settings.EnableCardPreviews = element("EnableCardPreviews").checked;
+                        settings.StylePlayerControls = element("StylePlayerControls").checked;
                         const result = await ApiClient.updatePluginConfiguration(pluginId, settings);
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     } catch (error) {

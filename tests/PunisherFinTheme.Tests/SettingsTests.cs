@@ -16,6 +16,8 @@ public sealed class SettingsTests
         Assert.True(settings.StyleActionButtons);
         Assert.True(settings.StyleHome);
         Assert.True(settings.StyleLibraries);
+        Assert.True(settings.EnableCardPreviews);
+        Assert.True(settings.StylePlayerControls);
     }
 
     [Theory]
@@ -33,4 +35,3 @@ public sealed class SettingsTests
         Assert.Equal(expected, settings.AccentColor);
     }
 }
-

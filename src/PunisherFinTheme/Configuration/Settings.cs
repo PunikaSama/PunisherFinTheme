@@ -19,6 +19,10 @@ public sealed partial class Settings : BasePluginConfiguration
 
     public bool StyleLibraries { get; set; } = true;
 
+    public bool EnableCardPreviews { get; set; } = true;
+
+    public bool StylePlayerControls { get; set; } = true;
+
     public void Sanitize()
     {
         string candidate = AccentColor?.Trim() ?? string.Empty;
@@ -30,4 +34,3 @@ public sealed partial class Settings : BasePluginConfiguration
     [GeneratedRegex("^#[0-9A-Fa-f]{6}$", RegexOptions.CultureInvariant)]
     private static partial Regex HexColorRegex();
 }
-

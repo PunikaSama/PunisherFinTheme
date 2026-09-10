@@ -53,6 +53,8 @@ public sealed class ThemeController : ControllerBase
             ActionButtons = settings.StyleActionButtons,
             Home = settings.StyleHome,
             Libraries = settings.StyleLibraries,
+            CardPreviews = settings.EnableCardPreviews,
+            PlayerControls = settings.StylePlayerControls,
             Version = typeof(Plugin).Assembly.GetName().Version?.ToString() ?? "0"
         });
     }

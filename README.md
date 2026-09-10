@@ -5,8 +5,9 @@ PunisherFinTheme brings a focused PunisherFin-inspired design to Jellyfin 12 Web
 ## Features
 
 - Restyled home and library media cards
+- Wide artwork and metadata previews on hover or keyboard/TV focus
 - Responsive episode rows for desktop and mobile
-- PunisherFin-style play and action buttons
+- PunisherFin-style detail and player controls
 - Configurable accent color and display options
 - Leaves the Jellyfin header, detail hero, and PunisherBanna unchanged
 
@@ -32,4 +33,3 @@ The theme works in Jellyfin Web and clients that embed Jellyfin Web. Fully nativ
 ## License
 
 PunisherFinTheme is licensed under the MIT License. Copyright © 2026 PunisherSama.
-

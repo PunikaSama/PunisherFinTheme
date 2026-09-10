@@ -25,7 +25,12 @@ public sealed class ClientThemeConfig
     [JsonPropertyName("libraries")]
     public bool Libraries { get; init; }
 
+    [JsonPropertyName("cardPreviews")]
+    public bool CardPreviews { get; init; }
+
+    [JsonPropertyName("playerControls")]
+    public bool PlayerControls { get; init; }
+
     [JsonPropertyName("version")]
     public required string Version { get; init; }
 }
-
