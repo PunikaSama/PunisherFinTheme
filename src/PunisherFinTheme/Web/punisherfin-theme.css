@@ -199,13 +199,13 @@
     }
 
     :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardBox {
-        border-color: #fff;
-        box-shadow: 0 .65rem 1.8rem rgba(0, 0, 0, .52), 0 0 0 1px #fff;
+        border-color: var(--pft-accent) !important;
+        box-shadow: 0 .65rem 1.8rem rgba(0, 0, 0, .52), 0 0 0 1px var(--pft-accent) !important;
     }
 
     :root.pft-enabled.pft-card-previews #itemDetailPage .card.pft-season-card.pft-preview-expanded .cardBox {
-        border-color: #fff;
-        box-shadow: 0 .65rem 1.8rem rgba(0, 0, 0, .52), 0 0 0 1px #fff;
+        border-color: var(--pft-accent) !important;
+        box-shadow: 0 .65rem 1.8rem rgba(0, 0, 0, .52), 0 0 0 1px var(--pft-accent) !important;
     }
 
     :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .pft-hover-artwork {

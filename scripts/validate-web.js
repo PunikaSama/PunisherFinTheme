@@ -118,6 +118,8 @@ for (const required of [
     "#itemDetailPage .card .itemProgressBar",
     "#itemDetailPage .countIndicator",
     ".pft-preview-expanded",
+    ".pft-preview-expanded .cardBox",
+    "0 0 0 1px var(--pft-accent) !important",
     ".videoPlayerContainer",
     ".skinHeader-withBackground",
     ".headerTop",
@@ -145,4 +147,8 @@ for (const forbidden of [
     if (styles.includes(forbidden)) {
         throw new Error(`Protected Jellyfin or PunisherBanna selector found: ${forbidden}`);
     }
+}
+
+if (/pft-preview-expanded[\s\S]{0,250}border-color:\s*#fff/i.test(styles)) {
+    throw new Error("Expanded card previews must use the configured accent color, not a white border.");
 }
