@@ -128,6 +128,16 @@
     box-shadow: 0 .45rem 1.35rem rgba(0, 0, 0, .38), 0 0 0 1px var(--pft-accent);
 }
 
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:is(:hover, :focus-within) .cardOverlayButtonIcon,
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:is(:hover, :focus-within) .cardOverlayFab-primary,
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardOverlayButton:is(:hover, :focus-visible) .cardOverlayButtonIcon,
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardOverlayFab-primary:is(:hover, :focus-visible) {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+    color: #fff !important;
+}
+
 :root.pft-enabled .homeSectionsContainer.pft-home-view .cardText,
 :root.pft-enabled .pft-library-view .cardText,
 :root.pft-enabled #itemDetailPage .card.pft-media-preview-card .cardText {
@@ -488,11 +498,10 @@
 }
 
 /* Jellyfin Web player controls. All native buttons and handlers remain untouched. */
-:root.pft-enabled.pft-player-controls .videoPlayerContainer,
-:root.pft-enabled.pft-player-controls .iconOsd {
-    --jf-palette-primary-main: var(--pft-accent);
-    --theme-primary-color: var(--pft-accent);
-    --primary-accent-color: var(--pft-accent);
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) {
+    --jf-palette-primary-main: var(--pft-accent) !important;
+    --theme-primary-color: var(--pft-accent) !important;
+    --primary-accent-color: var(--pft-accent) !important;
 }
 
 :root.pft-enabled.pft-player-controls .videoPlayerContainer :is(.videoOsdBottom, .videoOsd-centerButtons, .osdControls) button,
@@ -515,41 +524,41 @@
     font-size: clamp(1.6rem, 2.2vw, 2.15rem) !important;
 }
 
-:root.pft-enabled.pft-player-controls .videoPlayerContainer :is(.videoOsdBottom, .videoOsd-centerButtons, .osdControls) button:is(:hover, :focus-visible),
-:root.pft-enabled.pft-player-controls .videoPlayerContainer [class*="videoOsd"] .paper-icon-button-light:is(:hover, :focus-visible),
-:root.pft-enabled.pft-player-controls .videoPlayerContainer .paper-icon-button-light:is(:hover, :focus-visible),
-:root.pft-enabled.pft-player-controls .iconOsd .paper-icon-button-light:is(:hover, :focus-visible) {
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) button:is(:hover, :focus-visible),
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) .paper-icon-button-light:is(:hover, :focus-visible) {
     background: color-mix(in srgb, var(--pft-accent) 24%, rgba(0, 0, 0, .58)) !important;
     border-color: var(--pft-accent) !important;
     color: var(--pft-accent) !important;
     outline: 2px solid var(--pft-accent) !important;
     outline-offset: 2px;
-    transform: scale(1.16);
     z-index: 4;
 }
 
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) .paper-icon-button-light:is(:hover, :focus-visible) :is(.material-icons, .material-symbols-rounded, .material-symbols-outlined, svg),
-:root.pft-enabled.pft-player-controls .videoPlayerContainer button:is(:hover, :focus-visible) :is(.material-icons, .material-symbols-rounded, .material-symbols-outlined, svg) {
+:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(button, .paper-icon-button-light):is(:hover, :focus-visible) {
+    transform: scale(1.16);
+}
+
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(button, .paper-icon-button-light):is(:hover, :focus-visible) :is(.material-icons, .material-symbols-rounded, .material-symbols-outlined, svg) {
     color: var(--pft-accent) !important;
     fill: currentColor !important;
 }
 
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) :is(button, .paper-icon-button-light):is(.selected, .buttonActive, [aria-pressed="true"]) {
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(button, .paper-icon-button-light):is(.selected, .buttonActive, [aria-pressed="true"]) {
     border-color: var(--pft-accent) !important;
     color: var(--pft-accent) !important;
 }
 
-:root.pft-enabled.pft-player-controls .videoPlayerContainer :is(.btnPlay, .btnPause) {
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop) :is(.btnPlay, .btnPause) {
     background: var(--pft-accent) !important;
     border-color: var(--pft-accent) !important;
 }
 
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) input[type="range"],
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) .mdl-slider {
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) input[type="range"],
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) .mdl-slider {
     accent-color: var(--pft-accent) !important;
 }
 
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) :is(
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(
     .mdl-slider-background-lower,
     .mdl-slider__background-lower,
     .sliderBubble,
@@ -567,21 +576,21 @@
     color: var(--pft-accent) !important;
 }
 
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) :is(input[type="range"], .mdl-slider)::-webkit-slider-thumb {
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(input[type="range"], .mdl-slider)::-webkit-slider-thumb {
     background: var(--pft-accent) !important;
     background-color: var(--pft-accent) !important;
     border-color: var(--pft-accent) !important;
 }
 
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) :is(input[type="range"], .mdl-slider)::-moz-range-progress,
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) :is(input[type="range"], .mdl-slider)::-moz-range-thumb {
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(input[type="range"], .mdl-slider)::-moz-range-progress,
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(input[type="range"], .mdl-slider)::-moz-range-thumb {
     background: var(--pft-accent) !important;
     background-color: var(--pft-accent) !important;
     border-color: var(--pft-accent) !important;
 }
 
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) :is(input[type="range"], .mdl-slider)::-ms-fill-lower,
-:root.pft-enabled.pft-player-controls :is(.videoPlayerContainer, .iconOsd) :is(input[type="range"], .mdl-slider)::-ms-thumb {
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(input[type="range"], .mdl-slider)::-ms-fill-lower,
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(input[type="range"], .mdl-slider)::-ms-thumb {
     background: var(--pft-accent) !important;
     background-color: var(--pft-accent) !important;
     border-color: var(--pft-accent) !important;

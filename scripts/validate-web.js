@@ -133,6 +133,9 @@ for (const required of [
     ".pft-preview-expanded .cardBox",
     "0 0 0 1px var(--pft-accent) !important",
     ".videoPlayerContainer",
+    ":root.pft-enabled :is(.videoPlayerContainer",
+    ".cardOverlayButtonIcon",
+    ".cardOverlayFab-primary",
     "--jf-palette-primary-main: var(--pft-accent)",
     "accent-color: var(--pft-accent)",
     ".mdl-slider__background-lower",
@@ -174,4 +177,8 @@ for (const forbidden of [
 
 if (/pft-preview-expanded[\s\S]{0,250}border-color:\s*#fff/i.test(styles)) {
     throw new Error("Expanded card previews must use the configured accent color, not a white border.");
+}
+
+if (/pft-player-controls[^\{]*\{[\s\S]{0,250}accent-color:\s*var\(--pft-accent\)/i.test(styles)) {
+    throw new Error("Player accent colors must not depend on the optional enlarged-controls setting.");
 }

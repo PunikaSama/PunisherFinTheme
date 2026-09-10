@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
+        "version": "1.5.2.0",
+        "changelog": "Fixes player accent colors independently of the optional enlarged-player-controls setting. The configured accent now overrides Jellyfin's native cyan for player hover and focus states, active controls, playback and volume sliders, and scrubber thumbs. Expanded card preview play buttons now also use the configured accent color.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.5.2.0/PunisherFinTheme_1.5.2.0.zip",
+        "checksum": "8d77dd055b8d290f9b1e2f4e5893f36a",
+        "timestamp": "2026-09-10 20:52:35"
+      },
+      {
         "version": "1.5.1.0",
         "changelog": "Applies the configured accent color throughout Jellyfin's video player, including button hover and focus states, active controls, playback progress, scrubber thumbs, volume sliders, slider bubbles, and current Material UI slider variants across Chromium, Firefox, and legacy WebViews.",
         "targetAbi": "12.0.0.0",
