@@ -305,6 +305,25 @@
     outline-offset: 2px;
 }
 
+/* Library play-all, shuffle, and queue actions: modern MUI and legacy Jellyfin views. */
+:root.pft-enabled .pft-library-view :is(.MuiButtonGroup-root, [class*="MuiButtonGroup-root"]) :is(.MuiButton-contained, [class*="MuiButton-contained"]),
+:root.pft-enabled .pft-library-view :is(.btnPlayAll, .btnShuffle) {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+    border-color: color-mix(in srgb, var(--pft-accent) 76%, #000) !important;
+    color: #fff !important;
+}
+
+:root.pft-enabled .pft-library-view :is(.MuiButtonGroup-root, [class*="MuiButtonGroup-root"]) :is(.MuiButton-contained, [class*="MuiButton-contained"]):is(:hover, :focus-visible),
+:root.pft-enabled .pft-library-view :is(.btnPlayAll, .btnShuffle):is(:hover, :focus-visible) {
+    background: color-mix(in srgb, var(--pft-accent) 84%, #000) !important;
+    background-color: color-mix(in srgb, var(--pft-accent) 84%, #000) !important;
+    border-color: var(--pft-accent) !important;
+    color: #fff !important;
+    outline: 2px solid var(--pft-accent) !important;
+    outline-offset: 2px;
+}
+
 /* Detail action buttons: original Jellyfin elements and click handlers remain in place. */
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons {
     align-items: center;
@@ -666,6 +685,21 @@
 :root.pft-enabled #previewPopup .previewPopupScroller::-webkit-scrollbar-thumb,
 :root.pft-enabled #previewPopup .previewPopupScroller::-webkit-scrollbar-thumb:hover {
     background-color: color-mix(in srgb, var(--pft-accent) 70%, #fff) !important;
+}
+
+/* Jellyfin loading indicators, including the loader shown while video playback starts. */
+:root.pft-enabled .docspinner .mdl-spinner__layer,
+:root.pft-enabled .videoPlayerContainer .mdl-spinner__layer {
+    border-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .videoPlayerContainer :is(.MuiCircularProgress-root, [class*="MuiCircularProgress-root"], .progressring-spiner, .loadingSpinner) {
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .videoPlayerContainer :is(.progressring-spiner, .loadingSpinner) {
+    border-color: var(--pft-accent) !important;
+    border-right-color: transparent !important;
 }
 
 @media (max-width: 600px) {

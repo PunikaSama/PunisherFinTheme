@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
+        "version": "1.6.2.0",
+        "changelog": "Applies the configured accent color to the mobile library play-all, shuffle, and queue button group in both modern and legacy Jellyfin views. Video startup loading indicators now also use the selected accent color, including Jellyfin's MDL spinner and modern CircularProgress variants.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.6.2.0/PunisherFinTheme_1.6.2.0.zip",
+        "checksum": "e3c6b9e03f00756bb8975f7567b2a7e5",
+        "timestamp": "2026-09-11 01:24:01"
+      },
+      {
         "version": "1.6.1.0",
         "changelog": "Keeps centered preview play buttons transparent during card and video-preview hover. The configured accent background is now applied only while the play button itself is hovered or keyboard-focused, including InPlayerEpisodePreview cards.",
         "targetAbi": "12.0.0.0",
