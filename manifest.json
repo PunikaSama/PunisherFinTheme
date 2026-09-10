@@ -6,6 +6,7 @@
     "description": "Restyles home and library cards, episode rows, and detail actions while preserving Jellyfin's native behavior.",
     "owner": "PunisherSama",
     "category": "General",
+    "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
         "version": "1.4.1.0",

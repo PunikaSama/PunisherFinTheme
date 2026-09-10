@@ -1,5 +1,7 @@
 # PunisherFinTheme
 
+![PunisherFinTheme banner](PunisherFinThemeBanner.png)
+
 PunisherFinTheme brings a focused PunisherFin-inspired design to Jellyfin 12 Web while preserving Jellyfin's native behavior.
 
 ## Features
