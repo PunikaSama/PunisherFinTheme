@@ -426,18 +426,21 @@
     }
 
     :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
+        box-sizing: border-box;
         height: 50px;
-        max-width: min(15rem, calc(100vw - 3rem));
-        min-width: 0;
+        max-width: min(12.5rem, calc(100vw - 7rem)) !important;
+        min-width: min(12.5rem, calc(100vw - 7rem)) !important;
         padding-inline: 10px !important;
-        width: min(15rem, calc(100vw - 3rem));
+        width: min(12.5rem, calc(100vw - 7rem)) !important;
     }
 
     :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
-        flex: 0 0 auto;
+        box-sizing: border-box;
+        flex: 0 0 min(12.5rem, calc(100vw - 7rem));
         height: 50px;
-        min-width: 0;
-        width: min(15rem, calc(100vw - 3rem));
+        max-width: min(12.5rem, calc(100vw - 7rem)) !important;
+        min-width: min(12.5rem, calc(100vw - 7rem)) !important;
+        width: min(12.5rem, calc(100vw - 7rem)) !important;
     }
 
     :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay :is(.detailButton-text, .pft-detail-button-label) {

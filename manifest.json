@@ -8,6 +8,14 @@
     "category": "General",
     "versions": [
       {
+        "version": "1.2.3.0",
+        "changelog": "Constrains the mobile primary play action to a true 200px border-box width, preventing it from overlapping adjacent action buttons.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.2.3.0/PunisherFinTheme_1.2.3.0.zip",
+        "checksum": "1e170b3fc8854efe453a1e48093ba923",
+        "timestamp": "2026-09-10 17:43:33"
+      },
+      {
         "version": "1.2.2.0",
         "changelog": "Makes the mobile primary play action compact and centered, and fixes mobile library browsing to a stable three-column grid without changing desktop layouts.",
         "targetAbi": "12.0.0.0",
