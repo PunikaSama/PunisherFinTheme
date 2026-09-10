@@ -32,6 +32,10 @@ if (-not $SkipTests) {
     if ($LASTEXITCODE -ne 0) {
         throw "Web validation failed."
     }
+    node (Join-Path $projectRoot "scripts\test-settings-page.js")
+    if ($LASTEXITCODE -ne 0) {
+        throw "Settings page behavior test failed."
+    }
     dotnet test $solution --configuration $Configuration --disable-build-servers -m:1 --blame-hang-timeout 60s
     if ($LASTEXITCODE -ne 0) {
         throw "Tests failed."

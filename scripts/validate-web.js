@@ -43,17 +43,30 @@ for (const required of [
     "BackgroundCrossfadeMilliseconds",
     "BackgroundImageQuality",
     "ResetBackgroundSettings",
-    "punisherFinThemeSettingsBindings",
-    "settingsViews.find",
-    "view.querySelector",
-    "void showSettings()",
+    "applySettings",
+    "loadOptionalInformation",
+    "loadedSettings",
+    "view.dataset.bound",
+    "window.setTimeout",
+    "scheduleSettingsLoad",
+    "typeof ApiClient.getPluginConfiguration",
     "syncRangeDisplays",
-    "rangeSyncTimer",
     "/PunisherFinTheme/libraries",
     "/PunisherFinTheme/dependency"
 ]) {
     if (!html.includes(required)) {
         throw new Error(`Missing settings behavior: ${required}`);
+    }
+}
+
+for (const forbidden of [
+    "Promise.all",
+    "punisherFinThemeSettingsBindings",
+    "AbortController",
+    "?."
+]) {
+    if (html.includes(forbidden)) {
+        throw new Error(`Fragile settings behavior found: ${forbidden}`);
     }
 }
 

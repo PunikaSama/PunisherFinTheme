@@ -143,28 +143,26 @@
             (function () {
                 "use strict";
 
-                const pluginId = "4763374d-d1ce-4404-b769-3625dacdcb84";
-                const settingsViews = Array.from(document.querySelectorAll("#PunisherFinThemeSettings"));
-                const view = settingsViews.find(candidate => !candidate.classList.contains("hide") && candidate.getClientRects().length)
-                    || settingsViews[settingsViews.length - 1];
-                if (!view) {
+                var pluginId = "4763374d-d1ce-4404-b769-3625dacdcb84";
+                var view = document.getElementById("PunisherFinThemeSettings");
+                var form = document.getElementById("PunisherFinThemeSettingsForm");
+                var loading = false;
+                var loadedSettings = null;
+
+                if (!view || !form) {
                     console.error("PunisherFinTheme: Die Einstellungsseite wurde nicht gefunden.");
                     return;
                 }
-                const form = view.querySelector("#PunisherFinThemeSettingsForm");
-                const previousBindings = view.punisherFinThemeSettingsBindings;
-                previousBindings?.abort();
-                let loading = false;
 
                 function element(id) {
-                    return view.querySelector(`#${id}`);
+                    return document.getElementById(id);
                 }
 
                 function validColor(value) {
                     return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : "#FF5F87";
                 }
 
-                const ranges = [
+                var ranges = [
                     ["BackgroundOpacityPercent", "%"],
                     ["BackgroundBrightnessPercent", "%"],
                     ["BackgroundBlurPixels", "px"],
@@ -172,82 +170,161 @@
                     ["BackgroundContrastPercent", "%"],
                     ["BackgroundOverlayPercent", "%"],
                     ["BackgroundChangeIntervalSeconds", "s"],
-                    ["BackgroundCrossfadeMilliseconds", "s", value => (Number(value) / 1000).toLocaleString("de-DE", { maximumFractionDigits: 2 })],
+                    ["BackgroundCrossfadeMilliseconds", "s", function (value) {
+                        return (Number(value) / 1000).toLocaleString("de-DE", { maximumFractionDigits: 2 });
+                    }],
                     ["BackgroundImageQuality", "%"]
                 ];
 
                 function updateRange(id, suffix, formatter) {
-                    const input = element(id);
-                    const output = element(`${id}Value`);
-                    output.textContent = `${formatter ? formatter(input.value) : input.value} ${suffix}`;
+                    var input = element(id);
+                    var output = element(id + "Value");
+                    if (!input || !output) {
+                        return;
+                    }
+
+                    output.textContent = (formatter ? formatter(input.value) : input.value) + " " + suffix;
                 }
 
                 function setRange(id, value, fallback) {
-                    element(id).value = Number.isFinite(Number(value)) ? value : fallback;
-                    const entry = ranges.find(range => range[0] === id);
-                    updateRange(...entry);
-                }
+                    var parsed = Number(value);
+                    var entry;
+                    var index;
+                    element(id).value = isFinite(parsed) ? parsed : fallback;
+                    for (index = 0; index < ranges.length; index += 1) {
+                        if (ranges[index][0] === id) {
+                            entry = ranges[index];
+                            break;
+                        }
+                    }
 
-                function handleRangeEvent(event) {
-                    const entry = ranges.find(range => range[0] === event.target.id);
                     if (entry) {
-                        updateRange(...entry);
+                        updateRange(entry[0], entry[1], entry[2]);
                     }
                 }
 
                 function syncRangeDisplays() {
-                    ranges.forEach(range => updateRange(...range));
+                    ranges.forEach(function (range) {
+                        updateRange(range[0], range[1], range[2]);
+                    });
                 }
 
                 function normalizeLibraries(items) {
-                    const choices = new Map();
-                    (items || []).forEach(item => {
-                        const id = item.id || item.Id || item.ItemId;
-                        const name = item.name || item.Name;
+                    var choices = {};
+                    (items || []).forEach(function (item) {
+                        var id = item.id || item.Id || item.ItemId;
+                        var name = item.name || item.Name;
                         if (id && name) {
-                            choices.set(String(id).toLowerCase(), { id: String(id), name: String(name) });
+                            choices[String(id).toLowerCase()] = { id: String(id), name: String(name) };
                         }
                     });
-                    return Array.from(choices.values()).sort((left, right) => left.name.localeCompare(right.name));
+                    return Object.keys(choices).map(function (key) {
+                        return choices[key];
+                    }).sort(function (left, right) {
+                        return left.name.localeCompare(right.name);
+                    });
                 }
 
-                async function loadLibraries() {
-                    try {
-                        return normalizeLibraries(await requestJson("/PunisherFinTheme/libraries"));
-                    } catch (error) {
-                        try {
-                            return normalizeLibraries(await ApiClient.getVirtualFolders());
-                        } catch (fallbackError) {
-                            const userId = ApiClient.getCurrentUserId?.();
-                            const result = userId ? await ApiClient.getUserViews({ userId }) : null;
-                            return normalizeLibraries(result?.Items);
+                function loadLibraries() {
+                    return requestJson("/PunisherFinTheme/libraries").then(function (items) {
+                        var normalized = normalizeLibraries(items);
+                        if (normalized.length) {
+                            return normalized;
                         }
-                    }
+
+                        throw new Error("Der Plugin-Endpunkt lieferte keine Bibliotheken.");
+                    }).catch(function (error) {
+                        console.debug("PunisherFinTheme: eigener Bibliotheksendpunkt nicht verfügbar.", error);
+                        if (typeof ApiClient.getVirtualFolders !== "function") {
+                            throw error;
+                        }
+
+                        return ApiClient.getVirtualFolders();
+                    }).then(function (items) {
+                        var normalized = normalizeLibraries(items);
+                        if (normalized.length) {
+                            return normalized;
+                        }
+
+                        throw new Error("Keine virtuellen Ordner gefunden.");
+                    }).catch(function (error) {
+                        var userId = typeof ApiClient.getCurrentUserId === "function"
+                            ? ApiClient.getCurrentUserId()
+                            : "";
+                        console.debug("PunisherFinTheme: Virtual Folders nicht verfügbar.", error);
+                        if (!userId) {
+                            return [];
+                        }
+
+                        return requestJson("/UserViews", { userId: userId }).then(function (result) {
+                            return normalizeLibraries(result.Items || result.items || []);
+                        }).catch(function (fallbackError) {
+                            console.warn("PunisherFinTheme: Bibliotheken konnten nicht geladen werden.", fallbackError);
+                            return [];
+                        });
+                    });
                 }
 
                 function populateLibraries(libraries, selectedId, selectedName) {
-                    const select = element("BackgroundLibraryId");
-                    select.replaceChildren();
-                    const placeholder = document.createElement("option");
+                    var select = element("BackgroundLibraryId");
+                    var placeholder;
+                    var selectedLibrary = null;
+                    var index;
+                    while (select.firstChild) {
+                        select.removeChild(select.firstChild);
+                    }
+
+                    placeholder = document.createElement("option");
                     placeholder.value = "";
                     placeholder.textContent = libraries.length ? "Bitte auswählen" : "Keine Bibliothek gefunden";
                     select.appendChild(placeholder);
-                    libraries.forEach(library => {
-                        const option = document.createElement("option");
+                    libraries.forEach(function (library) {
+                        var option = document.createElement("option");
                         option.value = library.id;
                         option.textContent = library.name;
                         select.appendChild(option);
                     });
-                    const byId = libraries.find(library => library.id.toLowerCase() === String(selectedId || "").toLowerCase());
-                    const byName = libraries.find(library => library.name.toLowerCase() === String(selectedName || "Anime").toLowerCase());
-                    select.value = (byId || byName)?.id || "";
+
+                    for (index = 0; index < libraries.length; index += 1) {
+                        if (libraries[index].id.toLowerCase() === String(selectedId || "").toLowerCase()) {
+                            selectedLibrary = libraries[index];
+                            break;
+                        }
+                    }
+
+                    if (!selectedLibrary) {
+                        for (index = 0; index < libraries.length; index += 1) {
+                            if (libraries[index].name.toLowerCase() === String(selectedName || "Anime").toLowerCase()) {
+                                selectedLibrary = libraries[index];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!selectedLibrary && selectedId) {
+                        selectedLibrary = { id: String(selectedId), name: String(selectedName || "Gespeicherte Bibliothek") };
+                        placeholder = document.createElement("option");
+                        placeholder.value = selectedLibrary.id;
+                        placeholder.textContent = selectedLibrary.name;
+                        select.appendChild(placeholder);
+                    }
+
+                    select.value = selectedLibrary ? selectedLibrary.id : "";
                 }
 
                 function resetBackgroundSettings() {
                     element("EnableRandomBackground").checked = true;
-                    const librarySelect = element("BackgroundLibraryId");
-                    const animeOption = Array.from(librarySelect.options).find(option => option.textContent.toLowerCase() === "anime");
-                    librarySelect.value = animeOption?.value || "";
+                    var librarySelect = element("BackgroundLibraryId");
+                    var animeValue = "";
+                    var index;
+                    for (index = 0; index < librarySelect.options.length; index += 1) {
+                        if (librarySelect.options[index].textContent.toLowerCase() === "anime") {
+                            animeValue = librarySelect.options[index].value;
+                            break;
+                        }
+                    }
+
+                    librarySelect.value = animeValue;
                     setRange("BackgroundOpacityPercent", 100, 100);
                     setRange("BackgroundBrightnessPercent", 68, 68);
                     setRange("BackgroundBlurPixels", 5, 5);
@@ -259,129 +336,161 @@
                     setRange("BackgroundImageQuality", 90, 90);
                 }
 
-                async function requestJson(path) {
-                    const response = await ApiClient.fetch({ url: ApiClient.getUrl(path), type: "GET" });
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
-                    return response.json();
+                function requestJson(path, query) {
+                    return ApiClient.fetch({ url: ApiClient.getUrl(path, query), type: "GET" }).then(function (response) {
+                        if (!response.ok) {
+                            throw new Error("HTTP " + response.status);
+                        }
+
+                        return response.json();
+                    });
                 }
 
-                async function refreshDependencyState() {
-                    const label = element("DependencyMessage");
-                    try {
-                        const state = await requestJson("/PunisherFinTheme/dependency");
+                function refreshDependencyState() {
+                    var label = element("DependencyMessage");
+                    return requestJson("/PunisherFinTheme/dependency").then(function (state) {
                         element("PluginVersion").textContent = state.version || "";
                         label.textContent = state.message;
                         label.style.color = state.connected ? "#57d47b" : "#ffb74d";
-                    } catch (error) {
+                    }).catch(function (error) {
                         label.textContent = "Status nicht verfügbar. File Transformation 3.0.0 muss installiert und aktiv sein.";
                         label.style.color = "#ffb74d";
-                    }
+                    });
                 }
 
-                async function showSettings() {
+                function applySettings(settings) {
+                    loadedSettings = settings;
+                    element("Enabled").checked = settings.Enabled !== false;
+                    element("AccentColor").value = validColor(settings.AccentColor);
+                    element("ShowEpisodeOverview").checked = settings.ShowEpisodeOverview !== false;
+                    element("CompactEpisodes").checked = settings.CompactEpisodes === true;
+                    element("StyleActionButtons").checked = settings.StyleActionButtons !== false;
+                    element("StyleHome").checked = settings.StyleHome !== false;
+                    element("StyleLibraries").checked = settings.StyleLibraries !== false;
+                    element("EnableCardPreviews").checked = settings.EnableCardPreviews !== false;
+                    element("StylePlayerControls").checked = settings.StylePlayerControls !== false;
+                    element("EnableRandomBackground").checked = settings.EnableRandomBackground !== false;
+                    populateLibraries([], settings.BackgroundLibraryId, settings.BackgroundLibraryName);
+                    setRange("BackgroundOpacityPercent", settings.BackgroundOpacityPercent, 100);
+                    setRange("BackgroundBrightnessPercent", settings.BackgroundBrightnessPercent, 68);
+                    setRange("BackgroundBlurPixels", settings.BackgroundBlurPixels, 5);
+                    setRange("BackgroundSaturationPercent", settings.BackgroundSaturationPercent, 110);
+                    setRange("BackgroundContrastPercent", settings.BackgroundContrastPercent, 105);
+                    setRange("BackgroundOverlayPercent", settings.BackgroundOverlayPercent, 22);
+                    setRange("BackgroundChangeIntervalSeconds", settings.BackgroundChangeIntervalSeconds, 30);
+                    setRange("BackgroundCrossfadeMilliseconds", settings.BackgroundCrossfadeMilliseconds, 2500);
+                    setRange("BackgroundImageQuality", settings.BackgroundImageQuality, 90);
+                }
+
+                function loadOptionalInformation(settings) {
+                    loadLibraries().then(function (libraries) {
+                        populateLibraries(libraries, settings.BackgroundLibraryId, settings.BackgroundLibraryName);
+                    }).catch(function (error) {
+                        console.warn("PunisherFinTheme: Bibliotheksauswahl konnte nicht aufgebaut werden.", error);
+                        populateLibraries([], settings.BackgroundLibraryId, settings.BackgroundLibraryName);
+                    });
+                    refreshDependencyState();
+                }
+
+                function showSettings() {
                     if (loading) {
                         return;
                     }
 
                     loading = true;
                     Dashboard.showLoadingMsg();
-                    try {
-                        const [settings, libraries] = await Promise.all([
-                            ApiClient.getPluginConfiguration(pluginId),
-                            loadLibraries()
-                        ]);
-                        element("Enabled").checked = settings.Enabled !== false;
-                        element("AccentColor").value = validColor(settings.AccentColor);
-                        element("ShowEpisodeOverview").checked = settings.ShowEpisodeOverview !== false;
-                        element("CompactEpisodes").checked = settings.CompactEpisodes === true;
-                        element("StyleActionButtons").checked = settings.StyleActionButtons !== false;
-                        element("StyleHome").checked = settings.StyleHome !== false;
-                        element("StyleLibraries").checked = settings.StyleLibraries !== false;
-                        element("EnableCardPreviews").checked = settings.EnableCardPreviews !== false;
-                        element("StylePlayerControls").checked = settings.StylePlayerControls !== false;
-                        element("EnableRandomBackground").checked = settings.EnableRandomBackground !== false;
-                        populateLibraries(libraries, settings.BackgroundLibraryId, settings.BackgroundLibraryName);
-                        setRange("BackgroundOpacityPercent", settings.BackgroundOpacityPercent, 100);
-                        setRange("BackgroundBrightnessPercent", settings.BackgroundBrightnessPercent, 68);
-                        setRange("BackgroundBlurPixels", settings.BackgroundBlurPixels, 5);
-                        setRange("BackgroundSaturationPercent", settings.BackgroundSaturationPercent, 110);
-                        setRange("BackgroundContrastPercent", settings.BackgroundContrastPercent, 105);
-                        setRange("BackgroundOverlayPercent", settings.BackgroundOverlayPercent, 22);
-                        setRange("BackgroundChangeIntervalSeconds", settings.BackgroundChangeIntervalSeconds, 30);
-                        setRange("BackgroundCrossfadeMilliseconds", settings.BackgroundCrossfadeMilliseconds, 2500);
-                        setRange("BackgroundImageQuality", settings.BackgroundImageQuality, 90);
-                        await refreshDependencyState();
-                    } catch (error) {
+                    ApiClient.getPluginConfiguration(pluginId).then(function (settings) {
+                        applySettings(settings);
+                        loadOptionalInformation(settings);
+                    }).catch(function (error) {
                         console.error("PunisherFinTheme: Einstellungen konnten nicht geladen werden.", error);
                         Dashboard.alert("Die PunisherFinTheme-Einstellungen konnten nicht geladen werden.");
-                    } finally {
+                    }).then(function () {
                         loading = false;
                         Dashboard.hideLoadingMsg();
-                    }
+                    });
                 }
 
-                async function storeSettings(event) {
+                function scheduleSettingsLoad() {
+                    if (typeof ApiClient === "undefined"
+                            || typeof ApiClient.getPluginConfiguration !== "function"
+                            || typeof Dashboard === "undefined") {
+                        if (view.isConnected !== false) {
+                            window.setTimeout(scheduleSettingsLoad, 200);
+                        }
+                        return;
+                    }
+
+                    showSettings();
+                }
+
+                function storeSettings(event) {
+                    var settings;
+                    var librarySelect;
+                    var selectedOption;
                     event.preventDefault();
                     Dashboard.showLoadingMsg();
-                    try {
-                        const settings = await ApiClient.getPluginConfiguration(pluginId);
-                        settings.Enabled = element("Enabled").checked;
-                        settings.AccentColor = validColor(element("AccentColor").value);
-                        settings.ShowEpisodeOverview = element("ShowEpisodeOverview").checked;
-                        settings.CompactEpisodes = element("CompactEpisodes").checked;
-                        settings.StyleActionButtons = element("StyleActionButtons").checked;
-                        settings.StyleHome = element("StyleHome").checked;
-                        settings.StyleLibraries = element("StyleLibraries").checked;
-                        settings.EnableCardPreviews = element("EnableCardPreviews").checked;
-                        settings.StylePlayerControls = element("StylePlayerControls").checked;
-                        settings.EnableRandomBackground = element("EnableRandomBackground").checked;
-                        const librarySelect = element("BackgroundLibraryId");
-                        settings.BackgroundLibraryId = librarySelect.value;
-                        settings.BackgroundLibraryName = librarySelect.value
-                            ? (librarySelect.selectedOptions[0]?.textContent || "Anime")
-                            : (settings.BackgroundLibraryName || "Anime");
-                        ranges.forEach(range => { settings[range[0]] = Number(element(range[0]).value); });
-                        const result = await ApiClient.updatePluginConfiguration(pluginId, settings);
+
+                    settings = loadedSettings || {};
+                    settings.Enabled = element("Enabled").checked;
+                    settings.AccentColor = validColor(element("AccentColor").value);
+                    settings.ShowEpisodeOverview = element("ShowEpisodeOverview").checked;
+                    settings.CompactEpisodes = element("CompactEpisodes").checked;
+                    settings.StyleActionButtons = element("StyleActionButtons").checked;
+                    settings.StyleHome = element("StyleHome").checked;
+                    settings.StyleLibraries = element("StyleLibraries").checked;
+                    settings.EnableCardPreviews = element("EnableCardPreviews").checked;
+                    settings.StylePlayerControls = element("StylePlayerControls").checked;
+                    settings.EnableRandomBackground = element("EnableRandomBackground").checked;
+                    librarySelect = element("BackgroundLibraryId");
+                    selectedOption = librarySelect.selectedIndex >= 0
+                        ? librarySelect.options[librarySelect.selectedIndex]
+                        : null;
+                    settings.BackgroundLibraryId = librarySelect.value;
+                    settings.BackgroundLibraryName = librarySelect.value && selectedOption
+                        ? (selectedOption.textContent || "Anime")
+                        : (settings.BackgroundLibraryName || "Anime");
+                    ranges.forEach(function (range) {
+                        settings[range[0]] = Number(element(range[0]).value);
+                    });
+
+                    ApiClient.updatePluginConfiguration(pluginId, settings).then(function (result) {
+                        loadedSettings = settings;
+                        applySettings(settings);
                         Dashboard.processPluginConfigurationUpdateResult(result);
-                    } catch (error) {
+                    }).catch(function (error) {
                         console.error("PunisherFinTheme: Einstellungen konnten nicht gespeichert werden.", error);
                         Dashboard.hideLoadingMsg();
                         Dashboard.alert("Die PunisherFinTheme-Einstellungen konnten nicht gespeichert werden.");
-                    }
+                    });
                 }
 
-                const submitHandler = event => {
-                    event.stopImmediatePropagation();
-                    void storeSettings(event);
-                };
-                const resetButton = element("ResetBackgroundSettings");
-                view.addEventListener("pageshow", showSettings);
-                view.addEventListener("viewshow", showSettings);
-                form.addEventListener("submit", submitHandler, true);
-                form.addEventListener("input", handleRangeEvent);
-                form.addEventListener("change", handleRangeEvent);
-                resetButton.addEventListener("click", resetBackgroundSettings);
-                const rangeSyncTimer = window.setInterval(() => {
-                    if (!view.isConnected) {
-                        window.clearInterval(rangeSyncTimer);
-                        return;
-                    }
-                    syncRangeDisplays();
-                }, 100);
-                view.punisherFinThemeSettingsBindings = {
-                    abort: function () {
-                        window.clearInterval(rangeSyncTimer);
-                        view.removeEventListener("pageshow", showSettings);
-                        view.removeEventListener("viewshow", showSettings);
-                        form.removeEventListener("submit", submitHandler, true);
-                        form.removeEventListener("input", handleRangeEvent);
-                        form.removeEventListener("change", handleRangeEvent);
-                        resetButton.removeEventListener("click", resetBackgroundSettings);
-                    }
-                };
-                void showSettings();
+                function bindRange(range) {
+                    var input = element(range[0]);
+                    var synchronize = function () {
+                        updateRange(range[0], range[1], range[2]);
+                    };
+                    input.addEventListener("input", synchronize);
+                    input.addEventListener("change", synchronize);
+                }
+
+                if (!view.dataset.bound) {
+                    view.dataset.bound = "true";
+                    view.addEventListener("pageshow", scheduleSettingsLoad);
+                    view.addEventListener("viewshow", scheduleSettingsLoad);
+                    form.addEventListener("submit", function (event) {
+                        event.stopImmediatePropagation();
+                        storeSettings(event);
+                    }, true);
+                    ranges.forEach(bindRange);
+                    element("ResetBackgroundSettings").addEventListener("click", function () {
+                        resetBackgroundSettings();
+                        syncRangeDisplays();
+                    });
+                    window.setTimeout(scheduleSettingsLoad, 0);
+                } else {
+                    window.setTimeout(scheduleSettingsLoad, 0);
+                }
             }());
         </script>
     </div>
