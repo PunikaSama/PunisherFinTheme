@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
+        "version": "1.5.1.0",
+        "changelog": "Applies the configured accent color throughout Jellyfin's video player, including button hover and focus states, active controls, playback progress, scrubber thumbs, volume sliders, slider bubbles, and current Material UI slider variants across Chromium, Firefox, and legacy WebViews.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.5.1.0/PunisherFinTheme_1.5.1.0.zip",
+        "checksum": "72d4956edd24975736b730d91cf5d328",
+        "timestamp": "2026-09-10 20:42:14"
+      },
+      {
         "version": "1.5.0.0",
         "changelog": "Adds optional muted video clips to expanded previews for episodes, continue-watching items, seasons, series, movies, and newly added media. The option is enabled by default; disabling it preserves the existing static artwork preview. Only one bandwidth-limited preview plays at a time and automatically stops after twelve seconds.",
         "targetAbi": "12.0.0.0",
