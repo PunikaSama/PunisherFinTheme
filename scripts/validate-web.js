@@ -90,6 +90,7 @@ for (const required of [
     "#itemDetailPage .card .itemProgressBar",
     ".pft-preview-expanded",
     ".videoPlayerContainer",
+    ".skinHeader.skinHeader-withBackground",
     "#punisherFinRandomBackdrop",
     ".pft-backdrop-layer",
     ".backgroundContainer",
@@ -103,7 +104,6 @@ for (const required of [
 }
 
 for (const forbidden of [
-    ".skinHeader",
     ".headerTop",
     ".headerTabs",
     ".mainDrawer",

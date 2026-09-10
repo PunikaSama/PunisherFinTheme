@@ -11,6 +11,14 @@
     --pft-transition: 150ms ease;
 }
 
+/* Keep Jellyfin's top navigation transparent when its scrolled state is applied. */
+:root.pft-enabled .skinHeader,
+:root.pft-enabled .skinHeader.skinHeader-withBackground,
+:root.pft-enabled .skinHeader.semiTransparent {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
 /* Isolated rotating backdrop. It stays behind Jellyfin and never receives input. */
 #punisherFinRandomBackdrop {
     background: #101010;
