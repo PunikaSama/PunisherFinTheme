@@ -9,14 +9,22 @@
     --pft-border: rgba(255, 255, 255, .12);
     --pft-radius: 8px;
     --pft-transition: 150ms ease;
+    --jf-palette-AppBar-defaultBg: transparent;
+    --jf-palette-AppBar-transparentBg: transparent;
+    --jf-palette-AppBar-gradient: none;
 }
 
 /* Keep Jellyfin's top navigation transparent when its scrolled state is applied. */
 :root.pft-enabled .skinHeader,
-:root.pft-enabled .skinHeader.skinHeader-withBackground,
+:root.pft-enabled .skinHeader-withBackground,
 :root.pft-enabled .skinHeader.semiTransparent {
     background: transparent !important;
     background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 /* Isolated rotating backdrop. It stays behind Jellyfin and never receives input. */
@@ -76,7 +84,8 @@
 }
 
 :root.pft-enabled .homeSectionsContainer.pft-home-view .cardBox,
-:root.pft-enabled .pft-library-view .cardBox {
+:root.pft-enabled .pft-library-view .cardBox,
+:root.pft-enabled #itemDetailPage .card.pft-season-card .cardBox {
     border: 1px solid var(--pft-border);
     border-radius: var(--pft-radius) !important;
     background: var(--pft-card);
@@ -87,26 +96,32 @@
 
 :root.pft-enabled .homeSectionsContainer.pft-home-view .cardImageContainer,
 :root.pft-enabled .pft-library-view .cardImageContainer,
+:root.pft-enabled #itemDetailPage .card.pft-season-card .cardImageContainer,
 :root.pft-enabled .homeSectionsContainer.pft-home-view .cardContent,
-:root.pft-enabled .pft-library-view .cardContent {
+:root.pft-enabled .pft-library-view .cardContent,
+:root.pft-enabled #itemDetailPage .card.pft-season-card .cardContent {
     border-radius: calc(var(--pft-radius) - 1px) !important;
 }
 
 :root.pft-enabled .homeSectionsContainer.pft-home-view .card:hover .cardBox,
 :root.pft-enabled .homeSectionsContainer.pft-home-view .card:focus-within .cardBox,
 :root.pft-enabled .pft-library-view .card:hover .cardBox,
-:root.pft-enabled .pft-library-view .card:focus-within .cardBox {
+:root.pft-enabled .pft-library-view .card:focus-within .cardBox,
+:root.pft-enabled #itemDetailPage .card.pft-season-card:hover .cardBox,
+:root.pft-enabled #itemDetailPage .card.pft-season-card:focus-within .cardBox {
     border-color: var(--pft-accent);
     box-shadow: 0 .45rem 1.35rem rgba(0, 0, 0, .38), 0 0 0 1px var(--pft-accent);
 }
 
 :root.pft-enabled .homeSectionsContainer.pft-home-view .cardText,
-:root.pft-enabled .pft-library-view .cardText {
+:root.pft-enabled .pft-library-view .cardText,
+:root.pft-enabled #itemDetailPage .card.pft-season-card .cardText {
     color: var(--pft-text);
 }
 
 :root.pft-enabled .homeSectionsContainer.pft-home-view .cardText-secondary,
-:root.pft-enabled .pft-library-view .cardText-secondary {
+:root.pft-enabled .pft-library-view .cardText-secondary,
+:root.pft-enabled #itemDetailPage .card.pft-season-card .cardText-secondary {
     color: var(--pft-text-muted);
 }
 
@@ -164,7 +179,16 @@
         z-index: 20;
     }
 
+    :root.pft-enabled.pft-card-previews #itemDetailPage .card.pft-season-card.pft-preview-expanded {
+        z-index: 20;
+    }
+
     :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .cardBox {
+        border-color: #fff;
+        box-shadow: 0 .65rem 1.8rem rgba(0, 0, 0, .52), 0 0 0 1px #fff;
+    }
+
+    :root.pft-enabled.pft-card-previews #itemDetailPage .card.pft-season-card.pft-preview-expanded .cardBox {
         border-color: #fff;
         box-shadow: 0 .65rem 1.8rem rgba(0, 0, 0, .52), 0 0 0 1px #fff;
     }
@@ -181,7 +205,23 @@
         z-index: 3;
     }
 
+    :root.pft-enabled.pft-card-previews #itemDetailPage .card.pft-season-card .pft-hover-artwork {
+        height: 100%;
+        inset: 0;
+        object-fit: cover;
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        transition: opacity 140ms ease;
+        width: 100%;
+        z-index: 3;
+    }
+
     :root.pft-enabled.pft-card-previews .homeSectionsContainer.pft-home-view .card.pft-preview-expanded .pft-hover-artwork {
+        opacity: 1;
+    }
+
+    :root.pft-enabled.pft-card-previews #itemDetailPage .card.pft-season-card.pft-preview-expanded .pft-hover-artwork {
         opacity: 1;
     }
 

@@ -153,8 +153,10 @@
                 "use strict";
 
                 const pluginId = "4763374d-d1ce-4404-b769-3625dacdcb84";
-                const view = document.getElementById("PunisherFinThemeSettings");
-                const form = document.getElementById("PunisherFinThemeSettingsForm");
+                const scriptElement = document.currentScript;
+                const view = scriptElement?.closest("#PunisherFinThemeSettings")
+                    || Array.from(document.querySelectorAll("#PunisherFinThemeSettings")).at(-1);
+                const form = view.querySelector("#PunisherFinThemeSettingsForm");
                 const previousBindings = view.punisherFinThemeSettingsBindings;
                 previousBindings?.abort();
                 const bindings = new AbortController();
@@ -162,7 +164,7 @@
                 let loading = false;
 
                 function element(id) {
-                    return document.getElementById(id);
+                    return view.querySelector(`#${id}`);
                 }
 
                 function validColor(value) {
@@ -191,6 +193,13 @@
                     element(id).value = Number.isFinite(Number(value)) ? value : fallback;
                     const entry = ranges.find(range => range[0] === id);
                     updateRange(...entry);
+                }
+
+                function handleRangeEvent(event) {
+                    const entry = ranges.find(range => range[0] === event.target.id);
+                    if (entry) {
+                        updateRange(...entry);
+                    }
                 }
 
                 function normalizeLibraries(items) {
@@ -358,10 +367,8 @@
                     event.stopImmediatePropagation();
                     void storeSettings(event);
                 }, { capture: true, signal: bindings.signal });
-                ranges.forEach(range => {
-                    element(range[0]).addEventListener("input", () => updateRange(...range), { signal: bindings.signal });
-                    element(range[0]).addEventListener("change", () => updateRange(...range), { signal: bindings.signal });
-                });
+                form.addEventListener("input", handleRangeEvent, { signal: bindings.signal });
+                form.addEventListener("change", handleRangeEvent, { signal: bindings.signal });
                 element("ResetBackgroundSettings").addEventListener("click", resetBackgroundSettings, { signal: bindings.signal });
             }());
         </script>

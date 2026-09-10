@@ -1,7 +1,11 @@
 (function () {
     "use strict";
 
-    const runtimeKey = "__punisherFinThemeV130";
+    ["__punisherFinThemeV121", "__punisherFinThemeV130"].forEach(key => {
+        window[key]?.stop?.();
+        delete window[key];
+    });
+    const runtimeKey = "__punisherFinThemeV134";
     if (window[runtimeKey]) {
         return;
     }
@@ -38,13 +42,21 @@
     }
 
     function ensureStylesheet(api, version) {
-        if (runtime.stylesheet?.isConnected) {
+        const href = api.getUrl("/PunisherFinTheme/styles.css", { v: version || "1" });
+        const existing = runtime.stylesheet?.isConnected
+            ? runtime.stylesheet
+            : document.getElementById("punisherfin-theme-styles");
+        if (existing) {
+            if (existing.href !== new URL(href, window.location.href).href) {
+                existing.href = href;
+            }
+            runtime.stylesheet = existing;
             return;
         }
         const link = document.createElement("link");
         link.id = "punisherfin-theme-styles";
         link.rel = "stylesheet";
-        link.href = api.getUrl("/PunisherFinTheme/styles.css", { v: version || "1" });
+        link.href = href;
         document.head.appendChild(link);
         runtime.stylesheet = link;
     }
@@ -135,6 +147,9 @@
         }
         if (item.ParentBackdropItemId) {
             return api.getUrl(`/Items/${item.ParentBackdropItemId}/Images/Backdrop/0`, parameters);
+        }
+        if (item.Type === "Season" && item.SeriesId) {
+            return api.getUrl(`/Items/${item.SeriesId}/Images/Backdrop/0`, parameters);
         }
         return null;
     }
@@ -276,15 +291,19 @@
             return false;
         }
         const item = await loadItem(id);
-        if (!item || !["Episode", "Movie", "Series", "Video"].includes(item.Type)) {
+        const homeCard = Boolean(card.closest(".pft-home-view"));
+        if (!item || (!homeCard && item.Type !== "Season") || !["Episode", "Movie", "Series", "Season", "Video"].includes(item.Type)) {
             return false;
         }
+        card.classList.toggle("pft-season-card", item.Type === "Season");
         const url = imageUrl(api, item);
         return url ? createPreview(card, url) : false;
     }
 
     function previewCardFrom(target) {
-        const card = target instanceof Element ? target.closest(".pft-home-view .card") : null;
+        const card = target instanceof Element
+            ? target.closest(".pft-home-view .card, #itemDetailPage:not(.hide) .card")
+            : null;
         return card && root.classList.contains("pft-card-previews") ? card : null;
     }
 

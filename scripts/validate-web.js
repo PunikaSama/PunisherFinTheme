@@ -46,6 +46,8 @@ for (const required of [
     "HideRandomBackgroundInPlayer",
     "ResetBackgroundSettings",
     "AbortController",
+    "document.currentScript",
+    "view.querySelector",
     "/PunisherFinTheme/libraries",
     "/PunisherFinTheme/dependency"
 ]) {
@@ -55,7 +57,9 @@ for (const required of [
 }
 
 for (const required of [
+    "__punisherFinThemeV134",
     "__punisherFinThemeV130",
+    "document.getElementById(\"punisherfin-theme-styles\")",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
     "MutationObserver",
@@ -72,6 +76,8 @@ for (const required of [
     "getUserViews",
     "getItems",
     "pft-preview-expanded",
+    "pft-season-card",
+    "item.Type !== \"Season\"",
     "pft-detail-button-label",
     "removeAttribute(\"title\")",
     "homeSectionsContainer",
@@ -93,7 +99,8 @@ for (const required of [
     "#itemDetailPage .countIndicator",
     ".pft-preview-expanded",
     ".videoPlayerContainer",
-    ".skinHeader.skinHeader-withBackground",
+    ".skinHeader-withBackground",
+    "--jf-palette-AppBar-defaultBg: transparent",
     "#punisherFinRandomBackdrop",
     ".pft-backdrop-layer",
     ".backgroundContainer",
