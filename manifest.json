@@ -8,6 +8,14 @@
     "category": "General",
     "versions": [
       {
+        "version": "1.2.0.0",
+        "changelog": "Ports the PunisherFin modern detail action geometry to Jellyfin Web: 54px primary action, 52px secondary circles, 24px icons, focused pill expansion, native labels, and resume position text.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.2.0.0/PunisherFinTheme_1.2.0.0.zip",
+        "checksum": "eb58723bf3764474d71e4708db7c058f",
+        "timestamp": "2026-09-10 17:22:50"
+      },
+      {
         "version": "1.1.2.0",
         "changelog": "Restores the fixed glass text area and fixed card dimensions during previews, and constrains playback progress to a slim four-pixel bar at the image edge.",
         "targetAbi": "12.0.0.0",

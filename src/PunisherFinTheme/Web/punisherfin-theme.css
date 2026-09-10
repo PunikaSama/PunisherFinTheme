@@ -168,77 +168,105 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: .75rem;
+    gap: 8px;
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton {
+    align-items: center;
+    height: 52px;
+    justify-content: center;
     margin: 0 !important;
+    min-width: 52px;
+    overflow: visible;
+    padding: 0 !important;
+    width: auto;
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton .detailButton-content {
     align-items: center;
-    background: rgba(20, 20, 20, .42);
-    border: 1.5px solid rgba(255, 255, 255, .55);
-    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    border: 1.5px solid rgba(255, 255, 255, .35);
+    border-radius: 26px;
     display: flex;
     flex-direction: row;
-    height: 3.45rem;
+    height: 52px;
     justify-content: center;
     margin-inline: auto;
+    max-width: 52px;
+    min-width: 52px;
     overflow: hidden;
     padding: 0 !important;
-    transition: background var(--pft-transition), border-color var(--pft-transition), color var(--pft-transition), min-width var(--pft-transition), transform var(--pft-transition);
-    width: 3.45rem;
+    transition: background 150ms ease-out, border-color 150ms ease-out, max-width 150ms ease-out, padding 150ms ease-out;
+    width: max-content;
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton .detailButton-icon {
     flex: 0 0 auto;
-    font-size: 1.85rem !important;
+    font-size: 24px !important;
+    height: 48px;
+    line-height: 48px;
     margin: 0 !important;
-    transition: font-size var(--pft-transition), transform var(--pft-transition);
+    text-align: center;
+    width: 48px;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton .detailButton-text {
-    font-size: .92rem;
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton :is(.detailButton-text, .pft-detail-button-label) {
+    font-size: 13px;
     font-weight: 700;
+    line-height: 1.1;
     margin: 0 !important;
     max-width: 0;
     opacity: 0;
     overflow: hidden;
-    transition: margin var(--pft-transition), max-width var(--pft-transition), opacity var(--pft-transition);
+    text-overflow: ellipsis;
+    transition: max-width 150ms ease-out, opacity 150ms ease-out;
     white-space: nowrap;
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
     background: var(--pft-accent) !important;
     border-color: var(--pft-accent) !important;
+    border-radius: 27px;
+    column-gap: 2px;
+    height: 54px;
+    max-width: 54px;
+    min-width: 54px;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay :is(.detailButton-icon, .detailButton-text) {
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
+    height: 54px;
+    min-width: 54px;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay :is(.detailButton-icon, .detailButton-text, .pft-detail-button-label) {
     color: #fff !important;
 }
 
 :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) .detailButton-content {
     background: #fff !important;
     border-color: #fff !important;
+    border-width: 2.5px;
+    column-gap: 6px;
     color: var(--pft-accent) !important;
-    min-width: 7.8rem;
-    padding-inline: 1rem !important;
-    transform: scale(1.08);
-    width: auto;
+    max-width: 200px;
+    padding-left: 6px !important;
+    padding-right: 16px !important;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) :is(.detailButton-icon, .detailButton-text) {
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay:is(:hover, :focus-visible) .detailButton-content {
+    column-gap: 2px;
+    max-width: 320px;
+    min-width: 200px;
+    padding-left: 10px !important;
+    padding-right: 14px !important;
+}
+
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) :is(.detailButton-icon, .detailButton-text, .pft-detail-button-label) {
     color: var(--pft-accent) !important;
 }
 
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) .detailButton-icon {
-    font-size: 2rem !important;
-}
-
-:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) .detailButton-text {
-    margin-left: .45rem !important;
-    max-width: 9rem;
+:root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) :is(.detailButton-text, .pft-detail-button-label) {
+    max-width: 140px;
     opacity: 1;
 }
 
@@ -370,14 +398,21 @@
     }
 
     :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
-        min-width: 7.8rem;
-        padding-inline: 1rem !important;
-        width: auto;
+        height: 50px;
+        max-width: none;
+        min-width: 100%;
+        padding-inline: 10px !important;
+        width: 100%;
     }
 
-    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-text {
-        margin-left: .45rem !important;
-        max-width: 9rem;
+    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
+        flex: 1 0 100%;
+        height: 50px;
+        width: 100%;
+    }
+
+    :root.pft-enabled.pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay :is(.detailButton-text, .pft-detail-button-label) {
+        max-width: calc(100% - 50px);
         opacity: 1;
     }
 

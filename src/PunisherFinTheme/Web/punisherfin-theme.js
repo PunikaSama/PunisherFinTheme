@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    const runtimeKey = "__punisherFinThemeV112";
+    const runtimeKey = "__punisherFinThemeV120";
     if (window[runtimeKey]) {
         return;
     }
@@ -17,6 +17,7 @@
         stylesheet: null,
         observer: null,
         previewCache: new Map(),
+        resumeMinutes: new Map(),
         previewTimer: null,
         activeCard: null
     };
@@ -93,6 +94,7 @@
         }
 
         markSupportedViews();
+        syncDetailButtonLabels();
     }
 
     function cardId(card) {
@@ -126,6 +128,100 @@
         return null;
     }
 
+    function loadItem(id) {
+        const api = jellyfinApi();
+        const userId = api?.getCurrentUserId?.();
+        if (!id || !api || !userId) {
+            return Promise.resolve(null);
+        }
+
+        let request = runtime.previewCache.get(id);
+        if (!request) {
+            request = api.fetch({
+                url: api.getUrl(`/Users/${userId}/Items/${id}`),
+                type: "GET"
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                return response.json();
+            }).catch(error => {
+                console.debug("PunisherFinTheme: Mediendaten nicht verfügbar.", error);
+                return null;
+            });
+            runtime.previewCache.set(id, request);
+        }
+        return request;
+    }
+
+    function currentDetailItemId() {
+        const page = document.querySelector("#itemDetailPage:not(.hide)");
+        const direct = page?.dataset?.id || page?.getAttribute("data-id");
+        if (direct) {
+            return direct;
+        }
+        const query = location.hash.includes("?") ? location.hash.split("?")[1] : location.search.slice(1);
+        return new URLSearchParams(query).get("id");
+    }
+
+    function syncDetailButtonLabels() {
+        if (!runtime.config?.enabled || runtime.config.actionButtons !== true) {
+            return;
+        }
+        const buttons = document.querySelectorAll("#itemDetailPage:not(.hide) .mainDetailButtons .detailButton");
+        if (!buttons.length) {
+            return;
+        }
+
+        const id = currentDetailItemId();
+        const savedMinutes = id ? runtime.resumeMinutes.get(id) : null;
+        buttons.forEach(button => {
+            const content = button.querySelector(".detailButton-content");
+            if (!content) {
+                return;
+            }
+            let label = content.querySelector(".pft-detail-button-label");
+            if (!label) {
+                label = document.createElement("span");
+                label.className = "pft-detail-button-label";
+                content.appendChild(label);
+            }
+            const base = button.getAttribute("title") || button.getAttribute("aria-label") || "";
+            const language = document.documentElement.lang || navigator.language || "";
+            const connector = language.toLowerCase().startsWith("de") ? "ab" : "at";
+            const desired = button.classList.contains("btnPlay") && savedMinutes
+                ? `${base} ${connector} ${savedMinutes}m`
+                : base;
+            if (label.textContent !== desired) {
+                label.textContent = desired;
+            }
+        });
+
+        if (!id || savedMinutes) {
+            return;
+        }
+        void loadItem(id).then(item => {
+            const ticks = item?.UserData?.PlaybackPositionTicks || 0;
+            if (!ticks) {
+                return;
+            }
+            const minutes = Math.max(1, Math.floor(ticks / 600000000));
+            runtime.resumeMinutes.set(id, minutes);
+            document.querySelectorAll("#itemDetailPage:not(.hide) .mainDetailButtons .btnPlay").forEach(button => {
+                const label = button.querySelector(".pft-detail-button-label");
+                const base = button.getAttribute("title") || "";
+                if (label && base) {
+                    const language = document.documentElement.lang || navigator.language || "";
+                    const connector = language.toLowerCase().startsWith("de") ? "ab" : "at";
+                    const desired = `${base} ${connector} ${minutes}m`;
+                    if (label.textContent !== desired) {
+                        label.textContent = desired;
+                    }
+                }
+            });
+        });
+    }
+
     function createPreview(card, url) {
         const imageHost = card.querySelector(".cardImageContainer, .cardContent");
         if (!imageHost || imageHost.querySelector(".pft-hover-artwork")) {
@@ -151,29 +247,10 @@
     async function preparePreview(card) {
         const id = cardId(card);
         const api = jellyfinApi();
-        const userId = api?.getCurrentUserId?.();
-        if (!id || !api || !userId) {
+        if (!id || !api) {
             return false;
         }
-
-        let request = runtime.previewCache.get(id);
-        if (!request) {
-            request = api.fetch({
-                url: api.getUrl(`/Users/${userId}/Items/${id}`),
-                type: "GET"
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                return response.json();
-            }).catch(error => {
-                console.debug("PunisherFinTheme: Kartenvorschau nicht verfügbar.", error);
-                return null;
-            });
-            runtime.previewCache.set(id, request);
-        }
-
-        const item = await request;
+        const item = await loadItem(id);
         if (!item || !["Episode", "Movie", "Series", "Video"].includes(item.Type)) {
             return false;
         }
@@ -267,6 +344,7 @@
 
     function reconcile() {
         markSupportedViews();
+        syncDetailButtonLabels();
     }
 
     function schedule(reloadConfig) {

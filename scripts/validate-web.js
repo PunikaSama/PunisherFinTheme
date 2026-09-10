@@ -39,7 +39,7 @@ for (const required of [
 }
 
 for (const required of [
-    "__punisherFinThemeV112",
+    "__punisherFinThemeV120",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
     "MutationObserver",
@@ -51,6 +51,7 @@ for (const required of [
     "pft-card-previews",
     "pft-player-controls",
     "pft-preview-expanded",
+    "pft-detail-button-label",
     "homeSectionsContainer",
     "itemDetailPage"
 ]) {
