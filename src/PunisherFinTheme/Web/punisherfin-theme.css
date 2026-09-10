@@ -561,7 +561,6 @@
 :root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(
     .mdl-slider-background-lower,
     .mdl-slider__background-lower,
-    .sliderBubble,
     .sliderBubbleTrack,
     .iconOsdProgressInner,
     .playbackProgress > div,
@@ -574,6 +573,11 @@
     background-color: var(--pft-accent) !important;
     border-color: var(--pft-accent) !important;
     color: var(--pft-accent) !important;
+}
+
+/* A volume value bubble becomes an oversized empty block in some Jellyfin clients. */
+:root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .iconOsd, .volumeOsd) :is(.osdVolumeSliderContainer, .volumeOsd) .sliderBubble {
+    display: none !important;
 }
 
 :root.pft-enabled :is(.videoPlayerContainer, .videoOsdBottom, .videoOsdTop, .iconOsd, .volumeOsd) :is(input[type="range"], .mdl-slider)::-webkit-slider-thumb {
