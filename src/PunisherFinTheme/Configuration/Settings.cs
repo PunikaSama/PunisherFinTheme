@@ -47,10 +47,6 @@ public sealed partial class Settings : BasePluginConfiguration
 
     public int BackgroundImageQuality { get; set; } = 90;
 
-    public bool HideRandomBackgroundOnDetails { get; set; } = true;
-
-    public bool HideRandomBackgroundInPlayer { get; set; } = true;
-
     public void Sanitize()
     {
         string candidate = AccentColor?.Trim() ?? string.Empty;

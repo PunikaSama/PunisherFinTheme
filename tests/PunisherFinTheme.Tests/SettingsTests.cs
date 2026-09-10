@@ -29,8 +29,6 @@ public sealed class SettingsTests
         Assert.Equal(22, settings.BackgroundOverlayPercent);
         Assert.Equal(2500, settings.BackgroundCrossfadeMilliseconds);
         Assert.Equal(90, settings.BackgroundImageQuality);
-        Assert.True(settings.HideRandomBackgroundOnDetails);
-        Assert.True(settings.HideRandomBackgroundInPlayer);
     }
 
     [Theory]

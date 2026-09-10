@@ -67,12 +67,6 @@ public sealed class ClientThemeConfig
     [JsonPropertyName("backgroundQuality")]
     public int BackgroundQuality { get; init; }
 
-    [JsonPropertyName("hideBackgroundOnDetails")]
-    public bool HideBackgroundOnDetails { get; init; }
-
-    [JsonPropertyName("hideBackgroundInPlayer")]
-    public bool HideBackgroundInPlayer { get; init; }
-
     [JsonPropertyName("version")]
     public required string Version { get; init; }
 }

@@ -42,8 +42,6 @@ for (const required of [
     "BackgroundChangeIntervalSeconds",
     "BackgroundCrossfadeMilliseconds",
     "BackgroundImageQuality",
-    "HideRandomBackgroundOnDetails",
-    "HideRandomBackgroundInPlayer",
     "ResetBackgroundSettings",
     "AbortController",
     "document.currentScript",
@@ -57,6 +55,7 @@ for (const required of [
 }
 
 for (const required of [
+    "__punisherFinThemeV135",
     "__punisherFinThemeV134",
     "__punisherFinThemeV130",
     "document.getElementById(\"punisherfin-theme-styles\")",
@@ -75,6 +74,8 @@ for (const required of [
     "BackdropImageTags",
     "getUserViews",
     "getItems",
+    "backgroundAllowedForCurrentView",
+    "videoPlayerContainer-onTop",
     "pft-preview-expanded",
     "pft-season-card",
     "item.Type !== \"Season\"",
@@ -102,6 +103,7 @@ for (const required of [
     ".skinHeader-withBackground",
     "--jf-palette-AppBar-defaultBg: transparent",
     "#punisherFinRandomBackdrop",
+    ":root:has(.videoPlayerContainer-onTop)",
     ".pft-backdrop-layer",
     ".backgroundContainer",
     "pointer-events: none",

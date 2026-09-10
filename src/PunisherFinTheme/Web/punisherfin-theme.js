@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV134";
+    const runtimeKey = "__punisherFinThemeV135";
     if (window[runtimeKey]) {
         return;
     }
@@ -115,8 +115,8 @@
             restoreDetailButtonTitles();
         }
 
-        configureRandomBackground(config);
         markSupportedViews();
+        configureRandomBackground(config);
         syncDetailButtonLabels();
     }
 
@@ -419,16 +419,21 @@
         root.style.setProperty("--pft-bg-overlay-bottom", String(Math.min(.95, overlay * 1.45)));
     }
 
-    function backgroundHiddenForCurrentView() {
-        const config = runtime.config;
-        return Boolean(
-            (config?.hideBackgroundOnDetails && visible(document.querySelector("#itemDetailPage:not(.hide)")))
-            || (config?.hideBackgroundInPlayer && visible(document.querySelector(".videoPlayerContainer:not(.hide)")))
-        );
+    function anyVisible(selector) {
+        return Array.from(document.querySelectorAll(selector)).some(element => visible(element));
+    }
+
+    function backgroundAllowedForCurrentView() {
+        const playerActive = document.querySelector(".videoPlayerContainer-onTop")
+            || anyVisible(".videoPlayerContainer:not(.hide), .videoPlayerContainer video");
+        if (playerActive || anyVisible("#itemDetailPage:not(.hide)")) {
+            return false;
+        }
+        return anyVisible(".pft-home-view, .pft-library-view, .dashboardDocument:not(.hide), .pluginConfigurationPage:not(.hide), #dashboardPage:not(.hide)");
     }
 
     function updateBackgroundVisibility() {
-        runtime.backgroundContainer?.classList.toggle("pft-background-suspended", backgroundHiddenForCurrentView());
+        runtime.backgroundContainer?.classList.toggle("pft-background-suspended", !backgroundAllowedForCurrentView());
     }
 
     async function resolveBackgroundLibrary(api, config) {

@@ -81,8 +81,6 @@ public sealed class ThemeController : ControllerBase
             BackgroundOverlay = settings.BackgroundOverlayPercent,
             BackgroundCrossfade = settings.BackgroundCrossfadeMilliseconds,
             BackgroundQuality = settings.BackgroundImageQuality,
-            HideBackgroundOnDetails = settings.HideRandomBackgroundOnDetails,
-            HideBackgroundInPlayer = settings.HideRandomBackgroundInPlayer,
             Version = typeof(Plugin).Assembly.GetName().Version?.ToString() ?? "0"
         });
     }

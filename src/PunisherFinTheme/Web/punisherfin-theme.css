@@ -63,6 +63,12 @@
     display: none !important;
 }
 
+/* Hard safety boundary: the decorative backdrop must never share the player layer. */
+:root:has(.videoPlayerContainer-onTop) #punisherFinRandomBackdrop,
+:root:has(.videoPlayerContainer:not(.hide) video) #punisherFinRandomBackdrop {
+    display: none !important;
+}
+
 :root.pft-enabled.pft-random-background .backgroundContainer {
     background-color: transparent !important;
 }
