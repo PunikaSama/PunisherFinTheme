@@ -11,6 +11,7 @@ public sealed class SettingsTests
 
         Assert.True(settings.Enabled);
         Assert.Equal("#FF5F87", settings.AccentColor);
+        Assert.True(settings.EnablePunisherFinBranding);
         Assert.True(settings.ShowEpisodeOverview);
         Assert.False(settings.CompactEpisodes);
         Assert.True(settings.StyleActionButtons);

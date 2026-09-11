@@ -19,6 +19,7 @@ public sealed class ThemeController : ControllerBase
 {
     private const string ScriptResource = "PunisherFinTheme.Web.punisherfin-theme.js";
     private const string StyleResource = "PunisherFinTheme.Web.punisherfin-theme.css";
+    private const string LogoResource = "PunisherFinTheme.Web.punisherfin-logo.png";
     private readonly IUserManager _users;
     private readonly ILibraryManager _library;
     private readonly ILogger<ThemeController> _logger;
@@ -50,6 +51,16 @@ public sealed class ThemeController : ControllerBase
         return EmbeddedFile(StyleResource, "text/css; charset=utf-8");
     }
 
+    [HttpGet("logo.png")]
+    [AllowAnonymous]
+    [Produces("image/png")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult Logo()
+    {
+        return EmbeddedFile(LogoResource, MediaTypeNames.Image.Png);
+    }
+
     [HttpGet("config")]
     [AllowAnonymous]
     [Produces(MediaTypeNames.Application.Json)]
@@ -62,6 +73,7 @@ public sealed class ThemeController : ControllerBase
         {
             Enabled = settings.Enabled,
             Accent = settings.AccentColor,
+            Branding = settings.EnablePunisherFinBranding,
             EpisodeOverview = settings.ShowEpisodeOverview,
             CompactEpisodes = settings.CompactEpisodes,
             ActionButtons = settings.StyleActionButtons,

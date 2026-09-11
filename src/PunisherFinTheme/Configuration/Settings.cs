@@ -9,6 +9,8 @@ public sealed partial class Settings : BasePluginConfiguration
 
     public string AccentColor { get; set; } = "#FF5F87";
 
+    public bool EnablePunisherFinBranding { get; set; } = true;
+
     public bool ShowEpisodeOverview { get; set; } = true;
 
     public bool CompactEpisodes { get; set; }

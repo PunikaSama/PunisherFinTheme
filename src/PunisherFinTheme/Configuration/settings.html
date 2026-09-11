@@ -26,6 +26,15 @@
                             <div class="fieldDescription">Wird für Fokusrahmen, Fortschritt und primäre Aktionen verwendet.</div>
                         </div>
 
+                        <div style="margin:2em 0 1.5em;padding:1.25em;border:1px solid rgba(255,255,255,.12);border-radius:.5em;background:rgba(255,255,255,.035)">
+                            <h3 class="sectionTitle" style="margin-top:0">Branding</h3>
+                            <p class="fieldDescription" style="margin-bottom:1.2em">Verwendet das PunisherFin-Logo im Jellyfin-Header und Browser-Tab und zeigt im Header den Namen „PunisherFin“ an. Das eigentliche Server-Branding wird nicht dauerhaft ver&auml;ndert.</p>
+                            <label class="emby-checkbox-label">
+                                <input is="emby-checkbox" id="EnablePunisherFinBranding" type="checkbox">
+                                <span>PunisherFin-Branding verwenden</span>
+                            </label>
+                        </div>
+
                         <h3 class="sectionTitle">Bereiche</h3>
 
                         <label class="emby-checkbox-label">
@@ -370,6 +379,7 @@
                     loadedSettings = settings;
                     element("Enabled").checked = settings.Enabled !== false;
                     element("AccentColor").value = validColor(settings.AccentColor);
+                    element("EnablePunisherFinBranding").checked = settings.EnablePunisherFinBranding !== false;
                     element("ShowEpisodeOverview").checked = settings.ShowEpisodeOverview !== false;
                     element("CompactEpisodes").checked = settings.CompactEpisodes === true;
                     element("StyleActionButtons").checked = settings.StyleActionButtons !== false;
@@ -443,6 +453,7 @@
                     settings = loadedSettings || {};
                     settings.Enabled = element("Enabled").checked;
                     settings.AccentColor = validColor(element("AccentColor").value);
+                    settings.EnablePunisherFinBranding = element("EnablePunisherFinBranding").checked;
                     settings.ShowEpisodeOverview = element("ShowEpisodeOverview").checked;
                     settings.CompactEpisodes = element("CompactEpisodes").checked;
                     settings.StyleActionButtons = element("StyleActionButtons").checked;

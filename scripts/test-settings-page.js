@@ -83,6 +83,7 @@ async function main() {
     const expected = {
         Enabled: true,
         AccentColor: "#19AABB",
+        EnablePunisherFinBranding: true,
         ShowEpisodeOverview: true,
         CompactEpisodes: true,
         StyleActionButtons: true,
@@ -156,6 +157,7 @@ async function main() {
     await settle();
 
     assert.equal(elements.Enabled.checked, true, "Saved enabled state must be restored");
+    assert.equal(elements.EnablePunisherFinBranding.checked, true, "Saved branding state must be restored");
     assert.equal(elements.CompactEpisodes.checked, true, "Saved checkbox state must be restored");
     assert.equal(elements.EnableVideoPreviews.checked, true, "Video previews must be enabled by default and restored");
     assert.equal(elements.BackgroundOpacityPercent.value, 77, "Saved slider position must be restored");
@@ -168,6 +170,7 @@ async function main() {
     assert.equal(elements.BackgroundOpacityPercentValue.textContent, "42 %", "Slider label must update while dragging");
 
     elements.Enabled.checked = false;
+    elements.EnablePunisherFinBranding.checked = false;
     elements.StyleHome.checked = false;
     elements.EnableVideoPreviews.checked = false;
     elements.PunisherFinThemeSettingsForm.dispatch("submit");
@@ -176,6 +179,7 @@ async function main() {
     assert.ok(saved, "Submit must call updatePluginConfiguration");
     assert.equal(saved.pluginId, "4763374d-d1ce-4404-b769-3625dacdcb84");
     assert.equal(saved.settings.Enabled, false, "Changed checkbox state must be saved");
+    assert.equal(saved.settings.EnablePunisherFinBranding, false, "Changed branding state must be saved");
     assert.equal(saved.settings.StyleHome, false, "Every changed checkbox state must be saved");
     assert.equal(saved.settings.EnableVideoPreviews, false, "Video preview preference must be saved");
     assert.equal(saved.settings.BackgroundOpacityPercent, 42, "Changed slider value must be saved");

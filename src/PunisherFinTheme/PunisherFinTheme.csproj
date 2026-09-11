@@ -3,9 +3,9 @@
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Jellyfin.Plugin.PunisherFinTheme</AssemblyName>
     <RootNamespace>PunisherFinTheme</RootNamespace>
-    <Version>1.6.4.0</Version>
-    <AssemblyVersion>1.6.4.0</AssemblyVersion>
-    <FileVersion>1.6.4.0</FileVersion>
+    <Version>1.7.0.0</Version>
+    <AssemblyVersion>1.7.0.0</AssemblyVersion>
+    <FileVersion>1.7.0.0</FileVersion>
     <Description>PunisherFin-inspired styling for Jellyfin 12 Web.</Description>
     <RepositoryUrl>https://github.com/PunikaSama/PunisherFinTheme</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -30,5 +30,6 @@
     <EmbeddedResource Include="Configuration\settings.html" />
     <EmbeddedResource Include="Web\punisherfin-theme.css" />
     <EmbeddedResource Include="Web\punisherfin-theme.js" />
+    <EmbeddedResource Include="Web\punisherfin-logo.png" />
   </ItemGroup>
 </Project>

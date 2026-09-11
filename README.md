@@ -12,6 +12,7 @@ PunisherFinTheme brings a focused PunisherFin-inspired design to Jellyfin 12 Web
 - Accent-color integration for the InPlayerEpisodePreview plugin
 - Rotating backgrounds from a selectable media library
 - Adjustable background appearance, transitions, and accent color
+- Optional PunisherFin header and browser-tab branding, enabled by default
 
 ## Requirements
 

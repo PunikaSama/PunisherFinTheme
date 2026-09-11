@@ -1,17 +1,17 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV137";
+    const runtimeKey = "__punisherFinThemeV138";
     if (window[runtimeKey]) {
         return;
     }
 
     const root = document.documentElement;
-    const markerClasses = ["pft-enabled", "pft-action-buttons", "pft-hide-episode-overview", "pft-compact-episodes", "pft-card-previews", "pft-video-previews", "pft-player-controls", "pft-random-background"];
+    const markerClasses = ["pft-enabled", "pft-branding", "pft-action-buttons", "pft-hide-episode-overview", "pft-compact-episodes", "pft-card-previews", "pft-video-previews", "pft-player-controls", "pft-random-background"];
     const pageClasses = ["pft-home-view", "pft-library-view"];
     const runtime = {
         config: null,
@@ -36,7 +36,9 @@
         backgroundItems: [],
         backgroundLayer: 0,
         lastBackgroundItem: null,
-        headerStyles: new Map()
+        headerStyles: new Map(),
+        brandingElements: new Map(),
+        brandingFavicon: null
     };
 
     function jellyfinApi() {
@@ -65,6 +67,104 @@
         link.href = href;
         document.head.appendChild(link);
         runtime.stylesheet = link;
+    }
+
+    function directTextNode(element) {
+        return Array.from(element?.childNodes || []).find(node => node.nodeType === 3 && node.nodeValue?.trim()) || null;
+    }
+
+    function brandingLogoUrl() {
+        const api = jellyfinApi();
+        return api ? api.getUrl("/PunisherFinTheme/logo.png", { v: runtime.config?.version || "1" }) : null;
+    }
+
+    function restoreBranding() {
+        runtime.brandingElements.forEach((snapshot, element) => {
+            if (!element.isConnected) {
+                return;
+            }
+            if (snapshot.kind === "modern") {
+                const image = element.querySelector("img");
+                if (image && snapshot.imageSource !== null) {
+                    image.setAttribute("src", snapshot.imageSource);
+                }
+                const text = directTextNode(element);
+                if (text) {
+                    text.nodeValue = snapshot.text;
+                }
+                element.classList.remove("pft-brand-button");
+                image?.classList.remove("pft-brand-logo");
+            } else {
+                element.textContent = snapshot.text;
+                element.classList.remove("pft-brand-title");
+                element.style.removeProperty("--pft-brand-logo");
+            }
+        });
+        runtime.brandingElements.clear();
+        runtime.brandingFavicon?.remove();
+        runtime.brandingFavicon = null;
+    }
+
+    function syncBranding() {
+        if (!runtime.config?.enabled || runtime.config.branding !== true) {
+            restoreBranding();
+            return;
+        }
+
+        runtime.brandingElements.forEach((snapshot, element) => {
+            if (!element.isConnected) {
+                runtime.brandingElements.delete(element);
+            }
+        });
+
+        const logoUrl = brandingLogoUrl();
+        if (!logoUrl) {
+            return;
+        }
+
+        if (!runtime.brandingFavicon?.isConnected) {
+            const favicon = document.createElement("link");
+            favicon.id = "punisherfin-branding-favicon";
+            favicon.rel = "icon";
+            favicon.type = "image/png";
+            document.head.appendChild(favicon);
+            runtime.brandingFavicon = favicon;
+        }
+        runtime.brandingFavicon.href = logoUrl;
+
+        document.querySelectorAll(".MuiAppBar-root a[href], [class*='MuiAppBar-root'] a[href]").forEach(button => {
+            const image = button.querySelector("img");
+            const text = directTextNode(button);
+            if (!image || !text) {
+                return;
+            }
+            if (!runtime.brandingElements.has(button)) {
+                runtime.brandingElements.set(button, {
+                    kind: "modern",
+                    imageSource: image.getAttribute("src"),
+                    text: text.nodeValue
+                });
+            }
+            if (image.getAttribute("src") !== logoUrl) {
+                image.setAttribute("src", logoUrl);
+            }
+            image.classList.add("pft-brand-logo");
+            if (text.nodeValue !== "PunisherFin") {
+                text.nodeValue = "PunisherFin";
+            }
+            button.classList.add("pft-brand-button");
+        });
+
+        document.querySelectorAll(".pageTitleWithDefaultLogo").forEach(title => {
+            if (!runtime.brandingElements.has(title)) {
+                runtime.brandingElements.set(title, { kind: "legacy", text: title.textContent });
+            }
+            if (title.textContent !== "PunisherFin") {
+                title.textContent = "PunisherFin";
+            }
+            title.style.setProperty("--pft-brand-logo", `url("${logoUrl}")`);
+            title.classList.add("pft-brand-title");
+        });
     }
 
     function markSupportedViews() {
@@ -152,6 +252,7 @@
         if (config?.enabled) {
             root.classList.add("pft-enabled");
             root.style.setProperty("--pft-accent", /^#[0-9a-f]{6}$/i.test(config.accent) ? config.accent : "#FF5F87");
+            root.classList.toggle("pft-branding", config.branding === true);
             root.classList.toggle("pft-action-buttons", config.actionButtons === true);
             root.classList.toggle("pft-hide-episode-overview", config.episodeOverview === false);
             root.classList.toggle("pft-compact-episodes", config.compactEpisodes === true);
@@ -160,8 +261,10 @@
             root.classList.toggle("pft-player-controls", config.playerControls === true);
             root.classList.toggle("pft-random-background", config.randomBackground === true);
             syncTransparentHeader();
+            syncBranding();
         } else {
             restoreTransparentHeader();
+            restoreBranding();
             restoreDetailButtonTitles();
         }
 
@@ -795,6 +898,7 @@
     function reconcile() {
         markSupportedViews();
         syncTransparentHeader();
+        syncBranding();
         syncDetailButtonLabels();
         updateBackgroundVisibility();
     }
@@ -823,7 +927,7 @@
         }
 
         runtime.observer = new MutationObserver(() => schedule(false));
-        runtime.observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+        runtime.observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"], characterData: true });
         document.addEventListener("viewshow", () => schedule(true));
         window.addEventListener("hashchange", () => schedule(true));
         window.addEventListener("popstate", () => schedule(true));
@@ -842,6 +946,7 @@
             closePreview(runtime.activeCard);
             removeRandomBackground();
             restoreTransparentHeader();
+            restoreBranding();
             restoreDetailButtonTitles();
             root.classList.remove(...markerClasses);
             document.querySelectorAll(".pft-home-view, .pft-library-view").forEach(element => {

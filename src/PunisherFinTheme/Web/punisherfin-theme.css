@@ -707,6 +707,25 @@
     border-right-color: transparent !important;
 }
 
+/* Optional PunisherFin header branding for both Jellyfin 12 and legacy web headers. */
+:root.pft-enabled.pft-branding .pft-brand-button .pft-brand-logo {
+    height: 1.55em !important;
+    max-height: 1.55em !important;
+    max-width: 1.55em !important;
+    object-fit: contain !important;
+    width: 1.55em !important;
+}
+
+:root.pft-enabled.pft-branding .pageTitleWithDefaultLogo.pft-brand-title {
+    background-image: var(--pft-brand-logo) !important;
+    background-position: left center !important;
+    background-repeat: no-repeat !important;
+    background-size: 1.6em 1.6em !important;
+    min-height: 1.6em;
+    padding-left: 2em !important;
+    width: auto !important;
+}
+
 @media (max-width: 600px) {
     :root.pft-enabled .homeSectionsContainer.pft-home-view > .verticalSection {
         margin-bottom: 1.5rem;

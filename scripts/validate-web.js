@@ -24,6 +24,7 @@ new Function(client);
 for (const required of [
     "Enabled",
     "AccentColor",
+    "EnablePunisherFinBranding",
     "ShowEpisodeOverview",
     "CompactEpisodes",
     "StyleActionButtons",
@@ -72,6 +73,7 @@ for (const forbidden of [
 }
 
 for (const required of [
+    "__punisherFinThemeV138",
     "__punisherFinThemeV137",
     "__punisherFinThemeV136",
     "__punisherFinThemeV135",
@@ -80,6 +82,7 @@ for (const required of [
     "document.getElementById(\"punisherfin-theme-styles\")",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
+    "/PunisherFinTheme/logo.png",
     "MutationObserver",
     "pft-home-view",
     "pft-library-view",
@@ -97,6 +100,9 @@ for (const required of [
     "video.playsInline = true",
     "pft-player-controls",
     "pft-random-background",
+    "pft-branding",
+    "syncBranding",
+    "restoreBranding",
     "punisherFinRandomBackdrop",
     "BackdropImageTags",
     "getUserViews",
