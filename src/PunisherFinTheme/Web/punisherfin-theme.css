@@ -10,11 +10,131 @@
     --pft-radius: 8px;
     --pft-transition: 150ms ease;
     --jf-palette-primary-main: var(--pft-accent);
+    --jf-palette-primary-dark: color-mix(in srgb, var(--pft-accent) 78%, #000);
+    --jf-palette-primary-light: color-mix(in srgb, var(--pft-accent) 78%, #fff);
+    --jf-palette-primary-contrastText: #fff;
+    --jf-palette-secondary-main: var(--pft-accent);
+    --jf-palette-secondary-dark: color-mix(in srgb, var(--pft-accent) 78%, #000);
+    --jf-palette-secondary-light: color-mix(in srgb, var(--pft-accent) 78%, #fff);
+    --jf-palette-secondary-contrastText: #fff;
+    --jf-palette-primary-hover: color-mix(in srgb, var(--pft-accent) 20%, transparent);
     --theme-primary-color: var(--pft-accent);
     --primary-accent-color: var(--pft-accent);
     --jf-palette-AppBar-defaultBg: transparent;
     --jf-palette-AppBar-transparentBg: transparent;
     --jf-palette-AppBar-gradient: none;
+}
+
+/* Shared Jellyfin accent primitives that also appear outside themed card views. */
+:root.pft-enabled input[type="range"],
+:root.pft-enabled .mdl-slider {
+    accent-color: var(--pft-accent) !important;
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(.mdl-slider-background-lower, .mdl-slider__background-lower, .sliderMarker.watched, .itemProgressBarForeground),
+:root.pft-enabled :is(.MuiSlider-track, .MuiSlider-thumb, [class*="MuiSlider-track"], [class*="MuiSlider-thumb"]),
+:root.pft-enabled :is(.MuiLinearProgress-bar, [class*="MuiLinearProgress-bar"]),
+:root.pft-enabled :is(.countIndicator, .listItemIcon:not(.listItemIcon-transparent)) {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(input[type="range"], .mdl-slider)::-webkit-slider-thumb {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(input[type="range"], .mdl-slider)::-moz-range-progress,
+:root.pft-enabled :is(input[type="range"], .mdl-slider)::-moz-range-thumb {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(.MuiCheckbox-root.Mui-checked, .MuiRadio-root.Mui-checked, .MuiSwitch-switchBase.Mui-checked, .MuiTab-root.Mui-selected, .MuiBottomNavigationAction-root.Mui-selected),
+:root.pft-enabled :is(.button-accent-flat, .buttonActive, .metadataSidebarIcon, .upNextDialog-countdownText),
+:root.pft-enabled :is(.ratingbutton-icon-withrating, .playstatebutton-icon-played) {
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track,
+:root.pft-enabled .MuiTabs-indicator,
+:root.pft-enabled :is(.fullSyncIndicator, .mediaSourceIndicator, .playedIndicator),
+:root.pft-enabled :is(.lyricsFeaturePillow, .subtitleFeaturePillow) {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track {
+    background: color-mix(in srgb, var(--pft-accent) 50%, transparent) !important;
+}
+
+:root.pft-enabled .mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb,
+:root.pft-enabled .mdl-radio.show-focus .mdl-radio__button:focus + .mdl-radio__circles :is(.mdl-radio__outer-circle, .mdl-radio__inner-circle),
+:root.pft-enabled .mdl-radio__focus-circle {
+    background-color: var(--pft-accent) !important;
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(.mdlSpinnerActive, .docspinner) .mdl-spinner__layer,
+:root.pft-enabled :is(.MuiCircularProgress-root, [class*="MuiCircularProgress-root"], .progressring-spiner, .loadingSpinner) {
+    border-color: var(--pft-accent) !important;
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled progress:not(.recordingProgressBar)::-webkit-progress-value {
+    background-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled progress:not(.recordingProgressBar)::-moz-progress-bar {
+    background-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled progress:not(.recordingProgressBar)[aria-valuenow]::before {
+    background-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .listItemImageButton:is(:hover, :focus-visible) {
+    background: color-mix(in srgb, var(--pft-accent) 20%, transparent) !important;
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(#bookPlayer, #dialogToc) a:is(:hover, :focus-visible, :active) {
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .jstree-default .jstree-wholerow-clicked {
+    background: var(--pft-accent) !important;
+}
+
+/* Jellyfin's separate audio now-playing bar. */
+:root.pft-enabled .nowPlayingBar {
+    --jf-palette-primary-main: var(--pft-accent) !important;
+    --jf-palette-secondary-main: var(--pft-accent) !important;
+    --theme-primary-color: var(--pft-accent) !important;
+    --primary-accent-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .nowPlayingBar :is(.nowPlayingBarPositionSlider, .nowPlayingBarVolumeSlider) {
+    accent-color: var(--pft-accent) !important;
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled .nowPlayingBar :is(.mediaButton, .paper-icon-button-light, .btnUserItemRating):is(:hover, :focus-visible) {
+    background: color-mix(in srgb, var(--pft-accent) 24%, rgba(0, 0, 0, .58)) !important;
+    color: var(--pft-accent) !important;
+    outline: 2px solid var(--pft-accent) !important;
+    outline-offset: 2px;
+}
+
+:root.pft-enabled .nowPlayingBar :is(.buttonActive, [aria-pressed="true"], .ratingbutton-icon-withrating, .playstatebutton-icon-played),
+:root.pft-enabled .nowPlayingBar :is(.buttonActive, [aria-pressed="true"]) :is(.material-icons, .material-symbols-rounded, .material-symbols-outlined, svg) {
+    color: var(--pft-accent) !important;
+    fill: currentColor !important;
 }
 
 /* Keep Jellyfin's top navigation transparent when its scrolled state is applied. */

@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138", "__punisherFinThemeV139"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV139";
+    const runtimeKey = "__punisherFinThemeV140";
     if (window[runtimeKey]) {
         return;
     }
@@ -48,6 +48,13 @@
 
     function visible(element) {
         return Boolean(element && element.isConnected && !element.classList.contains("hide") && element.getClientRects().length);
+    }
+
+    function accentChannel(color) {
+        const match = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(color || "");
+        return match
+            ? `${parseInt(match[1], 16)} ${parseInt(match[2], 16)} ${parseInt(match[3], 16)}`
+            : "255 95 135";
     }
 
     function ensureStylesheet(api, version) {
@@ -311,10 +318,15 @@
         runtime.config = config;
         root.classList.remove(...markerClasses);
         root.style.removeProperty("--pft-accent");
+        root.style.removeProperty("--jf-palette-primary-mainChannel");
+        root.style.removeProperty("--jf-palette-secondary-mainChannel");
 
         if (config?.enabled) {
+            const accent = /^#[0-9a-f]{6}$/i.test(config.accent) ? config.accent : "#FF5F87";
             root.classList.add("pft-enabled");
-            root.style.setProperty("--pft-accent", /^#[0-9a-f]{6}$/i.test(config.accent) ? config.accent : "#FF5F87");
+            root.style.setProperty("--pft-accent", accent);
+            root.style.setProperty("--jf-palette-primary-mainChannel", accentChannel(accent));
+            root.style.setProperty("--jf-palette-secondary-mainChannel", accentChannel(accent));
             root.classList.toggle("pft-branding", config.branding === true);
             root.classList.toggle("pft-action-buttons", config.actionButtons === true);
             root.classList.toggle("pft-hide-episode-overview", config.episodeOverview === false);
@@ -1011,6 +1023,9 @@
             restoreTransparentHeader();
             restoreBranding();
             restoreDetailButtonTitles();
+            root.style.removeProperty("--pft-accent");
+            root.style.removeProperty("--jf-palette-primary-mainChannel");
+            root.style.removeProperty("--jf-palette-secondary-mainChannel");
             root.classList.remove(...markerClasses);
             document.querySelectorAll(".pft-home-view, .pft-library-view").forEach(element => {
                 element.classList.remove(...pageClasses);

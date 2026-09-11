@@ -73,6 +73,7 @@ for (const forbidden of [
 }
 
 for (const required of [
+    "__punisherFinThemeV140",
     "__punisherFinThemeV139",
     "__punisherFinThemeV138",
     "__punisherFinThemeV137",
@@ -85,6 +86,8 @@ for (const required of [
     "/PunisherFinTheme/styles.css",
     "/PunisherFinTheme/logo.png",
     "MutationObserver",
+    "accentChannel",
+    "--jf-palette-primary-mainChannel",
     "pft-home-view",
     "pft-library-view",
     "pft-action-buttons",
@@ -172,6 +175,16 @@ for (const required of [
     ".MuiCircularProgress-root",
     ".progressring-spiner, .loadingSpinner",
     ".MuiSlider-track",
+    ".nowPlayingBar",
+    ".nowPlayingBarPositionSlider",
+    ".nowPlayingBarVolumeSlider",
+    ".sliderMarker.watched",
+    ".MuiSwitch-switchBase.Mui-checked",
+    ".MuiCheckbox-root.Mui-checked",
+    ".MuiTabs-indicator",
+    ".mdl-switch__input:checked",
+    ".mdl-radio__focus-circle",
+    "progress:not(.recordingProgressBar)",
     "::-webkit-slider-thumb",
     "::-moz-range-progress",
     ".skinHeader-withBackground",
