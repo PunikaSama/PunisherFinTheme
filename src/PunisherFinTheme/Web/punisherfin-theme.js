@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV136";
+    const runtimeKey = "__punisherFinThemeV137";
     if (window[runtimeKey]) {
         return;
     }
@@ -116,7 +116,7 @@
         if (!runtime.config?.enabled) {
             return;
         }
-        document.querySelectorAll(".skinHeader, .skinHeader-withBackground, .headerTop").forEach(header => {
+        document.querySelectorAll(".skinHeader, .skinHeader-withBackground, .headerTop, .MuiAppBar-root, [class*='MuiAppBar-root'], header[class*='MuiPaper-elevation']").forEach(header => {
             if (!runtime.headerStyles.has(header)) {
                 runtime.headerStyles.set(header, transparentHeaderProperties.map(property => ({
                     property,

@@ -72,6 +72,7 @@ for (const forbidden of [
 }
 
 for (const required of [
+    "__punisherFinThemeV137",
     "__punisherFinThemeV136",
     "__punisherFinThemeV135",
     "__punisherFinThemeV134",
@@ -164,6 +165,8 @@ for (const required of [
     "::-moz-range-progress",
     ".skinHeader-withBackground",
     ".headerTop",
+    ".MuiAppBar-root",
+    "MuiPaper-elevation",
     "--jf-palette-AppBar-defaultBg: transparent",
     "#punisherFinRandomBackdrop",
     ":root:has(.videoPlayerContainer-onTop)",

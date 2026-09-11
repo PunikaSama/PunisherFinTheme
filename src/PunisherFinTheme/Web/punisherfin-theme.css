@@ -21,7 +21,9 @@
 :root.pft-enabled .skinHeader,
 :root.pft-enabled .skinHeader-withBackground,
 :root.pft-enabled .skinHeader.semiTransparent,
-:root.pft-enabled .headerTop {
+:root.pft-enabled .headerTop,
+:root.pft-enabled :is(.MuiAppBar-root, [class*="MuiAppBar-root"]),
+:root.pft-enabled header:is(.MuiPaper-elevation0, .MuiPaper-elevation1, [class*="MuiPaper-elevation"]) {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -31,8 +33,8 @@
     backdrop-filter: none !important;
 }
 
-:root.pft-enabled :is(.skinHeader, .skinHeader-withBackground, .headerTop)::before,
-:root.pft-enabled :is(.skinHeader, .skinHeader-withBackground, .headerTop)::after {
+:root.pft-enabled :is(.skinHeader, .skinHeader-withBackground, .headerTop, .MuiAppBar-root, [class*="MuiAppBar-root"])::before,
+:root.pft-enabled :is(.skinHeader, .skinHeader-withBackground, .headerTop, .MuiAppBar-root, [class*="MuiAppBar-root"])::after {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
