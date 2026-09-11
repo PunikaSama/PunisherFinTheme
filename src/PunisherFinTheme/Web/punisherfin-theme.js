@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV138";
+    const runtimeKey = "__punisherFinThemeV139";
     if (window[runtimeKey]) {
         return;
     }
@@ -38,6 +38,7 @@
         lastBackgroundItem: null,
         headerStyles: new Map(),
         brandingElements: new Map(),
+        brandingFavicons: new Map(),
         brandingFavicon: null
     };
 
@@ -94,6 +95,17 @@
                 }
                 element.classList.remove("pft-brand-button");
                 image?.classList.remove("pft-brand-logo");
+            } else if (snapshot.kind === "drawer") {
+                const image = element.querySelector(".MuiListItemIcon-root img, [class*='MuiListItemIcon-root'] img");
+                const primary = element.querySelector(".MuiListItemText-primary, [class*='MuiListItemText-primary']");
+                if (image && snapshot.imageSource !== null) {
+                    image.setAttribute("src", snapshot.imageSource);
+                }
+                if (primary) {
+                    primary.textContent = snapshot.text;
+                }
+                element.classList.remove("pft-brand-drawer-link");
+                image?.classList.remove("pft-brand-logo");
             } else {
                 element.textContent = snapshot.text;
                 element.classList.remove("pft-brand-title");
@@ -101,6 +113,19 @@
             }
         });
         runtime.brandingElements.clear();
+        runtime.brandingFavicons.forEach((snapshot, favicon) => {
+            if (snapshot.href === null) {
+                favicon.removeAttribute("href");
+            } else {
+                favicon.setAttribute("href", snapshot.href);
+            }
+            if (snapshot.type === null) {
+                favicon.removeAttribute("type");
+            } else {
+                favicon.setAttribute("type", snapshot.type);
+            }
+        });
+        runtime.brandingFavicons.clear();
         runtime.brandingFavicon?.remove();
         runtime.brandingFavicon = null;
     }
@@ -122,10 +147,24 @@
             return;
         }
 
+        document.querySelectorAll("link[rel~='icon']").forEach(favicon => {
+            if (favicon.id === "punisherfin-branding-favicon") {
+                return;
+            }
+            if (!runtime.brandingFavicons.has(favicon)) {
+                runtime.brandingFavicons.set(favicon, {
+                    href: favicon.getAttribute("href"),
+                    type: favicon.getAttribute("type")
+                });
+            }
+            favicon.setAttribute("href", logoUrl);
+            favicon.setAttribute("type", "image/png");
+        });
+
         if (!runtime.brandingFavicon?.isConnected) {
             const favicon = document.createElement("link");
             favicon.id = "punisherfin-branding-favicon";
-            favicon.rel = "icon";
+            favicon.rel = "shortcut icon";
             favicon.type = "image/png";
             document.head.appendChild(favicon);
             runtime.brandingFavicon = favicon;
@@ -153,6 +192,30 @@
                 text.nodeValue = "PunisherFin";
             }
             button.classList.add("pft-brand-button");
+        });
+
+        document.querySelectorAll(".dashboardDocument .MuiDrawer-root a[href], .dashboardDocument [class*='MuiDrawer-root'] a[href]").forEach(link => {
+            const image = link.querySelector(".MuiListItemIcon-root img, [class*='MuiListItemIcon-root'] img");
+            const primary = link.querySelector(".MuiListItemText-primary, [class*='MuiListItemText-primary']");
+            const secondary = link.querySelector(".MuiListItemText-secondary, [class*='MuiListItemText-secondary']");
+            if (!image || !primary || !secondary) {
+                return;
+            }
+            if (!runtime.brandingElements.has(link)) {
+                runtime.brandingElements.set(link, {
+                    kind: "drawer",
+                    imageSource: image.getAttribute("src"),
+                    text: primary.textContent
+                });
+            }
+            if (image.getAttribute("src") !== logoUrl) {
+                image.setAttribute("src", logoUrl);
+            }
+            image.classList.add("pft-brand-logo");
+            if (primary.textContent !== "PunisherFin") {
+                primary.textContent = "PunisherFin";
+            }
+            link.classList.add("pft-brand-drawer-link");
         });
 
         document.querySelectorAll(".pageTitleWithDefaultLogo").forEach(title => {

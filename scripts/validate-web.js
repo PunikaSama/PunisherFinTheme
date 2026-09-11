@@ -73,6 +73,7 @@ for (const forbidden of [
 }
 
 for (const required of [
+    "__punisherFinThemeV139",
     "__punisherFinThemeV138",
     "__punisherFinThemeV137",
     "__punisherFinThemeV136",
@@ -103,6 +104,10 @@ for (const required of [
     "pft-branding",
     "syncBranding",
     "restoreBranding",
+    "brandingFavicons",
+    "link[rel~='icon']",
+    "pft-brand-drawer-link",
+    "MuiListItemText-primary",
     "punisherFinRandomBackdrop",
     "BackdropImageTags",
     "getUserViews",

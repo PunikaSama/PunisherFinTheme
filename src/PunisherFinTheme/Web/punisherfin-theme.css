@@ -716,6 +716,14 @@
     width: 1.55em !important;
 }
 
+:root.pft-enabled.pft-branding .pft-brand-drawer-link .pft-brand-logo {
+    height: 2.5rem !important;
+    max-height: 2.5rem !important;
+    max-width: 2.5rem !important;
+    object-fit: contain !important;
+    width: 2.5rem !important;
+}
+
 :root.pft-enabled.pft-branding .pageTitleWithDefaultLogo.pft-brand-title {
     background-image: var(--pft-brand-logo) !important;
     background-position: left center !important;
