@@ -10,6 +10,7 @@ public sealed class SettingsTests
     {
         var settings = new Settings();
 
+        Assert.Equal("en", settings.SettingsLanguage);
         Assert.True(settings.Enabled);
         Assert.Equal("#FF5F87", settings.AccentColor);
         Assert.Equal(ThemeDesignCatalog.DefaultId, settings.DesignPreset);
@@ -33,6 +34,20 @@ public sealed class SettingsTests
         Assert.Equal(22, settings.BackgroundOverlayPercent);
         Assert.Equal(2500, settings.BackgroundCrossfadeMilliseconds);
         Assert.Equal(90, settings.BackgroundImageQuality);
+    }
+
+    [Theory]
+    [InlineData("de", "de")]
+    [InlineData(" DE ", "de")]
+    [InlineData("en", "en")]
+    [InlineData("invalid", "en")]
+    public void Sanitize_NormalizesSettingsLanguage(string input, string expected)
+    {
+        var settings = new Settings { SettingsLanguage = input };
+
+        settings.Sanitize();
+
+        Assert.Equal(expected, settings.SettingsLanguage);
     }
 
     [Theory]

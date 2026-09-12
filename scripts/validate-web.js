@@ -33,6 +33,13 @@ new Function(html.slice(start + opening.length, end));
 new Function(client);
 
 for (const required of [
+    "SettingsLanguage",
+    "normalizeSettingsLanguage",
+    "translations",
+    "applyLanguage",
+    "data-i18n",
+    "data-i18n-aria-label",
+    "settings.SettingsLanguage = currentLanguage()",
     "Enabled",
     "AccentColor",
     "DesignPreset",
@@ -90,6 +97,19 @@ for (const required of [
 ]) {
     if (!html.includes(required)) {
         throw new Error(`Missing settings behavior: ${required}`);
+    }
+}
+
+for (const required of [
+    "Settings language",
+    "Sprache der Einstellungen",
+    "The PunisherFinTheme settings could not be loaded.",
+    "Die PunisherFinTheme-Einstellungen konnten nicht geladen werden.",
+    "File Transformation is connected.",
+    "File Transformation ist verbunden."
+]) {
+    if (!html.includes(required)) {
+        throw new Error(`Missing bilingual settings text: ${required}`);
     }
 }
 

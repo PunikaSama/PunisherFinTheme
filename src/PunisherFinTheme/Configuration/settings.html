@@ -489,23 +489,31 @@
                 <form id="PunisherFinThemeSettingsForm">
                     <div class="verticalSection">
                         <h2 class="sectionTitle">PunisherFinTheme <small id="PluginVersion" style="font-size:.55em;opacity:.7"></small></h2>
-                        <p>Überträgt das PunisherFin-Design auf ausgewählte Bereiche von Jellyfin Web. Header, Hero-Bereich und PunisherBanna bleiben unverändert.</p>
+                        <p data-i18n="intro">Applies the PunisherFin design to selected areas of Jellyfin Web. The header, hero area, and PunisherBanna remain unchanged.</p>
+
+                        <div class="selectContainer">
+                            <label class="selectLabel" for="SettingsLanguage" data-i18n="settingsLanguage">Settings language</label>
+                            <select is="emby-select" id="SettingsLanguage" class="emby-select-withcolor">
+                                <option value="en">English</option>
+                                <option value="de">Deutsch</option>
+                            </select>
+                        </div>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="Enabled" type="checkbox">
-                            <span>PunisherFinTheme aktivieren</span>
+                            <span data-i18n="enableTheme">Enable PunisherFinTheme</span>
                         </label>
 
                         <div class="inputContainer">
-                            <label class="inputLabel inputLabelUnfocused" for="AccentColor">Akzentfarbe</label>
+                            <label class="inputLabel inputLabelUnfocused" for="AccentColor" data-i18n="accentColor">Accent color</label>
                             <input is="emby-input" id="AccentColor" type="color" value="#FF5F87">
-                            <div class="fieldDescription">Globale Farbe für Fokusrahmen, Fortschritt und primäre Aktionen in jedem Design.</div>
+                            <div class="fieldDescription" data-i18n="accentHelp">Global color for focus outlines, progress, and primary actions in every design.</div>
                         </div>
 
                         <section id="DesignSection" class="pft-design-section" aria-labelledby="DesignSectionTitle">
-                            <h3 id="DesignSectionTitle" class="sectionTitle" style="margin-top:0">Design-Auswahl</h3>
-                            <p class="fieldDescription" style="margin-bottom:1.2em">Das PunisherFin-Design bleibt unverändert der Standard. Die Akzentfarbe oben gilt unabhängig von der Auswahl für jedes Design.</p>
-                            <div class="pft-design-picker" role="radiogroup" aria-label="Design auswählen">
+                            <h3 id="DesignSectionTitle" class="sectionTitle" style="margin-top:0" data-i18n="designSelection">Design selection</h3>
+                            <p class="fieldDescription" style="margin-bottom:1.2em" data-i18n="designHelp">The unchanged PunisherFin design remains the default. The accent color applies to every design independently of this selection.</p>
+                            <div class="pft-design-picker" role="radiogroup" aria-label="Select design" data-i18n-aria-label="selectDesign">
                                 <label class="pft-design-option" for="DesignPunisherFin">
                                     <input id="DesignPunisherFin" name="DesignPreset" type="radio" value="punisherfin">
                                     <span class="pft-design-choice">
@@ -516,8 +524,8 @@
                                             <span class="pft-mini-shelf"><i></i><i></i><i></i><i></i></span>
                                         </span>
                                         <span class="pft-design-meta">
-                                            <span class="pft-design-name">PunisherFin <span class="pft-design-badge">Standard</span></span>
-                                            <span class="fieldDescription">Das aktuelle Design – optisch unverändert.</span>
+                                            <span class="pft-design-name">PunisherFin <span class="pft-design-badge" data-i18n="defaultBadge">Default</span></span>
+                                            <span class="fieldDescription" data-i18n="punisherDesignHelp">The current design, visually unchanged.</span>
                                         </span>
                                     </span>
                                 </label>
@@ -532,14 +540,14 @@
                                         </span>
                                         <span class="pft-design-meta">
                                             <span class="pft-design-name">Cinema Deck</span>
-                                            <span class="fieldDescription">Eigenständige Kino-Oberfläche mit kompakten Filmkarten, Bildtiteln und ruhigen Panels.</span>
+                                            <span class="fieldDescription" data-i18n="cinemaDesignHelp">A distinct cinematic interface with compact movie cards, image titles, and calm panels.</span>
                                         </span>
                                     </span>
                                 </label>
                             </div>
-                            <div id="DesignPreview" class="pft-design-preview" data-design="punisherfin" aria-label="Live-Vorschau des ausgewählten Designs">
-                                <div class="pft-preview-header"><span id="DesignPreviewTitle">PunisherFin</span><span>● Akzent</span></div>
-                                <div class="pft-preview-hero"><strong>Deine Startseite</strong><span>Filme und Serien entdecken</span></div>
+                            <div id="DesignPreview" class="pft-design-preview" data-design="punisherfin" aria-label="Live preview of the selected design" data-i18n-aria-label="liveDesignPreview">
+                                <div class="pft-preview-header"><span id="DesignPreviewTitle">PunisherFin</span><span data-i18n="accentPreview">● Accent</span></div>
+                                <div class="pft-preview-hero"><strong data-i18n="yourHome">Your home</strong><span data-i18n="discoverMedia">Discover movies and series</span></div>
                                 <div class="pft-preview-content">
                                     <div class="pft-preview-cards" aria-hidden="true">
                                         <div class="pft-preview-card"></div>
@@ -549,84 +557,84 @@
                                     <div class="pft-preview-side" aria-hidden="true">
                                         <div class="pft-preview-episode"></div>
                                         <div class="pft-preview-actions">
-                                            <span class="pft-preview-button">▶ Abspielen</span>
+                                            <span class="pft-preview-button" data-i18n="play">▶ Play</span>
                                             <span class="pft-preview-button">♥</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="fieldDescription" style="margin-top:.65em">Die Vorschau reagiert sofort. Auf Jellyfin wird das Design erst nach dem Speichern angewendet.</div>
+                            <div class="fieldDescription" style="margin-top:.65em" data-i18n="previewHelp">The preview updates immediately. Jellyfin applies the design after saving.</div>
                         </section>
 
                         <div style="margin:2em 0 1.5em;padding:1.25em;border:1px solid rgba(255,255,255,.12);border-radius:.5em;background:rgba(255,255,255,.035)">
                             <h3 class="sectionTitle" style="margin-top:0">Branding</h3>
-                            <p class="fieldDescription" style="margin-bottom:1.2em">Verwendet das PunisherFin-Logo im Jellyfin-Header und Browser-Tab und zeigt im Header den Namen „PunisherFin“ an. Das eigentliche Server-Branding wird nicht dauerhaft ver&auml;ndert.</p>
+                            <p class="fieldDescription" style="margin-bottom:1.2em" data-i18n="brandingHelp">Uses the PunisherFin logo in the Jellyfin header and browser tab and shows the name “PunisherFin” in the header. The server's actual branding is not changed permanently.</p>
                             <label class="emby-checkbox-label">
                                 <input is="emby-checkbox" id="EnablePunisherFinBranding" type="checkbox">
-                                <span>PunisherFin-Branding verwenden</span>
+                                <span data-i18n="useBranding">Use PunisherFin branding</span>
                             </label>
                         </div>
 
-                        <h3 class="sectionTitle">Bereiche</h3>
+                        <h3 class="sectionTitle" data-i18n="areas">Areas</h3>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="StyleHome" type="checkbox">
-                            <span>Startseitenkarten gestalten</span>
+                            <span data-i18n="styleHome">Style home-screen cards</span>
                         </label>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="StyleLibraries" type="checkbox">
-                            <span>Bibliotheksansichten gestalten</span>
+                            <span data-i18n="styleLibraries">Style library views</span>
                         </label>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="EnableCardPreviews" type="checkbox">
-                            <span>Karten bei Mauszeiger oder Fokus als breite Vorschau anzeigen</span>
+                            <span data-i18n="cardPreviews">Show cards as wide previews on hover or focus</span>
                         </label>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="EnableVideoPreviews" type="checkbox">
-                            <span>Stumme Videoausschnitte in Kartenvorschauen abspielen</span>
+                            <span data-i18n="videoPreviews">Play muted video clips in card previews</span>
                         </label>
                         <div class="fieldDescription" style="margin-bottom:1em">
-                            Gilt für Episoden, Staffeln, Serien, „Weiterschauen“ und neue Medien. Deaktiviert bleibt die bisherige statische Bildvorschau erhalten.
+                            <span data-i18n="videoPreviewHelp">Applies to episodes, seasons, series, Continue Watching, and new media. When disabled, the existing static image preview remains.</span>
                         </div>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="StyleActionButtons" type="checkbox">
-                            <span>Aktionsknöpfe auf Detailseiten gestalten</span>
+                            <span data-i18n="actionButtons">Style action buttons on detail pages</span>
                         </label>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="StylePlayerControls" type="checkbox">
-                            <span>Größere Wiedergabesteuerung mit Hover-Effekt verwenden</span>
+                            <span data-i18n="playerControls">Use larger playback controls with hover effects</span>
                         </label>
 
-                        <h3 class="sectionTitle">Episoden</h3>
+                        <h3 class="sectionTitle" data-i18n="episodes">Episodes</h3>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="ShowEpisodeOverview" type="checkbox">
-                            <span>Episodenbeschreibung anzeigen</span>
+                            <span data-i18n="episodeOverview">Show episode descriptions</span>
                         </label>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="CompactEpisodes" type="checkbox">
-                            <span>Kompakte Episodenkarten verwenden</span>
+                            <span data-i18n="compactEpisodes">Use compact episode cards</span>
                         </label>
 
                         <div style="margin:2em 0 1.5em;padding:1.25em;border:1px solid rgba(255,255,255,.12);border-radius:.5em;background:rgba(255,255,255,.035)">
-                            <h3 class="sectionTitle" style="margin-top:0">Zufälliger Hintergrund</h3>
-                            <p class="fieldDescription" style="margin-bottom:1.2em">Zeigt wechselnde backdrop.jpg-Bilder aus genau einer Bibliothek. Die Einbindung erfolgt automatisch und benötigt keine Änderung an Jellyfins index.html.</p>
+                            <h3 class="sectionTitle" style="margin-top:0" data-i18n="randomBackground">Random background</h3>
+                            <p class="fieldDescription" style="margin-bottom:1.2em" data-i18n="randomBackgroundHelp">Shows rotating backdrop images from one library. Integration is automatic and does not require changes to Jellyfin's index.html.</p>
 
                             <label class="emby-checkbox-label">
                                 <input is="emby-checkbox" id="EnableRandomBackground" type="checkbox">
-                                <span>Zufälligen Hintergrund aktivieren</span>
+                                <span data-i18n="enableRandomBackground">Enable random background</span>
                             </label>
 
                             <div class="selectContainer">
-                                <label class="selectLabel" for="BackgroundLibraryId">Bibliothek</label>
+                                <label class="selectLabel" for="BackgroundLibraryId" data-i18n="library">Library</label>
                                 <select is="emby-select" id="BackgroundLibraryId" class="emby-select-withcolor emby-select"></select>
-                                <div class="fieldDescription">Es werden Filme und Serien mit vorhandenem backdrop.jpg verwendet.</div>
+                                <div class="fieldDescription" data-i18n="libraryBackdropHelp">Movies and series with available backdrop artwork are used.</div>
                             </div>
 
                             <div style="margin:1.25em 0 1.5em">
@@ -634,67 +642,67 @@
                                     <div id="BackgroundPreviewLayer1" style="background-position:center;background-repeat:no-repeat;background-size:cover;inset:-20px;opacity:0;position:absolute;transform:scale(1.04)"></div>
                                     <div id="BackgroundPreviewLayer2" style="background-position:center;background-repeat:no-repeat;background-size:cover;inset:-20px;opacity:0;position:absolute;transform:scale(1.04)"></div>
                                     <div id="BackgroundPreviewOverlay" style="inset:0;pointer-events:none;position:absolute"></div>
-                                    <div id="BackgroundPreviewStatus" style="align-items:center;background:rgba(0,0,0,.58);display:flex;inset:0;justify-content:center;padding:1em;position:absolute;text-align:center">Vorschaubild wird geladen …</div>
+                                    <div id="BackgroundPreviewStatus" style="align-items:center;background:rgba(0,0,0,.58);display:flex;inset:0;justify-content:center;padding:1em;position:absolute;text-align:center" data-i18n="previewLoading">Loading preview image…</div>
                                 </div>
                                 <button is="emby-button" id="RefreshBackgroundPreview" type="button" class="raised emby-button" style="margin-top:.75em">
-                                    <span>Anderes zufälliges Vorschaubild</span>
+                                    <span data-i18n="anotherPreview">Another random preview image</span>
                                 </button>
-                                <div class="fieldDescription">Das Bild wird zufällig aus der ausgewählten Bibliothek geladen. Die Vorschau verändert nichts, bis du speicherst.</div>
+                                <div class="fieldDescription" data-i18n="backgroundPreviewHelp">The image is selected randomly from the chosen library. The preview changes nothing until you save.</div>
                             </div>
 
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundOpacityPercent">Deckkraft: <output id="BackgroundOpacityPercentValue">100 %</output></label>
+                                <label class="inputLabel" for="BackgroundOpacityPercent"><span data-i18n="opacity">Opacity:</span> <output id="BackgroundOpacityPercentValue">100 %</output></label>
                                 <input id="BackgroundOpacityPercent" type="range" min="0" max="100" step="1" value="100" style="width:100%">
                             </div>
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundBrightnessPercent">Helligkeit: <output id="BackgroundBrightnessPercentValue">68 %</output></label>
+                                <label class="inputLabel" for="BackgroundBrightnessPercent"><span data-i18n="brightness">Brightness:</span> <output id="BackgroundBrightnessPercentValue">68 %</output></label>
                                 <input id="BackgroundBrightnessPercent" type="range" min="20" max="150" step="1" value="68" style="width:100%">
                             </div>
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundBlurPixels">Unschärfe: <output id="BackgroundBlurPixelsValue">5 px</output></label>
+                                <label class="inputLabel" for="BackgroundBlurPixels"><span data-i18n="blur">Blur:</span> <output id="BackgroundBlurPixelsValue">5 px</output></label>
                                 <input id="BackgroundBlurPixels" type="range" min="0" max="30" step="1" value="5" style="width:100%">
                             </div>
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundSaturationPercent">Sättigung: <output id="BackgroundSaturationPercentValue">110 %</output></label>
+                                <label class="inputLabel" for="BackgroundSaturationPercent"><span data-i18n="saturation">Saturation:</span> <output id="BackgroundSaturationPercentValue">110 %</output></label>
                                 <input id="BackgroundSaturationPercent" type="range" min="0" max="200" step="1" value="110" style="width:100%">
                             </div>
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundContrastPercent">Kontrast: <output id="BackgroundContrastPercentValue">105 %</output></label>
+                                <label class="inputLabel" for="BackgroundContrastPercent"><span data-i18n="contrast">Contrast:</span> <output id="BackgroundContrastPercentValue">105 %</output></label>
                                 <input id="BackgroundContrastPercent" type="range" min="50" max="200" step="1" value="105" style="width:100%">
                             </div>
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundOverlayPercent">Abdunklung: <output id="BackgroundOverlayPercentValue">22 %</output></label>
+                                <label class="inputLabel" for="BackgroundOverlayPercent"><span data-i18n="darkening">Darkening:</span> <output id="BackgroundOverlayPercentValue">22 %</output></label>
                                 <input id="BackgroundOverlayPercent" type="range" min="0" max="80" step="1" value="22" style="width:100%">
                             </div>
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundChangeIntervalSeconds">Bildwechsel: <output id="BackgroundChangeIntervalSecondsValue">30 s</output></label>
+                                <label class="inputLabel" for="BackgroundChangeIntervalSeconds"><span data-i18n="imageChange">Image change:</span> <output id="BackgroundChangeIntervalSecondsValue">30 s</output></label>
                                 <input id="BackgroundChangeIntervalSeconds" type="range" min="10" max="300" step="5" value="30" style="width:100%">
                             </div>
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundCrossfadeMilliseconds">Überblendung: <output id="BackgroundCrossfadeMillisecondsValue">2,5 s</output></label>
+                                <label class="inputLabel" for="BackgroundCrossfadeMilliseconds"><span data-i18n="crossfade">Crossfade:</span> <output id="BackgroundCrossfadeMillisecondsValue">2.5 s</output></label>
                                 <input id="BackgroundCrossfadeMilliseconds" type="range" min="0" max="10000" step="250" value="2500" style="width:100%">
                             </div>
                             <div class="inputContainer">
-                                <label class="inputLabel" for="BackgroundImageQuality">Bildqualität: <output id="BackgroundImageQualityValue">90 %</output></label>
+                                <label class="inputLabel" for="BackgroundImageQuality"><span data-i18n="imageQuality">Image quality:</span> <output id="BackgroundImageQualityValue">90 %</output></label>
                                 <input id="BackgroundImageQuality" type="range" min="30" max="100" step="1" value="90" style="width:100%">
                             </div>
 
                             <button is="emby-button" id="ResetBackgroundSettings" type="button" class="raised emby-button" style="margin-top:1em">
-                                <span>Hintergrundeinstellungen zurücksetzen</span>
+                                <span data-i18n="resetBackground">Reset background settings</span>
                             </button>
                         </div>
 
                         <div style="margin:1.5em 0;padding:1em;border-radius:.35em;background:rgba(255,255,255,.05)">
                             <div style="font-weight:600;margin-bottom:.35em">File Transformation</div>
-                            <div id="DependencyMessage" class="fieldDescription">Status wird geladen …</div>
+                            <div id="DependencyMessage" class="fieldDescription" data-i18n="statusLoading">Loading status…</div>
                         </div>
 
                         <div class="fieldDescription" style="margin-bottom:1.2em">
-                            Änderungen werden beim nächsten Laden oder Wechsel einer Jellyfin-Seite übernommen.
+                            <span data-i18n="saveNotice">Changes take effect the next time a Jellyfin page loads or changes.</span>
                         </div>
 
                         <button is="emby-button" type="submit" class="raised button-submit block emby-button">
-                            <span>Speichern</span>
+                            <span data-i18n="save">Save</span>
                         </button>
                     </div>
                 </form>
@@ -716,6 +724,140 @@
                 var previewCurrentItem = null;
                 var previewCurrentBackdrop = 0;
                 var previewQualityTimer = null;
+                var dependencyState = null;
+                var previewStatusKey = "previewLoading";
+                var translations = {
+                    en: {
+                        intro: "Applies the PunisherFin design to selected areas of Jellyfin Web. The header, hero area, and PunisherBanna remain unchanged.",
+                        settingsLanguage: "Settings language",
+                        enableTheme: "Enable PunisherFinTheme",
+                        accentColor: "Accent color",
+                        accentHelp: "Global color for focus outlines, progress, and primary actions in every design.",
+                        designSelection: "Design selection",
+                        designHelp: "The unchanged PunisherFin design remains the default. The accent color applies to every design independently of this selection.",
+                        selectDesign: "Select design",
+                        defaultBadge: "Default",
+                        punisherDesignHelp: "The current design, visually unchanged.",
+                        cinemaDesignHelp: "A distinct cinematic interface with compact movie cards, image titles, and calm panels.",
+                        liveDesignPreview: "Live preview of the selected design",
+                        accentPreview: "● Accent",
+                        yourHome: "Your home",
+                        discoverMedia: "Discover movies and series",
+                        play: "▶ Play",
+                        previewHelp: "The preview updates immediately. Jellyfin applies the design after saving.",
+                        brandingHelp: "Uses the PunisherFin logo in the Jellyfin header and browser tab and shows the name “PunisherFin” in the header. The server's actual branding is not changed permanently.",
+                        useBranding: "Use PunisherFin branding",
+                        areas: "Areas",
+                        styleHome: "Style home-screen cards",
+                        styleLibraries: "Style library views",
+                        cardPreviews: "Show cards as wide previews on hover or focus",
+                        videoPreviews: "Play muted video clips in card previews",
+                        videoPreviewHelp: "Applies to episodes, seasons, series, Continue Watching, and new media. When disabled, the existing static image preview remains.",
+                        actionButtons: "Style action buttons on detail pages",
+                        playerControls: "Use larger playback controls with hover effects",
+                        episodes: "Episodes",
+                        episodeOverview: "Show episode descriptions",
+                        compactEpisodes: "Use compact episode cards",
+                        randomBackground: "Random background",
+                        randomBackgroundHelp: "Shows rotating backdrop images from one library. Integration is automatic and does not require changes to Jellyfin's index.html.",
+                        enableRandomBackground: "Enable random background",
+                        library: "Library",
+                        libraryBackdropHelp: "Movies and series with available backdrop artwork are used.",
+                        previewLoading: "Loading preview image…",
+                        previewLoadFailed: "The random preview image could not be loaded.",
+                        selectLibraryFirst: "Please select a library first.",
+                        searchingLibrary: "Searching the library for a random image…",
+                        noBackdrop: "No backdrop artwork was found in this library.",
+                        backgroundPreviewFailed: "The random background preview could not be loaded.",
+                        anotherPreview: "Another random preview image",
+                        backgroundPreviewHelp: "The image is selected randomly from the chosen library. The preview changes nothing until you save.",
+                        opacity: "Opacity:",
+                        brightness: "Brightness:",
+                        blur: "Blur:",
+                        saturation: "Saturation:",
+                        contrast: "Contrast:",
+                        darkening: "Darkening:",
+                        imageChange: "Image change:",
+                        crossfade: "Crossfade:",
+                        imageQuality: "Image quality:",
+                        resetBackground: "Reset background settings",
+                        statusLoading: "Loading status…",
+                        dependencyConnected: "File Transformation is connected.",
+                        dependencyDisconnected: "File Transformation 3.0.0 is not connected. Verify that it is installed and enabled.",
+                        selectLibrary: "Please select",
+                        noLibrary: "No library found",
+                        storedLibrary: "Stored library",
+                        settingsLoadFailed: "The PunisherFinTheme settings could not be loaded.",
+                        settingsSaveFailed: "The PunisherFinTheme settings could not be saved.",
+                        saveNotice: "Changes take effect the next time a Jellyfin page loads or changes.",
+                        save: "Save"
+                    },
+                    de: {
+                        intro: "Überträgt das PunisherFin-Design auf ausgewählte Bereiche von Jellyfin Web. Header, Hero-Bereich und PunisherBanna bleiben unverändert.",
+                        settingsLanguage: "Sprache der Einstellungen",
+                        enableTheme: "PunisherFinTheme aktivieren",
+                        accentColor: "Akzentfarbe",
+                        accentHelp: "Globale Farbe für Fokusrahmen, Fortschritt und primäre Aktionen in jedem Design.",
+                        designSelection: "Design-Auswahl",
+                        designHelp: "Das PunisherFin-Design bleibt unverändert der Standard. Die Akzentfarbe gilt unabhängig von der Auswahl für jedes Design.",
+                        selectDesign: "Design auswählen",
+                        defaultBadge: "Standard",
+                        punisherDesignHelp: "Das aktuelle Design – optisch unverändert.",
+                        cinemaDesignHelp: "Eigenständige Kino-Oberfläche mit kompakten Filmkarten, Bildtiteln und ruhigen Panels.",
+                        liveDesignPreview: "Live-Vorschau des ausgewählten Designs",
+                        accentPreview: "● Akzent",
+                        yourHome: "Deine Startseite",
+                        discoverMedia: "Filme und Serien entdecken",
+                        play: "▶ Abspielen",
+                        previewHelp: "Die Vorschau reagiert sofort. Auf Jellyfin wird das Design erst nach dem Speichern angewendet.",
+                        brandingHelp: "Verwendet das PunisherFin-Logo im Jellyfin-Header und Browser-Tab und zeigt im Header den Namen „PunisherFin“ an. Das eigentliche Server-Branding wird nicht dauerhaft verändert.",
+                        useBranding: "PunisherFin-Branding verwenden",
+                        areas: "Bereiche",
+                        styleHome: "Startseitenkarten gestalten",
+                        styleLibraries: "Bibliotheksansichten gestalten",
+                        cardPreviews: "Karten bei Mauszeiger oder Fokus als breite Vorschau anzeigen",
+                        videoPreviews: "Stumme Videoausschnitte in Kartenvorschauen abspielen",
+                        videoPreviewHelp: "Gilt für Episoden, Staffeln, Serien, „Weiterschauen“ und neue Medien. Deaktiviert bleibt die bisherige statische Bildvorschau erhalten.",
+                        actionButtons: "Aktionsknöpfe auf Detailseiten gestalten",
+                        playerControls: "Größere Wiedergabesteuerung mit Hover-Effekt verwenden",
+                        episodes: "Episoden",
+                        episodeOverview: "Episodenbeschreibung anzeigen",
+                        compactEpisodes: "Kompakte Episodenkarten verwenden",
+                        randomBackground: "Zufälliger Hintergrund",
+                        randomBackgroundHelp: "Zeigt wechselnde Hintergrundbilder aus genau einer Bibliothek. Die Einbindung erfolgt automatisch und benötigt keine Änderung an Jellyfins index.html.",
+                        enableRandomBackground: "Zufälligen Hintergrund aktivieren",
+                        library: "Bibliothek",
+                        libraryBackdropHelp: "Es werden Filme und Serien mit vorhandenem Hintergrundbild verwendet.",
+                        previewLoading: "Vorschaubild wird geladen…",
+                        previewLoadFailed: "Das zufällige Vorschaubild konnte nicht geladen werden.",
+                        selectLibraryFirst: "Bitte zuerst eine Bibliothek auswählen.",
+                        searchingLibrary: "Zufälliges Bild aus der Bibliothek wird gesucht…",
+                        noBackdrop: "In dieser Bibliothek wurde kein Hintergrundbild gefunden.",
+                        backgroundPreviewFailed: "Die zufällige Hintergrundvorschau konnte nicht geladen werden.",
+                        anotherPreview: "Anderes zufälliges Vorschaubild",
+                        backgroundPreviewHelp: "Das Bild wird zufällig aus der ausgewählten Bibliothek geladen. Die Vorschau verändert nichts, bis du speicherst.",
+                        opacity: "Deckkraft:",
+                        brightness: "Helligkeit:",
+                        blur: "Unschärfe:",
+                        saturation: "Sättigung:",
+                        contrast: "Kontrast:",
+                        darkening: "Abdunklung:",
+                        imageChange: "Bildwechsel:",
+                        crossfade: "Überblendung:",
+                        imageQuality: "Bildqualität:",
+                        resetBackground: "Hintergrundeinstellungen zurücksetzen",
+                        statusLoading: "Status wird geladen…",
+                        dependencyConnected: "File Transformation ist verbunden.",
+                        dependencyDisconnected: "File Transformation 3.0.0 ist nicht verbunden. Prüfe, ob es installiert und aktiviert ist.",
+                        selectLibrary: "Bitte auswählen",
+                        noLibrary: "Keine Bibliothek gefunden",
+                        storedLibrary: "Gespeicherte Bibliothek",
+                        settingsLoadFailed: "Die PunisherFinTheme-Einstellungen konnten nicht geladen werden.",
+                        settingsSaveFailed: "Die PunisherFinTheme-Einstellungen konnten nicht gespeichert werden.",
+                        saveNotice: "Änderungen werden beim nächsten Laden oder Wechsel einer Jellyfin-Seite übernommen.",
+                        save: "Speichern"
+                    }
+                };
 
                 function ensureSettingsStylesheet() {
                     var styleId = "punisherfin-theme-settings-styles";
@@ -728,8 +870,8 @@
                     link.id = styleId;
                     link.rel = "stylesheet";
                     link.href = typeof ApiClient !== "undefined" && typeof ApiClient.getUrl === "function"
-                        ? ApiClient.getUrl("/PunisherFinTheme/settings.css", { v: "2.1.1.0" })
-                        : "/PunisherFinTheme/settings.css?v=2.1.1.0";
+                        ? ApiClient.getUrl("/PunisherFinTheme/settings.css", { v: "2.1.4.0" })
+                        : "/PunisherFinTheme/settings.css?v=2.1.4.0";
                     document.head.appendChild(link);
                 }
 
@@ -742,6 +884,54 @@
 
                 function element(id) {
                     return document.getElementById(id);
+                }
+
+                function normalizeSettingsLanguage(value) {
+                    return String(value || "").trim().toLowerCase() === "de" ? "de" : "en";
+                }
+
+                function currentLanguage() {
+                    return normalizeSettingsLanguage(element("SettingsLanguage").value);
+                }
+
+                function translate(key) {
+                    return translations[currentLanguage()][key] || translations.en[key] || key;
+                }
+
+                function renderDependencyState() {
+                    var label = element("DependencyMessage");
+                    if (!dependencyState) {
+                        label.textContent = translate("statusLoading");
+                        return;
+                    }
+
+                    label.textContent = translate(dependencyState.connected ? "dependencyConnected" : "dependencyDisconnected");
+                    label.style.color = dependencyState.connected ? "#57d47b" : "#ffb74d";
+                }
+
+                function setPreviewStatus(key) {
+                    previewStatusKey = key;
+                    element("BackgroundPreviewStatus").textContent = translate(key);
+                }
+
+                function applyLanguage() {
+                    var librarySelect;
+                    var placeholder;
+                    view.setAttribute("lang", currentLanguage());
+                    view.querySelectorAll("[data-i18n]").forEach(function (node) {
+                        node.textContent = translate(node.getAttribute("data-i18n"));
+                    });
+                    view.querySelectorAll("[data-i18n-aria-label]").forEach(function (node) {
+                        node.setAttribute("aria-label", translate(node.getAttribute("data-i18n-aria-label")));
+                    });
+                    setPreviewStatus(previewStatusKey);
+                    renderDependencyState();
+                    syncRangeDisplays();
+                    librarySelect = element("BackgroundLibraryId");
+                    placeholder = librarySelect && librarySelect.querySelector('option[value=""]');
+                    if (placeholder) {
+                        placeholder.textContent = translate(librarySelect.options.length > 1 ? "selectLibrary" : "noLibrary");
+                    }
                 }
 
                 function validColor(value) {
@@ -785,7 +975,7 @@
                     ["BackgroundOverlayPercent", "%"],
                     ["BackgroundChangeIntervalSeconds", "s"],
                     ["BackgroundCrossfadeMilliseconds", "s", function (value) {
-                        return (Number(value) / 1000).toLocaleString("de-DE", { maximumFractionDigits: 2 });
+                        return (Number(value) / 1000).toLocaleString(currentLanguage() === "de" ? "de-DE" : "en-US", { maximumFractionDigits: 2 });
                     }],
                     ["BackgroundImageQuality", "%"]
                 ];
@@ -874,7 +1064,7 @@
                         applyPreviewEffects();
                     };
                     status.style.display = "flex";
-                    status.textContent = "Vorschaubild wird geladen …";
+                    setPreviewStatus("previewLoading");
                     if (!image) {
                         display();
                         return;
@@ -882,7 +1072,7 @@
                     image.addEventListener("load", display);
                     image.addEventListener("error", function () {
                         if (requestedGeneration === previewGeneration) {
-                            status.textContent = "Das zufällige Vorschaubild konnte nicht geladen werden.";
+                            setPreviewStatus("previewLoadFailed");
                         }
                     });
                     image.src = url;
@@ -906,7 +1096,7 @@
                     var cached = previewItemsByLibrary[String(libraryId).toLowerCase()];
                     if (!libraryId || !userId) {
                         status.style.display = "flex";
-                        status.textContent = "Bitte zuerst eine Bibliothek auswählen.";
+                        setPreviewStatus("selectLibraryFirst");
                         return;
                     }
                     if (cached && !reloadItems) {
@@ -914,7 +1104,7 @@
                         return;
                     }
                     status.style.display = "flex";
-                    status.textContent = "Zufälliges Bild aus der Bibliothek wird gesucht …";
+                    setPreviewStatus("searchingLibrary");
                     requestJson("/Items", {
                         UserId: userId,
                         ParentId: libraryId,
@@ -931,13 +1121,13 @@
                         }
                         previewItemsByLibrary[String(libraryId).toLowerCase()] = items;
                         if (!items.length) {
-                            status.textContent = "In dieser Bibliothek wurde kein backdrop.jpg gefunden.";
+                            setPreviewStatus("noBackdrop");
                             return;
                         }
                         chooseRandomPreview(items, generation);
                     }).catch(function (error) {
                         if (generation === previewGeneration) {
-                            status.textContent = "Die zufällige Hintergrundvorschau konnte nicht geladen werden.";
+                            setPreviewStatus("backgroundPreviewFailed");
                         }
                         console.warn("PunisherFinTheme: Hintergrundvorschau konnte nicht geladen werden.", error);
                     });
@@ -1019,7 +1209,7 @@
 
                     placeholder = document.createElement("option");
                     placeholder.value = "";
-                    placeholder.textContent = libraries.length ? "Bitte auswählen" : "Keine Bibliothek gefunden";
+                    placeholder.textContent = translate(libraries.length ? "selectLibrary" : "noLibrary");
                     select.appendChild(placeholder);
                     libraries.forEach(function (library) {
                         var option = document.createElement("option");
@@ -1045,7 +1235,7 @@
                     }
 
                     if (!selectedLibrary && selectedId) {
-                        selectedLibrary = { id: String(selectedId), name: String(selectedName || "Gespeicherte Bibliothek") };
+                        selectedLibrary = { id: String(selectedId), name: String(selectedName || translate("storedLibrary")) };
                         placeholder = document.createElement("option");
                         placeholder.value = selectedLibrary.id;
                         placeholder.textContent = selectedLibrary.name;
@@ -1095,16 +1285,18 @@
                     var label = element("DependencyMessage");
                     return requestJson("/PunisherFinTheme/dependency").then(function (state) {
                         element("PluginVersion").textContent = state.version || "";
-                        label.textContent = state.message;
-                        label.style.color = state.connected ? "#57d47b" : "#ffb74d";
+                        dependencyState = { connected: state.connected === true };
+                        renderDependencyState();
                     }).catch(function (error) {
-                        label.textContent = "Status nicht verfügbar. File Transformation 3.0.0 muss installiert und aktiv sein.";
-                        label.style.color = "#ffb74d";
+                        dependencyState = { connected: false };
+                        renderDependencyState();
                     });
                 }
 
                 function applySettings(settings) {
                     loadedSettings = settings;
+                    element("SettingsLanguage").value = normalizeSettingsLanguage(settings.SettingsLanguage);
+                    applyLanguage();
                     element("Enabled").checked = settings.Enabled !== false;
                     element("AccentColor").value = validColor(settings.AccentColor);
                     applyDesignSelection(settings.DesignPreset);
@@ -1154,7 +1346,7 @@
                         loadOptionalInformation(settings);
                     }).catch(function (error) {
                         console.error("PunisherFinTheme: Einstellungen konnten nicht geladen werden.", error);
-                        Dashboard.alert("Die PunisherFinTheme-Einstellungen konnten nicht geladen werden.");
+                        Dashboard.alert(translate("settingsLoadFailed"));
                     }).then(function () {
                         loading = false;
                         Dashboard.hideLoadingMsg();
@@ -1182,6 +1374,7 @@
                     Dashboard.showLoadingMsg();
 
                     settings = loadedSettings || {};
+                    settings.SettingsLanguage = currentLanguage();
                     settings.Enabled = element("Enabled").checked;
                     settings.AccentColor = validColor(element("AccentColor").value);
                     settings.DesignPreset = selectedDesign();
@@ -1214,7 +1407,7 @@
                     }).catch(function (error) {
                         console.error("PunisherFinTheme: Einstellungen konnten nicht gespeichert werden.", error);
                         Dashboard.hideLoadingMsg();
-                        Dashboard.alert("Die PunisherFinTheme-Einstellungen konnten nicht gespeichert werden.");
+                        Dashboard.alert(translate("settingsSaveFailed"));
                     });
                 }
 
@@ -1240,6 +1433,7 @@
                         storeSettings(event);
                     }, true);
                     ranges.forEach(bindRange);
+                    element("SettingsLanguage").addEventListener("change", applyLanguage);
                     element("DesignPunisherFin").addEventListener("change", syncDesignPreview);
                     element("DesignCinematic").addEventListener("change", syncDesignPreview);
                     element("AccentColor").addEventListener("input", syncDesignPreview);

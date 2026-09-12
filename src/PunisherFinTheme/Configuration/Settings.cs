@@ -6,6 +6,8 @@ namespace PunisherFinTheme.Configuration;
 
 public sealed partial class Settings : BasePluginConfiguration
 {
+    public string SettingsLanguage { get; set; } = "en";
+
     public bool Enabled { get; set; } = true;
 
     public string AccentColor { get; set; } = "#FF5F87";
@@ -56,6 +58,9 @@ public sealed partial class Settings : BasePluginConfiguration
 
     public void Sanitize()
     {
+        SettingsLanguage = string.Equals(SettingsLanguage?.Trim(), "de", StringComparison.OrdinalIgnoreCase)
+            ? "de"
+            : "en";
         string candidate = AccentColor?.Trim() ?? string.Empty;
         AccentColor = HexColorRegex().IsMatch(candidate)
             ? candidate.ToUpperInvariant()

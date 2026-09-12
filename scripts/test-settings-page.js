@@ -15,11 +15,32 @@ class FakeElement {
         this.dataset = {};
         this.children = [];
         this.listeners = {};
+        this.attributes = {};
     }
 
     addEventListener(name, handler) {
         this.listeners[name] = this.listeners[name] || [];
         this.listeners[name].push(handler);
+    }
+
+    setAttribute(name, value) {
+        this.attributes[name] = String(value);
+    }
+
+    getAttribute(name) {
+        return this.attributes[name] || null;
+    }
+
+    querySelector(selector) {
+        if (selector === 'option[value=""]') {
+            return this.children.find((child) => child.value === "") || null;
+        }
+
+        return null;
+    }
+
+    querySelectorAll() {
+        return [];
     }
 
     dispatch(name) {
@@ -82,6 +103,7 @@ async function main() {
     };
     const window = { setTimeout, clearTimeout };
     const expected = {
+        SettingsLanguage: "en",
         Enabled: true,
         AccentColor: "#19AABB",
         DesignPreset: "cinematic",
@@ -188,7 +210,8 @@ async function main() {
     assert.equal(elements.BackgroundOpacityPercent.value, 77, "Saved slider position must be restored");
     assert.equal(elements.BackgroundOpacityPercentValue.textContent, "77 %", "Saved slider label must be restored");
     assert.equal(elements.BackgroundLibraryId.value, expected.BackgroundLibraryId, "Saved library must survive a failed library lookup");
-    assert.equal(elements.DependencyMessage.textContent, "Verbunden", "Dependency state must load independently");
+    assert.equal(elements.SettingsLanguage.value, "en", "English must be the default settings language");
+    assert.equal(elements.DependencyMessage.textContent, "File Transformation is connected.", "Dependency state must be localized independently");
     await settle();
     assert.match(
         elements.BackgroundPreviewLayer1.style.backgroundImage || elements.BackgroundPreviewLayer2.style.backgroundImage || "",
@@ -220,12 +243,16 @@ async function main() {
     elements.EnablePunisherFinBranding.checked = false;
     elements.StyleHome.checked = false;
     elements.EnableVideoPreviews.checked = false;
+    elements.SettingsLanguage.value = "de";
+    elements.SettingsLanguage.dispatch("change");
+    assert.equal(elements.DependencyMessage.textContent, "File Transformation ist verbunden.", "Language switch must update dynamic status text immediately");
     elements.PunisherFinThemeSettingsForm.dispatch("submit");
     await settle();
 
     assert.ok(saved, "Submit must call updatePluginConfiguration");
     assert.equal(saved.pluginId, "4763374d-d1ce-4404-b769-3625dacdcb84");
     assert.equal(saved.settings.Enabled, false, "Changed checkbox state must be saved");
+    assert.equal(saved.settings.SettingsLanguage, "de", "Selected settings language must be saved");
     assert.equal(saved.settings.DesignPreset, "punisherfin", "Changed design must be saved independently");
     assert.equal(saved.settings.AccentColor, "#7733CC", "Changing designs must preserve the global accent color");
     assert.equal(saved.settings.EnablePunisherFinBranding, false, "Changed branding state must be saved");
