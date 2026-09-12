@@ -268,6 +268,44 @@
     color: #fff !important;
 }
 
+/* Every home/library card action must follow the configured accent, including
+   Jellyfin 12's secondary more/favorite buttons and current MUI icon buttons. */
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) :is(
+    .cardOverlayButton,
+    .cardOverlayFab,
+    .paper-icon-button-light,
+    .MuiIconButton-root,
+    [class*="MuiIconButton-root"]
+):is(:hover, :focus-visible) {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+    color: #fff !important;
+}
+
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) :is(
+    .cardOverlayButton,
+    .cardOverlayFab,
+    .paper-icon-button-light,
+    .MuiIconButton-root,
+    [class*="MuiIconButton-root"]
+):is(:hover, :focus-visible) :is(.cardOverlayButtonIcon, .material-icons, .material-symbols-rounded, .material-symbols-outlined, svg) {
+    background-color: transparent !important;
+    color: #fff !important;
+    fill: currentColor !important;
+}
+
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) :is(
+    [data-isfavorite="true"],
+    [data-is-favorite="true"],
+    .ratingbutton-icon-withrating,
+    .playstatebutton-icon-played
+) :is(.cardOverlayButtonIcon, .favorite, .material-icons, .material-symbols-rounded, .material-symbols-outlined, svg),
+:root.pft-enabled :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) :is(.ratingbutton-icon-withrating, .playstatebutton-icon-played) {
+    color: var(--pft-accent) !important;
+    fill: currentColor !important;
+}
+
 :root.pft-enabled .homeSectionsContainer.pft-home-view .cardText,
 :root.pft-enabled .pft-library-view .cardText,
 :root.pft-enabled #itemDetailPage .card.pft-media-preview-card .cardText {

@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138", "__punisherFinThemeV139", "__punisherFinThemeV140"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138", "__punisherFinThemeV139", "__punisherFinThemeV140", "__punisherFinThemeV200", "__punisherFinThemeV210", "__punisherFinThemeV211"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV211";
+    const runtimeKey = "__punisherFinThemeV212";
     if (window[runtimeKey]) {
         return;
     }
@@ -22,6 +22,7 @@
         designStylesheet: null,
         designGeneration: 0,
         observer: null,
+        headObserver: null,
         previewCache: new Map(),
         previewVideoItemCache: new Map(),
         resumeMinutes: new Map(),
@@ -41,7 +42,8 @@
         headerStyles: new Map(),
         brandingElements: new Map(),
         brandingFavicons: new Map(),
-        brandingFavicon: null
+        brandingFavicon: null,
+        brandingDocumentTitle: null
     };
 
     function jellyfinApi() {
@@ -145,6 +147,16 @@
         return Array.from(element?.childNodes || []).find(node => node.nodeType === 3 && node.nodeValue?.trim()) || null;
     }
 
+    function brandingTextNode(element) {
+        const direct = directTextNode(element);
+        if (direct) {
+            return direct;
+        }
+        return Array.from(element?.querySelectorAll("span, div") || [])
+            .map(candidate => directTextNode(candidate))
+            .find(node => node?.nodeValue?.trim() && !/^\d+(?:\.\d+)+$/.test(node.nodeValue.trim())) || null;
+    }
+
     function brandingLogoUrl() {
         const api = jellyfinApi();
         return api ? api.getUrl("/PunisherFinTheme/logo.png", { v: runtime.config?.version || "1" }) : null;
@@ -160,7 +172,7 @@
                 if (image && snapshot.imageSource !== null) {
                     image.setAttribute("src", snapshot.imageSource);
                 }
-                const text = directTextNode(element);
+                const text = snapshot.textNode?.isConnected ? snapshot.textNode : brandingTextNode(element);
                 if (text) {
                     text.nodeValue = snapshot.text;
                 }
@@ -199,6 +211,10 @@
         runtime.brandingFavicons.clear();
         runtime.brandingFavicon?.remove();
         runtime.brandingFavicon = null;
+        if (runtime.brandingDocumentTitle !== null) {
+            document.title = runtime.brandingDocumentTitle;
+            runtime.brandingDocumentTitle = null;
+        }
     }
 
     function syncBranding() {
@@ -242,9 +258,16 @@
         }
         runtime.brandingFavicon.href = logoUrl;
 
-        document.querySelectorAll(".MuiAppBar-root a[href], [class*='MuiAppBar-root'] a[href]").forEach(button => {
+        if (runtime.brandingDocumentTitle === null) {
+            runtime.brandingDocumentTitle = document.title;
+        }
+        if (document.title !== "PunisherFin") {
+            document.title = "PunisherFin";
+        }
+
+        document.querySelectorAll(".MuiAppBar-root :is(a[href], button), [class*='MuiAppBar-root'] :is(a[href], button)").forEach(button => {
             const image = button.querySelector("img");
-            const text = directTextNode(button);
+            const text = brandingTextNode(button);
             if (!image || !text) {
                 return;
             }
@@ -252,7 +275,8 @@
                 runtime.brandingElements.set(button, {
                     kind: "modern",
                     imageSource: image.getAttribute("src"),
-                    text: text.nodeValue
+                    text: text.nodeValue,
+                    textNode: text
                 });
             }
             if (image.getAttribute("src") !== logoUrl) {
@@ -265,11 +289,15 @@
             button.classList.add("pft-brand-button");
         });
 
-        document.querySelectorAll(".dashboardDocument .MuiDrawer-root a[href], .dashboardDocument [class*='MuiDrawer-root'] a[href]").forEach(link => {
+        document.querySelectorAll(".MuiDrawer-root a[href], [class*='MuiDrawer-root'] a[href]").forEach(link => {
             const image = link.querySelector(".MuiListItemIcon-root img, [class*='MuiListItemIcon-root'] img");
             const primary = link.querySelector(".MuiListItemText-primary, [class*='MuiListItemText-primary']");
             const secondary = link.querySelector(".MuiListItemText-secondary, [class*='MuiListItemText-secondary']");
-            if (!image || !primary || !secondary) {
+            const href = link.getAttribute("href") || "";
+            const serverIdentity = Boolean(secondary)
+                || /dashboard|configuration|server/i.test(href)
+                || /branding|logo/i.test(image?.getAttribute("src") || "");
+            if (!image || !primary || !serverIdentity) {
                 return;
             }
             if (!runtime.brandingElements.has(link)) {
@@ -1078,6 +1106,8 @@
 
         runtime.observer = new MutationObserver(() => schedule(false));
         runtime.observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"], characterData: true });
+        runtime.headObserver = new MutationObserver(() => schedule(false));
+        runtime.headObserver.observe(document.head, { childList: true, subtree: true, attributes: true, attributeFilter: ["href"], characterData: true });
         document.addEventListener("viewshow", () => schedule(true));
         window.addEventListener("hashchange", () => schedule(true));
         window.addEventListener("popstate", () => schedule(true));
@@ -1091,6 +1121,7 @@
         reconcile: reconcile,
         stop: function () {
             runtime.observer?.disconnect();
+            runtime.headObserver?.disconnect();
             window.clearTimeout(runtime.timer);
             window.clearTimeout(runtime.previewTimer);
             closePreview(runtime.activeCard);

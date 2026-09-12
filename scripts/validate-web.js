@@ -18,8 +18,8 @@ const settingsStyles = fs.readFileSync(settingsStylePath, "utf8");
 
 const normalizedDefaultStyles = styles.replace(/\r\n/g, "\n");
 const defaultStyleHash = crypto.createHash("sha256").update(normalizedDefaultStyles).digest("hex");
-if (defaultStyleHash !== "750d6d71156a6ab8fda253b09770f13c0f51f8ae57f146e4a76c78e61498dccd") {
-    throw new Error("The existing PunisherFin default design must remain visually unchanged in the multi-design release.");
+if (defaultStyleHash !== "d9bc8afce5ad912304a5c1022dc33f8b491967978863569c297aa6ccd8467375") {
+    throw new Error("The reviewed PunisherFin default design baseline changed unexpectedly.");
 }
 
 const opening = "<script type=\"text/javascript\">";
@@ -118,7 +118,7 @@ for (const forbidden of [
 }
 
 for (const required of [
-    "__punisherFinThemeV211",
+    "__punisherFinThemeV212",
     "__punisherFinThemeV140",
     "__punisherFinThemeV139",
     "__punisherFinThemeV138",
@@ -159,6 +159,10 @@ for (const required of [
     "syncBranding",
     "restoreBranding",
     "brandingFavicons",
+    "brandingDocumentTitle",
+    "document.title = \"PunisherFin\"",
+    "headObserver",
+    "brandingTextNode",
     "link[rel~='icon']",
     "pft-brand-drawer-link",
     "MuiListItemText-primary",
@@ -206,6 +210,8 @@ for (const required of [
     ":root.pft-enabled :is(.videoPlayerContainer",
     ".cardOverlayButtonIcon",
     ".cardOverlayFab-primary",
+    ".cardOverlayButton",
+    ".MuiIconButton-root",
     "--jf-palette-primary-main: var(--pft-accent)",
     "accent-color: var(--pft-accent)",
     ".mdl-slider__background-lower",

@@ -9,20 +9,20 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
+        "version": "2.1.2.0",
+        "changelog": "Applies the configured global accent color to every home, library, continue-watching, and detail-card action, including Jellyfin 12 secondary more and favorite controls and their MUI variants. PunisherFin branding now also survives Jellyfin's late mobile and browser updates: the document title and favicon are continuously synchronized, nested mobile header labels are detected, and server identity entries in mobile drawers are no longer limited to desktop dashboard markup.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v2.1.2.0/PunisherFinTheme_2.1.2.0.zip",
+        "checksum": "4b3273fbc70b23cc1b0182930b6bd3a2",
+        "timestamp": "2026-09-12 19:20:55"
+      },
+      {
         "version": "2.1.1.0",
         "changelog": "Fixes the design gallery on dynamically loaded Jellyfin settings pages. The preview styles are now delivered as a dedicated embedded plugin resource and injected into Jellyfin's actual document with an explicit cache-safe version, so the selectable homepage miniatures and live preview can no longer collapse into unstyled inline text.",
         "targetAbi": "12.0.0.0",
         "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v2.1.1.0/PunisherFinTheme_2.1.1.0.zip",
         "checksum": "ea5624beff946a93d6039d1359193da0",
         "timestamp": "2026-09-12 18:57:04"
-      },
-      {
-        "version": "2.1.0.0",
-        "changelog": "Rebuilds design selection as a reliable visual gallery with full homepage miniatures and a larger live preview that follows the global accent color. The optional Cinematic preset is replaced by the distinctly styled Cinema Deck experience: compact landscape media cards, editorial shelf panels, image-focused information surfaces, restrained rectangular controls, and a timeline-style episode list. The original PunisherFin design remains visually unchanged and continues to be the default.",
-        "targetAbi": "12.0.0.0",
-        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v2.1.0.0/PunisherFinTheme_2.1.0.0.zip",
-        "checksum": "7330e69bfc2db4070f5bcce8d2c4eb31",
-        "timestamp": "2026-09-12 18:41:03"
       }
     ]
   }
