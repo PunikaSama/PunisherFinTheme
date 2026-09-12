@@ -1,0 +1,257 @@
+#PunisherFinThemeSettings .pft-design-section {
+    --pft-settings-accent: #ff5f87;
+    background: rgba(5, 6, 9, .48);
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 16px;
+    margin: 1.75em 0;
+    padding: clamp(1em, 2.5vw, 1.6em);
+}
+
+#PunisherFinThemeSettings .pft-design-picker {
+    display: grid;
+    gap: clamp(.9em, 2vw, 1.4em);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#PunisherFinThemeSettings .pft-design-option {
+    display: block;
+    min-width: 0;
+    position: relative;
+}
+
+#PunisherFinThemeSettings .pft-design-option > input {
+    height: 1px;
+    opacity: 0;
+    position: absolute;
+    width: 1px;
+}
+
+#PunisherFinThemeSettings .pft-design-choice {
+    background: rgba(7, 8, 11, .78);
+    border: 2px solid rgba(255, 255, 255, .18);
+    border-radius: 14px;
+    cursor: pointer;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+#PunisherFinThemeSettings .pft-design-option > input:checked + .pft-design-choice {
+    border-color: var(--pft-settings-accent);
+    box-shadow: 0 0 0 1px var(--pft-settings-accent), 0 12px 30px rgba(0, 0, 0, .38);
+}
+
+#PunisherFinThemeSettings .pft-design-option > input:checked + .pft-design-choice::after {
+    align-items: center;
+    background: var(--pft-settings-accent);
+    border: 3px solid #121318;
+    border-radius: 50%;
+    color: #fff;
+    content: "✓";
+    display: flex;
+    font-weight: 900;
+    height: 2em;
+    justify-content: center;
+    position: absolute;
+    right: .7em;
+    top: .7em;
+    width: 2em;
+    z-index: 8;
+}
+
+#PunisherFinThemeSettings .pft-design-option > input:focus-visible + .pft-design-choice {
+    outline: 3px solid var(--pft-settings-accent);
+    outline-offset: 3px;
+}
+
+#PunisherFinThemeSettings .pft-design-choice:hover {
+    border-color: var(--pft-settings-accent);
+    transform: translateY(-2px);
+}
+
+#PunisherFinThemeSettings .pft-design-home {
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(90deg, rgba(6, 7, 10, .9), rgba(6, 7, 10, .3)), radial-gradient(circle at 76% 35%, color-mix(in srgb, var(--pft-settings-accent) 38%, #26344a), #10131a 62%);
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+#PunisherFinThemeSettings .pft-design-home::before {
+    background: linear-gradient(0deg, #090a0d 0, transparent 55%);
+    content: "";
+    inset: 0;
+    opacity: .8;
+    position: absolute;
+}
+
+#PunisherFinThemeSettings .pft-mini-nav {
+    align-items: center;
+    background: rgba(5, 6, 8, .72);
+    display: flex;
+    gap: 3%;
+    height: 13%;
+    padding: 0 5%;
+    position: relative;
+    z-index: 2;
+}
+
+#PunisherFinThemeSettings .pft-mini-nav::before {
+    background: var(--pft-settings-accent);
+    border-radius: 50%;
+    content: "";
+    height: 45%;
+    margin-right: 2%;
+    width: 3.8%;
+}
+
+#PunisherFinThemeSettings .pft-mini-nav i {
+    background: rgba(255, 255, 255, .72);
+    border-radius: 1em;
+    height: 12%;
+    width: 10%;
+}
+
+#PunisherFinThemeSettings .pft-mini-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 8%;
+    height: 31%;
+    justify-content: center;
+    padding: 0 6%;
+    position: relative;
+    z-index: 2;
+}
+
+#PunisherFinThemeSettings .pft-mini-hero b { font-size: clamp(.56em, 1.25vw, .95em); }
+#PunisherFinThemeSettings .pft-mini-hero i {
+    background: var(--pft-settings-accent);
+    border-radius: 1em;
+    height: 10%;
+    width: 19%;
+}
+
+#PunisherFinThemeSettings .pft-mini-heading {
+    background: rgba(255, 255, 255, .88);
+    border-radius: 1em;
+    display: block;
+    height: 2.5%;
+    margin: 1% 6% 2.5%;
+    position: relative;
+    width: 18%;
+    z-index: 2;
+}
+
+#PunisherFinThemeSettings .pft-mini-shelf {
+    display: grid;
+    gap: 3%;
+    grid-template-columns: repeat(4, 1fr);
+    height: 42%;
+    padding: 0 6% 5%;
+    position: relative;
+    z-index: 2;
+}
+
+#PunisherFinThemeSettings .pft-mini-shelf i {
+    background: linear-gradient(145deg, #6a7180, #242831 65%);
+    border: 1px solid rgba(255, 255, 255, .28);
+    border-radius: 5px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, .38);
+    position: relative;
+}
+
+#PunisherFinThemeSettings .pft-mini-shelf i::after {
+    background: var(--pft-settings-accent);
+    bottom: 0;
+    content: "";
+    height: 3px;
+    left: 0;
+    position: absolute;
+    width: 62%;
+}
+
+#PunisherFinThemeSettings .pft-design-thumb-cinematic {
+    background: linear-gradient(90deg, #07090d 0 32%, transparent 70%), radial-gradient(circle at 75% 45%, color-mix(in srgb, var(--pft-settings-accent) 32%, #34445c), #111620 70%);
+}
+
+#PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-nav {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, .13);
+}
+
+#PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-hero { height: 37%; }
+#PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-heading { background: var(--pft-settings-accent); height: 1.5%; width: 10%; }
+#PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-shelf { gap: 2.5%; grid-template-columns: 1.35fr 1fr 1fr; height: 35%; }
+#PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-shelf i { background: linear-gradient(120deg, #303b4d, #11151d); border-radius: 2px; }
+
+#PunisherFinThemeSettings .pft-design-meta { display: block; min-height: 4.4em; padding: .9em 1em 1em; }
+#PunisherFinThemeSettings .pft-design-name { align-items: center; display: flex; font-size: 1.05em; font-weight: 700; justify-content: space-between; margin-bottom: .3em; }
+#PunisherFinThemeSettings .pft-design-badge { background: var(--pft-settings-accent); border-radius: 999px; color: #fff; font-size: .7em; padding: .2em .6em; }
+
+#PunisherFinThemeSettings .pft-design-preview {
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(90deg, rgba(8, 9, 12, .94), rgba(8, 9, 12, .48)), radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--pft-settings-accent) 28%, #2b3444), #101218 68%);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 12px;
+    color: #fff;
+    margin-top: 1.25em;
+    min-height: 17em;
+    overflow: hidden;
+    padding: clamp(.65em, 2vw, 1.25em);
+}
+
+#PunisherFinThemeSettings .pft-preview-header { display: flex; font-weight: 800; justify-content: space-between; margin-bottom: 4%; }
+#PunisherFinThemeSettings .pft-preview-header span:last-child { color: var(--pft-settings-accent); }
+#PunisherFinThemeSettings .pft-preview-hero { display: flex; flex-direction: column; gap: .25em; margin-bottom: 5%; }
+#PunisherFinThemeSettings .pft-preview-hero strong { font-size: clamp(1em, 2.7vw, 1.8em); }
+#PunisherFinThemeSettings .pft-preview-hero span { color: rgba(255, 255, 255, .62); font-size: .78em; }
+#PunisherFinThemeSettings .pft-preview-content { display: grid; gap: 4%; grid-template-columns: 1.2fr .8fr; }
+#PunisherFinThemeSettings .pft-preview-cards { display: grid; gap: 4%; grid-template-columns: repeat(3, 1fr); }
+
+#PunisherFinThemeSettings :is(.pft-preview-card, .pft-preview-episode) {
+    background: linear-gradient(145deg, #4b5362, #15171c);
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 6px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .32);
+    min-height: 5.5em;
+    position: relative;
+}
+
+#PunisherFinThemeSettings .pft-preview-card::after {
+    background: var(--pft-settings-accent);
+    border-radius: 50%;
+    content: "12";
+    font-size: .58em;
+    height: 1.8em;
+    line-height: 1.8em;
+    position: absolute;
+    right: .35em;
+    text-align: center;
+    top: .35em;
+    width: 1.8em;
+}
+
+#PunisherFinThemeSettings .pft-preview-side { display: flex; flex-direction: column; gap: .6em; }
+#PunisherFinThemeSettings .pft-preview-episode { min-height: 3.3em; }
+#PunisherFinThemeSettings .pft-preview-actions { display: flex; gap: .45em; }
+#PunisherFinThemeSettings .pft-preview-button { border: 1px solid rgba(255, 255, 255, .48); border-radius: 999px; font-size: .65em; padding: .55em .8em; }
+#PunisherFinThemeSettings .pft-preview-button:first-child { background: var(--pft-settings-accent); border-color: var(--pft-settings-accent); flex: 1; }
+
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] { background: linear-gradient(90deg, #07090e 0 35%, rgba(7, 9, 14, .54) 72%, #07090e), radial-gradient(circle at 75% 20%, color-mix(in srgb, var(--pft-settings-accent) 34%, #33445d), #0d121b 68%); border-radius: 3px; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-header { border-bottom: 1px solid rgba(255, 255, 255, .14); padding-bottom: 2.5%; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-hero strong { font-size: clamp(1.25em, 3.4vw, 2.35em); letter-spacing: -.04em; text-transform: uppercase; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-content { grid-template-columns: 1.6fr .7fr; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-cards { gap: 2%; grid-template-columns: 1.35fr 1fr 1fr; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-card { border-radius: 2px; min-height: 6em; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-card::after { border-radius: 0; bottom: 0; content: ""; height: 3px; left: 0; right: auto; top: auto; width: 58%; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-side { border-left: 1px solid rgba(255, 255, 255, .16); padding-left: 10%; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-episode { background: rgba(255, 255, 255, .055); border-left: 2px solid var(--pft-settings-accent); border-radius: 0; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-button { border-radius: 2px; text-transform: uppercase; }
+
+@media (max-width: 600px) {
+    #PunisherFinThemeSettings .pft-design-picker { grid-template-columns: 1fr; }
+    #PunisherFinThemeSettings .pft-design-preview { aspect-ratio: auto; min-height: 15em; }
+    #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-content { grid-template-columns: 1fr; }
+    #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-side { border-left: 0; border-top: 1px solid rgba(255, 255, 255, .16); margin-top: 5%; padding: 5% 0 0; }
+}

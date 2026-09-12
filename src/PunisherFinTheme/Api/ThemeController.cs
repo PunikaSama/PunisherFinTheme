@@ -20,6 +20,7 @@ public sealed class ThemeController : ControllerBase
     private const string ScriptResource = "PunisherFinTheme.Web.punisherfin-theme.js";
     private const string StyleResource = "PunisherFinTheme.Web.punisherfin-theme.css";
     private const string CinematicStyleResource = "PunisherFinTheme.Web.Designs.cinematic-theme.css";
+    private const string SettingsStyleResource = "PunisherFinTheme.Web.settings-design.css";
     private const string LogoResource = "PunisherFinTheme.Web.punisherfin-logo.png";
     private readonly IUserManager _users;
     private readonly ILibraryManager _library;
@@ -50,6 +51,16 @@ public sealed class ThemeController : ControllerBase
     public ActionResult Styles()
     {
         return EmbeddedFile(StyleResource, "text/css; charset=utf-8");
+    }
+
+    [HttpGet("settings.css")]
+    [AllowAnonymous]
+    [Produces("text/css")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult SettingsStyles()
+    {
+        return EmbeddedFile(SettingsStyleResource, "text/css; charset=utf-8");
     }
 
     [HttpGet("logo.png")]

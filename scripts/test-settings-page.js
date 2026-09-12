@@ -72,6 +72,7 @@ async function main() {
     }
 
     const document = {
+        head: new FakeElement("", "head"),
         getElementById(id) {
             return elements[id] || null;
         },
@@ -166,6 +167,9 @@ async function main() {
     };
 
     new Function("document", "window", "ApiClient", "Dashboard", "console", script)(document, window, ApiClient, Dashboard, quietConsole);
+    assert.equal(document.head.children.length, 1, "Settings page must inject its external gallery stylesheet");
+    assert.equal(document.head.children[0].id, "punisherfin-theme-settings-styles", "Settings stylesheet must have a stable cache-safe id");
+    assert.equal(document.head.children[0].href, "/PunisherFinTheme/settings.css", "Settings gallery must load from the plugin CSS endpoint");
     await settle();
     assert.equal(elements.Enabled.checked, false, "Page must wait until Jellyfin's API client is ready");
     ApiClient.getPluginConfiguration = getPluginConfiguration;

@@ -9,20 +9,20 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
+        "version": "2.1.1.0",
+        "changelog": "Fixes the design gallery on dynamically loaded Jellyfin settings pages. The preview styles are now delivered as a dedicated embedded plugin resource and injected into Jellyfin's actual document with an explicit cache-safe version, so the selectable homepage miniatures and live preview can no longer collapse into unstyled inline text.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v2.1.1.0/PunisherFinTheme_2.1.1.0.zip",
+        "checksum": "ea5624beff946a93d6039d1359193da0",
+        "timestamp": "2026-09-12 18:57:04"
+      },
+      {
         "version": "2.1.0.0",
         "changelog": "Rebuilds design selection as a reliable visual gallery with full homepage miniatures and a larger live preview that follows the global accent color. The optional Cinematic preset is replaced by the distinctly styled Cinema Deck experience: compact landscape media cards, editorial shelf panels, image-focused information surfaces, restrained rectangular controls, and a timeline-style episode list. The original PunisherFin design remains visually unchanged and continues to be the default.",
         "targetAbi": "12.0.0.0",
         "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v2.1.0.0/PunisherFinTheme_2.1.0.0.zip",
         "checksum": "7330e69bfc2db4070f5bcce8d2c4eb31",
         "timestamp": "2026-09-12 18:41:03"
-      },
-      {
-        "version": "2.0.0.0",
-        "changelog": "Introduces a safe multi-design system while keeping the existing PunisherFin appearance unchanged and selected by default. A new Cinematic design provides landscape-first cards, film-inspired surfaces, redesigned episode rows, detail actions, video controls, audio controls, and InPlayerEpisodePreview styling. The settings page now includes accessible design cards and an isolated live component preview. The accent color remains a single global preference shared by every design, unknown design IDs fall back to PunisherFin, and failed optional stylesheet loads cannot break the interface.",
-        "targetAbi": "12.0.0.0",
-        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v2.0.0.0/PunisherFinTheme_2.0.0.0.zip",
-        "checksum": "af4fe94d1be385dd6193f1073ea31b87",
-        "timestamp": "2026-09-12 15:29:21"
       }
     ]
   }

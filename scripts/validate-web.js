@@ -9,10 +9,12 @@ const settingsPath = path.join(root, "src", "PunisherFinTheme", "Configuration",
 const clientPath = path.join(root, "src", "PunisherFinTheme", "Web", "punisherfin-theme.js");
 const stylePath = path.join(root, "src", "PunisherFinTheme", "Web", "punisherfin-theme.css");
 const cinematicStylePath = path.join(root, "src", "PunisherFinTheme", "Web", "Designs", "cinematic-theme.css");
+const settingsStylePath = path.join(root, "src", "PunisherFinTheme", "Web", "settings-design.css");
 const html = fs.readFileSync(settingsPath, "utf8");
 const client = fs.readFileSync(clientPath, "utf8");
 const styles = fs.readFileSync(stylePath, "utf8");
 const cinematicStyles = fs.readFileSync(cinematicStylePath, "utf8");
+const settingsStyles = fs.readFileSync(settingsStylePath, "utf8");
 
 const normalizedDefaultStyles = styles.replace(/\r\n/g, "\n");
 const defaultStyleHash = crypto.createHash("sha256").update(normalizedDefaultStyles).digest("hex");
@@ -30,12 +32,6 @@ if (start < 0 || end < 0 || start > html.lastIndexOf("</div>")) {
 new Function(html.slice(start + opening.length, end));
 new Function(client);
 
-const pageStart = html.indexOf("<div id=\"PunisherFinThemeSettings\"");
-const bodyStyle = html.indexOf("<style>", html.indexOf("<body"));
-if (bodyStyle < 0 || bodyStyle > pageStart) {
-    throw new Error("Settings gallery styles must be loaded inside the dynamic Jellyfin page body.");
-}
-
 for (const required of [
     "Enabled",
     "AccentColor",
@@ -47,6 +43,9 @@ for (const required of [
     "pft-mini-hero",
     "Cinema Deck",
     "syncDesignPreview",
+    "ensureSettingsStylesheet",
+    "/PunisherFinTheme/settings.css",
+    "punisherfin-theme-settings-styles",
     "selectedDesign",
     "EnablePunisherFinBranding",
     "ShowEpisodeOverview",
@@ -94,6 +93,19 @@ for (const required of [
     }
 }
 
+for (const required of [
+    ".pft-design-picker",
+    ".pft-design-home",
+    ".pft-mini-shelf",
+    ".pft-design-preview[data-design=\"cinematic\"]",
+    "var(--pft-settings-accent)",
+    "@media (max-width: 600px)"
+]) {
+    if (!settingsStyles.includes(required)) {
+        throw new Error(`Missing external settings gallery style: ${required}`);
+    }
+}
+
 for (const forbidden of [
     "Promise.all",
     "punisherFinThemeSettingsBindings",
@@ -106,7 +118,7 @@ for (const forbidden of [
 }
 
 for (const required of [
-    "__punisherFinThemeV210",
+    "__punisherFinThemeV211",
     "__punisherFinThemeV140",
     "__punisherFinThemeV139",
     "__punisherFinThemeV138",

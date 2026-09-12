@@ -717,6 +717,24 @@
                 var previewCurrentBackdrop = 0;
                 var previewQualityTimer = null;
 
+                function ensureSettingsStylesheet() {
+                    var styleId = "punisherfin-theme-settings-styles";
+                    var existing = document.getElementById(styleId);
+                    if (existing || !document.head || typeof document.createElement !== "function") {
+                        return;
+                    }
+
+                    var link = document.createElement("link");
+                    link.id = styleId;
+                    link.rel = "stylesheet";
+                    link.href = typeof ApiClient !== "undefined" && typeof ApiClient.getUrl === "function"
+                        ? ApiClient.getUrl("/PunisherFinTheme/settings.css", { v: "2.1.1.0" })
+                        : "/PunisherFinTheme/settings.css?v=2.1.1.0";
+                    document.head.appendChild(link);
+                }
+
+                ensureSettingsStylesheet();
+
                 if (!view || !form) {
                     console.error("PunisherFinTheme: Die Einstellungsseite wurde nicht gefunden.");
                     return;
