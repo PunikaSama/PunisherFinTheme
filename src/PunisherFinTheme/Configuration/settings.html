@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>PunisherFinTheme</title>
+    </head>
+<body>
     <style>
         #PunisherFinThemeSettings .pft-design-section {
             --pft-settings-accent: #ff5f87;
@@ -235,9 +237,249 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Jellyfin inserts configuration pages dynamically. Keep this stylesheet in the
+           page body and make each choice a real miniature of the home screen. */
+        #PunisherFinThemeSettings .pft-design-section {
+            border-radius: 1em;
+            padding: clamp(1em, 2.5vw, 1.6em);
+        }
+        #PunisherFinThemeSettings .pft-design-picker {
+            gap: clamp(.9em, 2vw, 1.4em);
+        }
+        #PunisherFinThemeSettings .pft-design-choice {
+            background: rgba(7, 8, 11, .72);
+            border-radius: .9em;
+        }
+        #PunisherFinThemeSettings .pft-design-option > input:checked + .pft-design-choice::after {
+            align-items: center;
+            background: var(--pft-settings-accent);
+            border: 3px solid #121318;
+            border-radius: 50%;
+            color: #fff;
+            content: "✓";
+            display: flex;
+            font-size: .82em;
+            font-weight: 900;
+            height: 2em;
+            justify-content: center;
+            position: absolute;
+            right: .7em;
+            top: .7em;
+            width: 2em;
+            z-index: 8;
+        }
+        #PunisherFinThemeSettings .pft-design-home {
+            aspect-ratio: 16 / 9;
+            background:
+                linear-gradient(90deg, rgba(6, 7, 10, .9), rgba(6, 7, 10, .3)),
+                radial-gradient(circle at 76% 35%, color-mix(in srgb, var(--pft-settings-accent) 38%, #26344a), #10131a 62%);
+            display: block;
+            padding: 0;
+        }
+        #PunisherFinThemeSettings .pft-design-home::before {
+            background: linear-gradient(0deg, #090a0d 0, transparent 55%);
+            opacity: .8;
+        }
+        #PunisherFinThemeSettings .pft-mini-nav {
+            align-items: center;
+            background: rgba(5, 6, 8, .72);
+            display: flex;
+            gap: 3%;
+            height: 13%;
+            padding: 0 5%;
+            position: relative;
+            z-index: 2;
+        }
+        #PunisherFinThemeSettings .pft-mini-nav::before {
+            background: var(--pft-settings-accent);
+            border-radius: 50%;
+            content: "";
+            height: 45%;
+            margin-right: 2%;
+            width: 3.8%;
+        }
+        #PunisherFinThemeSettings .pft-mini-nav i {
+            background: rgba(255, 255, 255, .72);
+            border-radius: 1em;
+            height: 12%;
+            width: 10%;
+        }
+        #PunisherFinThemeSettings .pft-mini-hero {
+            display: flex;
+            flex-direction: column;
+            gap: 8%;
+            height: 31%;
+            justify-content: center;
+            padding: 0 6%;
+            position: relative;
+            z-index: 2;
+        }
+        #PunisherFinThemeSettings .pft-mini-hero b {
+            font-size: clamp(.56em, 1.25vw, .95em);
+            letter-spacing: -.02em;
+        }
+        #PunisherFinThemeSettings .pft-mini-hero i {
+            background: var(--pft-settings-accent);
+            border-radius: 1em;
+            height: 10%;
+            width: 19%;
+        }
+        #PunisherFinThemeSettings .pft-mini-heading {
+            background: rgba(255, 255, 255, .88);
+            border-radius: 1em;
+            display: block;
+            height: 2.5%;
+            margin: 1% 6% 2.5%;
+            position: relative;
+            width: 18%;
+            z-index: 2;
+        }
+        #PunisherFinThemeSettings .pft-mini-shelf {
+            display: grid;
+            gap: 3%;
+            grid-template-columns: repeat(4, 1fr);
+            height: 42%;
+            padding: 0 6% 5%;
+            position: relative;
+            z-index: 2;
+        }
+        #PunisherFinThemeSettings .pft-mini-shelf i {
+            background: linear-gradient(145deg, #6a7180, #242831 65%);
+            border: 1px solid rgba(255, 255, 255, .28);
+            border-radius: .32em;
+            box-shadow: 0 .3em .7em rgba(0, 0, 0, .38);
+            position: relative;
+        }
+        #PunisherFinThemeSettings .pft-mini-shelf i::after {
+            background: var(--pft-settings-accent);
+            border-radius: 1em;
+            bottom: 0;
+            content: "";
+            height: 3px;
+            left: 0;
+            position: absolute;
+            width: 62%;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic {
+            background:
+                linear-gradient(90deg, #07090d 0 32%, transparent 70%),
+                radial-gradient(circle at 75% 45%, color-mix(in srgb, var(--pft-settings-accent) 32%, #34445c), #111620 70%);
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-nav {
+            background: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, .13);
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-hero {
+            height: 37%;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-heading {
+            background: var(--pft-settings-accent);
+            height: 1.5%;
+            width: 10%;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-shelf {
+            gap: 2.5%;
+            grid-template-columns: 1.35fr 1fr 1fr;
+            height: 35%;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-shelf i {
+            background: linear-gradient(120deg, #303b4d, #11151d);
+            border-radius: .12em;
+        }
+        #PunisherFinThemeSettings .pft-design-meta {
+            min-height: 4.4em;
+            padding: .9em 1em 1em;
+        }
+        #PunisherFinThemeSettings .pft-design-name {
+            align-items: center;
+        }
+        #PunisherFinThemeSettings .pft-design-preview {
+            background:
+                linear-gradient(90deg, rgba(8, 9, 12, .94), rgba(8, 9, 12, .48)),
+                radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--pft-settings-accent) 28%, #2b3444), #101218 68%);
+            min-height: 17em;
+        }
+        #PunisherFinThemeSettings .pft-preview-hero {
+            display: flex;
+            flex-direction: column;
+            gap: .25em;
+            margin: 0 0 5%;
+        }
+        #PunisherFinThemeSettings .pft-preview-hero strong {
+            font-size: clamp(1em, 2.7vw, 1.8em);
+        }
+        #PunisherFinThemeSettings .pft-preview-hero span {
+            color: rgba(255, 255, 255, .62);
+            font-size: .78em;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] {
+            background:
+                linear-gradient(90deg, #07090e 0 35%, rgba(7, 9, 14, .54) 72%, #07090e),
+                radial-gradient(circle at 75% 20%, color-mix(in srgb, var(--pft-settings-accent) 34%, #33445d), #0d121b 68%);
+            border-radius: .2em;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-header {
+            border-bottom: 1px solid rgba(255, 255, 255, .14);
+            padding-bottom: 2.5%;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-hero strong {
+            font-size: clamp(1.25em, 3.4vw, 2.35em);
+            letter-spacing: -.04em;
+            text-transform: uppercase;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-content {
+            display: grid;
+            grid-template-columns: 1.6fr .7fr;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-cards {
+            gap: 2%;
+            grid-template-columns: 1.35fr 1fr 1fr;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-card {
+            border-radius: .15em;
+            min-height: 6em;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-card::after {
+            border-radius: 0;
+            bottom: 0;
+            content: "";
+            height: 3px;
+            left: 0;
+            right: auto;
+            top: auto;
+            width: 58%;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-side {
+            border-left: 1px solid rgba(255, 255, 255, .16);
+            margin: 0;
+            padding-left: 10%;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-episode {
+            background: rgba(255, 255, 255, .055);
+            border-left: 2px solid var(--pft-settings-accent);
+            border-radius: 0;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-button {
+            border-radius: .1em;
+            text-transform: uppercase;
+        }
+        @media (max-width: 600px) {
+            #PunisherFinThemeSettings .pft-design-preview {
+                aspect-ratio: auto;
+                min-height: 15em;
+            }
+            #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-content {
+                grid-template-columns: 1fr;
+            }
+            #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-side {
+                border-left: 0;
+                border-top: 1px solid rgba(255, 255, 255, .16);
+                margin-top: 5%;
+                padding: 5% 0 0;
+            }
+        }
     </style>
-</head>
-<body>
     <div id="PunisherFinThemeSettings"
          data-role="page"
          class="page type-interior pluginConfigurationPage"
@@ -267,10 +509,11 @@
                                 <label class="pft-design-option" for="DesignPunisherFin">
                                     <input id="DesignPunisherFin" name="DesignPreset" type="radio" value="punisherfin">
                                     <span class="pft-design-choice">
-                                        <span class="pft-design-thumb" aria-hidden="true">
-                                            <span class="pft-design-thumb-card"></span>
-                                            <span class="pft-design-thumb-card"></span>
-                                            <span class="pft-design-thumb-card"></span>
+                                        <span class="pft-design-thumb pft-design-home" aria-hidden="true">
+                                            <span class="pft-mini-nav"><i></i><i></i><i></i></span>
+                                            <span class="pft-mini-hero"><b>PunisherFin</b><i></i></span>
+                                            <span class="pft-mini-heading"></span>
+                                            <span class="pft-mini-shelf"><i></i><i></i><i></i><i></i></span>
                                         </span>
                                         <span class="pft-design-meta">
                                             <span class="pft-design-name">PunisherFin <span class="pft-design-badge">Standard</span></span>
@@ -281,18 +524,22 @@
                                 <label class="pft-design-option" for="DesignCinematic">
                                     <input id="DesignCinematic" name="DesignPreset" type="radio" value="cinematic">
                                     <span class="pft-design-choice">
-                                        <span class="pft-design-thumb pft-design-thumb-cinematic" aria-hidden="true">
-                                            <span class="pft-design-thumb-card"></span>
+                                        <span class="pft-design-thumb pft-design-thumb-cinematic pft-design-home" aria-hidden="true">
+                                            <span class="pft-mini-nav"><i></i><i></i><i></i></span>
+                                            <span class="pft-mini-hero"><b>Cinema Deck</b><i></i></span>
+                                            <span class="pft-mini-heading"></span>
+                                            <span class="pft-mini-shelf"><i></i><i></i><i></i></span>
                                         </span>
                                         <span class="pft-design-meta">
-                                            <span class="pft-design-name">Cinematic</span>
-                                            <span class="fieldDescription">Breite Karten, Filmstreifen und Glasflächen.</span>
+                                            <span class="pft-design-name">Cinema Deck</span>
+                                            <span class="fieldDescription">Eigenständige Kino-Oberfläche mit kompakten Filmkarten, Bildtiteln und ruhigen Panels.</span>
                                         </span>
                                     </span>
                                 </label>
                             </div>
                             <div id="DesignPreview" class="pft-design-preview" data-design="punisherfin" aria-label="Live-Vorschau des ausgewählten Designs">
                                 <div class="pft-preview-header"><span id="DesignPreviewTitle">PunisherFin</span><span>● Akzent</span></div>
+                                <div class="pft-preview-hero"><strong>Deine Startseite</strong><span>Filme und Serien entdecken</span></div>
                                 <div class="pft-preview-content">
                                     <div class="pft-preview-cards" aria-hidden="true">
                                         <div class="pft-preview-card"></div>
@@ -496,7 +743,7 @@
                     var accent = validColor(element("AccentColor").value);
                     var style = element("DesignSection").style;
                     element("DesignPreview").dataset.design = design;
-                    element("DesignPreviewTitle").textContent = design === "cinematic" ? "Cinematic" : "PunisherFin";
+                    element("DesignPreviewTitle").textContent = design === "cinematic" ? "Cinema Deck" : "PunisherFin";
                     if (typeof style.setProperty === "function") {
                         style.setProperty("--pft-settings-accent", accent);
                     } else {

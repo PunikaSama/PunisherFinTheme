@@ -7,7 +7,7 @@ PunisherFinTheme brings selectable, accent-aware designs to Jellyfin 12 Web whil
 ## Features
 
 - Modern home and library layouts for desktop and mobile
-- Selectable PunisherFin and Cinematic designs with a live settings preview
+- Selectable PunisherFin and Cinema Deck designs with full homepage previews in settings
 - One global accent color shared by every design
 - Wide artwork and optional muted video previews on hover or TV focus
 - Responsive episode lists and redesigned playback controls

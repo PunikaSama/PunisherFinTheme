@@ -38,8 +38,8 @@ public static class ThemeDesignCatalog
         new DesignOption
         {
             Id = CinematicId,
-            Name = "Cinematic",
-            Description = "Breite Medienkarten, filmische Verläufe und eine eigenständige Oberfläche.",
+            Name = "Cinema Deck",
+            Description = "Eigenständige Kino-Oberfläche mit kompakten Filmkarten, Bildtiteln und ruhigen Panels.",
             Stylesheet = "/PunisherFinTheme/designs/cinematic.css"
         }
     ];

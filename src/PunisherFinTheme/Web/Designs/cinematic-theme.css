@@ -1,295 +1,222 @@
-/* Cinematic is an optional override bundle. The unchanged PunisherFin stylesheet stays the base. */
+/* Cinema Deck is an optional, isolated override bundle.
+   The original PunisherFin stylesheet remains the unchanged default layer. */
 :root.pft-enabled[data-pft-design="cinematic"] {
-    --pft-background: #080a0e;
-    --pft-surface: rgba(12, 15, 21, .88);
-    --pft-surface-raised: rgba(27, 31, 40, .94);
+    --pft-background: #07090d;
+    --pft-surface: rgba(8, 11, 16, .92);
+    --pft-surface-raised: rgba(17, 22, 30, .96);
     --pft-text: #f7f8fb;
-    --pft-text-muted: rgba(239, 242, 248, .72);
-    --pft-card: linear-gradient(145deg, rgba(27, 31, 40, .94), rgba(8, 10, 14, .88));
-    --pft-border: rgba(255, 255, 255, .16);
-    --pft-radius: 18px;
-    --pft-transition: 220ms cubic-bezier(.2, .75, .25, 1);
+    --pft-text-muted: rgba(232, 236, 244, .68);
+    --pft-card: rgba(7, 9, 13, .96);
+    --pft-border: rgba(255, 255, 255, .13);
+    --pft-radius: 3px;
+    --pft-transition: 190ms cubic-bezier(.22, .72, .25, 1);
     color-scheme: dark;
 }
 
-:root.pft-enabled[data-pft-design="cinematic"] body {
-    background-color: var(--pft-background);
+:root.pft-enabled[data-pft-design="cinematic"] body { background-color: var(--pft-background); }
+:root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view { padding-bottom: 5rem; }
+
+/* Editorial shelves make the home page structurally different from PunisherFin. */
+:root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view > .verticalSection {
+    background: linear-gradient(105deg, rgba(8, 11, 16, .82), rgba(8, 11, 16, .32));
+    border-left: 3px solid color-mix(in srgb, var(--pft-accent) 72%, transparent);
+    border-top: 1px solid rgba(255, 255, 255, .08);
+    margin: 0 0 clamp(1.2rem, 2.4vw, 2.2rem);
+    padding: clamp(.85rem, 1.6vw, 1.4rem) 0 clamp(1rem, 2vw, 1.6rem) clamp(.85rem, 1.8vw, 1.6rem);
 }
 
 :root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view) .sectionTitle,
 :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .sectionTitle {
-    font-size: clamp(1.35rem, 2vw, 2rem);
-    font-weight: 800;
-    letter-spacing: -.025em;
-    text-shadow: 0 2px 18px rgba(0, 0, 0, .75);
+    align-items: center;
+    color: var(--pft-text) !important;
+    display: flex;
+    font-size: clamp(.9rem, 1.2vw, 1.08rem);
+    font-weight: 760;
+    gap: .65rem;
+    letter-spacing: .13em;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, .72);
+    text-transform: uppercase;
 }
 
-:root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view > .verticalSection {
-    margin-bottom: clamp(2.2rem, 5vw, 4.5rem);
+:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view) .sectionTitle::after,
+:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .sectionTitle::after {
+    background: linear-gradient(90deg, var(--pft-accent), transparent);
+    content: "";
+    height: 1px;
+    max-width: 8rem;
+    opacity: .82;
+    width: 12vw;
 }
 
-:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view) .itemsContainer {
-    gap: clamp(.85rem, 1.5vw, 1.35rem);
+:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view) .itemsContainer { gap: clamp(.55rem, .9vw, .9rem); }
+:root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view .card:not(.pft-preview-expanded) { width: clamp(13.5rem, 17vw, 17.5rem) !important; }
+:root.pft-enabled[data-pft-design="cinematic"] .pft-library-view .itemsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
 }
-
-/* Landscape-first cards with a film-strip surface and an accent light line. */
-:root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view .card:not(.pft-preview-expanded) {
-    width: clamp(18rem, 25vw, 28rem) !important;
-}
-
-:root.pft-enabled[data-pft-design="cinematic"] .pft-library-view .card {
-    width: calc(33.333% - 1rem) !important;
-}
-
-:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .card.pft-season-card {
-    width: clamp(17rem, 23vw, 24rem) !important;
-}
-
-:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:not(.pft-preview-expanded) .cardScalable {
-    padding-top: 56.25% !important;
-}
+:root.pft-enabled[data-pft-design="cinematic"] .pft-library-view .card { width: 100% !important; }
+:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .card.pft-season-card { width: clamp(13.5rem, 17vw, 17rem) !important; }
+:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:not(.pft-preview-expanded) .cardScalable { padding-top: 56.25% !important; }
 
 :root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardBox {
     background: var(--pft-card) !important;
     border: 1px solid var(--pft-border) !important;
     border-radius: var(--pft-radius) !important;
-    box-shadow: 0 .8rem 2.2rem rgba(0, 0, 0, .34);
+    box-shadow: 0 .55rem 1.4rem rgba(0, 0, 0, .3);
     isolation: isolate;
     overflow: hidden;
     position: relative;
     transform: translateZ(0);
+    transition: border-color var(--pft-transition), box-shadow var(--pft-transition), transform var(--pft-transition);
+}
+
+:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardBox::before {
+    background: linear-gradient(to top, rgba(3, 4, 7, .98), rgba(3, 4, 7, .08) 48%, transparent 68%);
+    content: "";
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 3;
 }
 
 :root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardBox::after {
-    background: linear-gradient(90deg, transparent, var(--pft-accent), transparent);
+    background: var(--pft-accent);
     bottom: 0;
     content: "";
-    height: 2px;
-    left: 12%;
-    opacity: .72;
+    height: 3px;
+    left: 0;
     pointer-events: none;
     position: absolute;
-    right: 12%;
-    transform: scaleX(.25);
-    transition: opacity var(--pft-transition), transform var(--pft-transition);
+    transform: scaleX(.24);
+    transform-origin: left;
+    transition: transform var(--pft-transition);
+    width: 100%;
     z-index: 8;
 }
 
-:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardImageContainer,
-:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardContent {
-    border-radius: calc(var(--pft-radius) - 1px) calc(var(--pft-radius) - 1px) 0 0 !important;
-}
-
+:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) :is(.cardImageContainer, .cardContent) { border-radius: calc(var(--pft-radius) - 1px) !important; }
 :root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardText {
-    font-weight: 650;
-    letter-spacing: -.01em;
-    padding-inline: .7rem;
+    color: var(--pft-text) !important;
+    font-size: .88rem;
+    font-weight: 680;
+    letter-spacing: .01em;
+    overflow: hidden;
+    padding: .42rem .62rem 0;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    z-index: 5;
 }
-
 :root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .cardText-secondary {
-    font-size: .9em;
-    padding-bottom: .45rem;
+    color: var(--pft-text-muted) !important;
+    font-size: .72rem;
+    font-weight: 520;
+    letter-spacing: .04em;
+    padding-bottom: .5rem;
+    padding-top: .12rem;
+    text-transform: uppercase;
 }
 
 :root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:is(:hover, :focus-within) .cardBox {
     border-color: var(--pft-accent) !important;
-    box-shadow: 0 1.15rem 3rem rgba(0, 0, 0, .56), 0 0 0 1px var(--pft-accent), 0 0 2.2rem var(--pft-accent-soft) !important;
-    transform: translateY(-5px) scale(1.015);
+    box-shadow: 0 .9rem 2.4rem rgba(0, 0, 0, .58), 0 0 0 1px var(--pft-accent), 0 0 1.4rem var(--pft-accent-soft) !important;
+    transform: translateY(-3px);
 }
-
-:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:is(:hover, :focus-within) .cardBox::after {
-    opacity: 1;
-    transform: scaleX(1);
-}
-
+:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card:is(:hover, :focus-within) .cardBox::after { transform: scaleX(1); }
 :root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .countIndicator {
-    border: 1px solid rgba(255, 255, 255, .66);
-    box-shadow: 0 .3rem 1.1rem rgba(0, 0, 0, .5), 0 0 1.1rem var(--pft-accent-soft);
+    background: rgba(4, 6, 10, .9) !important;
+    border: 1px solid var(--pft-accent) !important;
+    border-radius: 2px !important;
+    box-shadow: 0 .25rem .8rem rgba(0, 0, 0, .55);
+    color: var(--pft-text) !important;
+    font-size: .75rem;
     font-weight: 800;
 }
+:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card .itemProgressBar { height: 3px !important; max-height: 3px !important; }
 
-:root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view, #itemDetailPage) .card .itemProgressBar {
-    height: 5px !important;
-    max-height: 5px !important;
-}
-
-/* Detail hero and actions use wide cinematic pills instead of expanding circles. */
-:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .detailPagePrimaryContainer {
-    text-shadow: 0 2px 20px rgba(0, 0, 0, .8);
-}
-
-:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons {
-    gap: .65rem;
-}
-
-:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton,
-:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay {
-    height: 48px;
-    min-width: 48px;
-}
-
-:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton .detailButton-content,
-:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
-    background: rgba(10, 12, 17, .72) !important;
-    border: 1px solid rgba(255, 255, 255, .36) !important;
-    border-radius: 12px !important;
-    column-gap: .25rem;
-    height: 48px;
+/* Film-dossier details and rectangular action controls. */
+:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .detailPagePrimaryContainer { max-width: 66rem; text-shadow: 0 2px 20px rgba(0, 0, 0, .82); }
+:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons { gap: .5rem; }
+:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons :is(.detailButton, .btnPlay) { height: 44px; min-width: 44px; }
+:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons :is(.detailButton, .btnPlay) .detailButton-content {
+    background: rgba(5, 7, 11, .78) !important;
+    border: 1px solid rgba(255, 255, 255, .3) !important;
+    border-radius: 2px !important;
+    height: 44px;
     max-width: none;
-    min-width: 48px;
-    padding: 0 .85rem !important;
+    min-width: 44px;
+    padding: 0 .8rem !important;
 }
-
-:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
-    background: var(--pft-accent) !important;
-    border-color: var(--pft-accent) !important;
-    min-width: 10.5rem;
-}
-
+:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content { background: var(--pft-accent) !important; border-color: var(--pft-accent) !important; min-width: 9rem; }
 :root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton :is(.detailButton-text, .pft-detail-button-label) {
+    font-size: .78rem;
+    font-weight: 760;
+    letter-spacing: .08em;
     max-width: 10rem;
     opacity: 1;
+    text-transform: uppercase;
 }
-
 :root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) .detailButton-content {
     background: var(--pft-accent-soft) !important;
     border-color: var(--pft-accent) !important;
     color: #fff !important;
-    max-width: none;
-    outline: 2px solid var(--pft-accent);
+    outline: 1px solid var(--pft-accent);
     outline-offset: 2px;
-    padding: 0 .85rem !important;
 }
 
-:root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .detailButton:is(:hover, :focus-visible) :is(.detailButton-icon, .detailButton-text, .pft-detail-button-label) {
-    color: #fff !important;
-}
-
-/* Episode rows become separated glass panels with a larger still image. */
-:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .vertical-list {
-    gap: 1rem;
-}
-
+/* Episodes form a clean timeline rather than another media-card wall. */
+:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .vertical-list { gap: 0; }
 :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-withContentWrapper {
-    background: linear-gradient(105deg, rgba(25, 29, 38, .94), rgba(8, 10, 14, .78)) !important;
-    border: 1px solid var(--pft-border);
-    border-radius: 16px !important;
-    box-shadow: 0 .65rem 1.7rem rgba(0, 0, 0, .3);
+    background: linear-gradient(90deg, rgba(9, 12, 17, .9), rgba(9, 12, 17, .42)) !important;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+    border-left: 2px solid transparent;
+    border-radius: 0 !important;
+    box-shadow: none;
 }
-
 :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-withContentWrapper:is(:hover, :focus-within) {
-    border-color: var(--pft-accent);
-    box-shadow: inset 4px 0 var(--pft-accent), 0 .8rem 2rem rgba(0, 0, 0, .45), 0 0 1.3rem var(--pft-accent-soft);
-    transform: translateX(4px);
+    background: linear-gradient(90deg, var(--pft-accent-soft), rgba(9, 12, 17, .52)) !important;
+    border-left-color: var(--pft-accent);
+    box-shadow: none;
+    transform: translateX(2px);
 }
-
 :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemImage {
-    border-radius: 15px 0 0 15px !important;
-    flex-basis: clamp(12rem, 24vw, 18rem);
-    min-height: 8.5rem;
-    width: clamp(12rem, 24vw, 18rem) !important;
+    border-radius: 0 !important;
+    flex-basis: clamp(9rem, 15vw, 12rem);
+    min-height: 5.5rem;
+    width: clamp(9rem, 15vw, 12rem) !important;
 }
+:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBody { padding: .75rem 1rem !important; }
+:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBodyText:first-child { font-size: .95rem; font-weight: 720; }
 
-:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBody {
-    padding: 1.05rem 1.25rem !important;
-}
-
-:root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBodyText:first-child {
-    font-size: 1.05rem;
-    font-weight: 750;
-}
-
-/* Player and audio bar share the same glass-and-accent language. */
-:root.pft-enabled[data-pft-design="cinematic"] .videoPlayerContainer .videoOsdBottom {
-    background: linear-gradient(to top, rgba(4, 5, 8, .98), rgba(4, 5, 8, .68) 58%, transparent) !important;
-    padding-top: 4rem;
-}
-
+/* Players and InPlayerEpisodePreview share the global accent and deck surfaces. */
+:root.pft-enabled[data-pft-design="cinematic"] .videoPlayerContainer .videoOsdBottom { background: linear-gradient(to top, rgba(3, 4, 7, .98), rgba(3, 4, 7, .62) 56%, transparent) !important; padding-top: 3.5rem; }
 :root.pft-enabled[data-pft-design="cinematic"].pft-player-controls .videoPlayerContainer :is(.videoOsdBottom, .videoOsd-centerButtons, .osdControls) button,
-:root.pft-enabled[data-pft-design="cinematic"].pft-player-controls .videoPlayerContainer [class*="videoOsd"] .paper-icon-button-light {
-    background: rgba(10, 12, 17, .66) !important;
-    border-radius: 12px !important;
-    backdrop-filter: blur(12px);
-}
-
+:root.pft-enabled[data-pft-design="cinematic"].pft-player-controls .videoPlayerContainer [class*="videoOsd"] .paper-icon-button-light { background: rgba(5, 7, 11, .58) !important; border-radius: 2px !important; backdrop-filter: blur(10px); }
 :root.pft-enabled[data-pft-design="cinematic"].pft-player-controls .videoPlayerContainer :is(.videoOsdBottom, .videoOsd-centerButtons, .osdControls) button:is(:hover, :focus-visible),
-:root.pft-enabled[data-pft-design="cinematic"].pft-player-controls .videoPlayerContainer [class*="videoOsd"] .paper-icon-button-light:is(:hover, :focus-visible) {
-    background: var(--pft-accent-soft) !important;
-    border-color: var(--pft-accent) !important;
-    box-shadow: 0 0 1.25rem var(--pft-accent-soft);
-    color: var(--pft-accent) !important;
-}
-
-:root.pft-enabled[data-pft-design="cinematic"] .nowPlayingBar {
-    background: rgba(8, 10, 14, .94) !important;
-    border-top: 1px solid var(--pft-accent) !important;
-    box-shadow: 0 -1rem 3rem rgba(0, 0, 0, .55), 0 -1px 1.2rem var(--pft-accent-soft);
-    backdrop-filter: blur(18px);
-}
-
-:root.pft-enabled[data-pft-design="cinematic"] #previewPopup {
-    background: rgba(7, 9, 13, .97) !important;
-    border: 1px solid var(--pft-border);
-    border-radius: 18px !important;
-    box-shadow: 0 1.25rem 4rem rgba(0, 0, 0, .65), 0 0 1.8rem var(--pft-accent-soft);
-    overflow: hidden;
-}
-
-:root.pft-enabled[data-pft-design="cinematic"] #previewPopup :is(.previewListItem:hover, .previewListItem:focus-within, .previewListItem.selectedListItem) {
-    background: linear-gradient(90deg, var(--pft-accent-soft), rgba(255, 255, 255, .05)) !important;
-    box-shadow: inset 4px 0 var(--pft-accent);
-}
+:root.pft-enabled[data-pft-design="cinematic"].pft-player-controls .videoPlayerContainer [class*="videoOsd"] .paper-icon-button-light:is(:hover, :focus-visible) { background: var(--pft-accent-soft) !important; border-color: var(--pft-accent) !important; box-shadow: inset 0 -2px var(--pft-accent); color: var(--pft-accent) !important; }
+:root.pft-enabled[data-pft-design="cinematic"] .nowPlayingBar { background: rgba(5, 7, 11, .96) !important; border-top: 1px solid var(--pft-accent) !important; box-shadow: 0 -1rem 2.5rem rgba(0, 0, 0, .55); backdrop-filter: blur(16px); }
+:root.pft-enabled[data-pft-design="cinematic"] #previewPopup { background: rgba(5, 7, 11, .98) !important; border: 1px solid var(--pft-border); border-radius: 2px !important; box-shadow: 0 1.2rem 3.5rem rgba(0, 0, 0, .7); overflow: hidden; }
+:root.pft-enabled[data-pft-design="cinematic"] #previewPopup :is(.previewListItem:hover, .previewListItem:focus-within, .previewListItem.selectedListItem) { background: linear-gradient(90deg, var(--pft-accent-soft), rgba(255, 255, 255, .035)) !important; box-shadow: inset 2px 0 var(--pft-accent); }
 
 @media (max-width: 900px) {
-    :root.pft-enabled[data-pft-design="cinematic"] .pft-library-view .card {
-        width: calc(50% - .6rem) !important;
-    }
-
-    :root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view .card:not(.pft-preview-expanded) {
-        width: min(72vw, 23rem) !important;
-    }
-
-    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .card.pft-season-card {
-        width: min(70vw, 21rem) !important;
-    }
+    :root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view .card:not(.pft-preview-expanded),
+    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .card.pft-season-card { width: min(48vw, 16rem) !important; }
+    :root.pft-enabled[data-pft-design="cinematic"] .pft-library-view .itemsContainer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 600px) {
-    :root.pft-enabled[data-pft-design="cinematic"] {
-        --pft-radius: 14px;
-    }
-
-    :root.pft-enabled[data-pft-design="cinematic"] :is(.homeSectionsContainer.pft-home-view, .pft-library-view) .itemsContainer {
-        gap: .7rem;
-    }
-
-    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-content {
-        display: grid;
-        grid-template-columns: 8.5rem minmax(0, 1fr);
-        min-height: 6.5rem;
-    }
-
-    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemImage {
-        border-radius: 13px 0 0 13px !important;
-        min-height: 6.5rem;
-        width: 8.5rem !important;
-    }
-
-    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBody {
-        padding: .65rem .75rem !important;
-    }
-
-    :root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content {
-        min-width: min(58vw, 13rem);
-    }
+    :root.pft-enabled[data-pft-design="cinematic"] { --pft-radius: 2px; }
+    :root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view > .verticalSection { margin-bottom: 1rem; padding-left: .65rem; }
+    :root.pft-enabled[data-pft-design="cinematic"] .homeSectionsContainer.pft-home-view .card:not(.pft-preview-expanded),
+    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage .card.pft-season-card { width: min(63vw, 15rem) !important; }
+    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItem-content { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); min-height: 5rem; }
+    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemImage { min-height: 5rem; width: 7.5rem !important; }
+    :root.pft-enabled[data-pft-design="cinematic"] #itemDetailPage :is(#childrenCollapsible, #listChildrenCollapsible) .listItemBody { padding: .5rem .65rem !important; }
+    :root.pft-enabled[data-pft-design="cinematic"].pft-action-buttons #itemDetailPage .mainDetailButtons .btnPlay .detailButton-content { min-width: min(55vw, 11rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    :root.pft-enabled[data-pft-design="cinematic"] :is(.cardBox, .listItem-withContentWrapper) {
-        transition: none !important;
-    }
-
-    :root.pft-enabled[data-pft-design="cinematic"] :is(.card, .listItem-withContentWrapper):is(:hover, :focus-within) {
-        transform: none !important;
-    }
+    :root.pft-enabled[data-pft-design="cinematic"] :is(.cardBox, .listItem-withContentWrapper) { transition: none !important; }
+    :root.pft-enabled[data-pft-design="cinematic"] :is(.card, .listItem-withContentWrapper):is(:hover, :focus-within) { transform: none !important; }
 }

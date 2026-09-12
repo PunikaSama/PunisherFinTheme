@@ -30,6 +30,12 @@ if (start < 0 || end < 0 || start > html.lastIndexOf("</div>")) {
 new Function(html.slice(start + opening.length, end));
 new Function(client);
 
+const pageStart = html.indexOf("<div id=\"PunisherFinThemeSettings\"");
+const bodyStyle = html.indexOf("<style>", html.indexOf("<body"));
+if (bodyStyle < 0 || bodyStyle > pageStart) {
+    throw new Error("Settings gallery styles must be loaded inside the dynamic Jellyfin page body.");
+}
+
 for (const required of [
     "Enabled",
     "AccentColor",
@@ -37,6 +43,9 @@ for (const required of [
     "DesignPunisherFin",
     "DesignCinematic",
     "DesignPreview",
+    "pft-design-home",
+    "pft-mini-hero",
+    "Cinema Deck",
     "syncDesignPreview",
     "selectedDesign",
     "EnablePunisherFinBranding",
@@ -97,7 +106,7 @@ for (const forbidden of [
 }
 
 for (const required of [
-    "__punisherFinThemeV200",
+    "__punisherFinThemeV210",
     "__punisherFinThemeV140",
     "__punisherFinThemeV139",
     "__punisherFinThemeV138",

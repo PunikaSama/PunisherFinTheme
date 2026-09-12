@@ -176,7 +176,7 @@ async function main() {
     assert.equal(elements.Enabled.checked, true, "Saved enabled state must be restored");
     assert.equal(elements.DesignCinematic.checked, true, "Saved design must be restored");
     assert.equal(elements.DesignPreview.dataset.design, "cinematic", "Saved design must update the live preview");
-    assert.equal(elements.DesignPreviewTitle.textContent, "Cinematic", "Live preview must identify the selected design");
+    assert.equal(elements.DesignPreviewTitle.textContent, "Cinema Deck", "Live preview must identify the selected design");
     assert.equal(elements.DesignSection.style["--pft-settings-accent"], expected.AccentColor, "Live preview must use the saved global accent");
     assert.equal(elements.EnablePunisherFinBranding.checked, true, "Saved branding state must be restored");
     assert.equal(elements.CompactEpisodes.checked, true, "Saved checkbox state must be restored");
