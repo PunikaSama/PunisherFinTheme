@@ -79,7 +79,7 @@ async function main() {
             return new FakeElement("", tagName);
         }
     };
-    const window = { setTimeout };
+    const window = { setTimeout, clearTimeout };
     const expected = {
         Enabled: true,
         AccentColor: "#19AABB",
@@ -106,6 +106,7 @@ async function main() {
         BackgroundImageQuality: 84
     };
     let saved = null;
+    let lastItemsQuery = null;
     const getPluginConfiguration = function () {
         return Promise.resolve({ ...expected });
     };
@@ -114,7 +115,10 @@ async function main() {
             saved = { pluginId, settings: { ...settings } };
             return Promise.resolve({});
         },
-        getUrl(requestPath) {
+        getUrl(requestPath, query) {
+            if (requestPath === "/Items") {
+                lastItemsQuery = query;
+            }
             return requestPath;
         },
         fetch(request) {
@@ -122,6 +126,18 @@ async function main() {
                 return Promise.resolve({
                     ok: true,
                     json: () => Promise.resolve({ connected: true, message: "Verbunden", version: "test" })
+                });
+            }
+
+            if (request.url === "/Items") {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({
+                        Items: [{
+                            Id: "preview-item",
+                            BackdropImageTags: ["preview-tag"]
+                        }]
+                    })
                 });
             }
 
@@ -164,10 +180,24 @@ async function main() {
     assert.equal(elements.BackgroundOpacityPercentValue.textContent, "77 %", "Saved slider label must be restored");
     assert.equal(elements.BackgroundLibraryId.value, expected.BackgroundLibraryId, "Saved library must survive a failed library lookup");
     assert.equal(elements.DependencyMessage.textContent, "Verbunden", "Dependency state must load independently");
+    await settle();
+    assert.match(
+        elements.BackgroundPreviewLayer1.style.backgroundImage || elements.BackgroundPreviewLayer2.style.backgroundImage || "",
+        /preview-item/,
+        "Preview must use a backdrop from the selected library"
+    );
+    assert.equal(lastItemsQuery.ParentId, expected.BackgroundLibraryId, "Preview must query the selected library only");
+    elements.RefreshBackgroundPreview.dispatch("click");
+    await settle();
+    assert.match(elements.BackgroundPreviewLayer1.style.backgroundImage || "", /preview-item/, "Random-preview button must display another backdrop");
 
     elements.BackgroundOpacityPercent.value = "42";
     elements.BackgroundOpacityPercent.dispatch("input");
     assert.equal(elements.BackgroundOpacityPercentValue.textContent, "42 %", "Slider label must update while dragging");
+    assert.ok(
+        [elements.BackgroundPreviewLayer1.style.opacity, elements.BackgroundPreviewLayer2.style.opacity].includes("0.42"),
+        "Preview opacity must update while dragging"
+    );
 
     elements.Enabled.checked = false;
     elements.EnablePunisherFinBranding.checked = false;

@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
       {
+        "version": "1.8.0.0",
+        "changelog": "Adds an isolated live preview to the random-background settings. The preview selects a random backdrop from the currently selected Jellyfin library and updates opacity, brightness, blur, saturation, contrast, overlay darkness, crossfade duration, and image quality before settings are saved. Changing libraries automatically loads a matching preview, and a dedicated button selects another random image without altering the active site background.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v1.8.0.0/PunisherFinTheme_1.8.0.0.zip",
+        "checksum": "39c0097ce22c6c705a0c104aa86e0e03",
+        "timestamp": "2026-09-12 15:05:16"
+      },
+      {
         "version": "1.7.2.0",
         "changelog": "Applies the configured accent color to Jellyfin's audio now-playing bar, including position and volume sliders, slider thumbs, active repeat, shuffle and favorite states, and control hover or keyboard focus. Also completes a broader accent audit for legacy and modern sliders, checkboxes, radio controls, switches, tabs, progress indicators, loading spinners, count badges, list actions, metadata selection, and reader controls. RGB channel variables are now generated from the selected color so translucent Jellyfin hover states no longer fall back to blue.",
         "targetAbi": "12.0.0.0",

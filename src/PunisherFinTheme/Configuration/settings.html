@@ -97,6 +97,19 @@
                                 <div class="fieldDescription">Es werden Filme und Serien mit vorhandenem backdrop.jpg verwendet.</div>
                             </div>
 
+                            <div style="margin:1.25em 0 1.5em">
+                                <div id="BackgroundPreview" style="aspect-ratio:16/9;background:#151515;border:1px solid rgba(255,255,255,.18);border-radius:.5em;overflow:hidden;position:relative">
+                                    <div id="BackgroundPreviewLayer1" style="background-position:center;background-repeat:no-repeat;background-size:cover;inset:-20px;opacity:0;position:absolute;transform:scale(1.04)"></div>
+                                    <div id="BackgroundPreviewLayer2" style="background-position:center;background-repeat:no-repeat;background-size:cover;inset:-20px;opacity:0;position:absolute;transform:scale(1.04)"></div>
+                                    <div id="BackgroundPreviewOverlay" style="inset:0;pointer-events:none;position:absolute"></div>
+                                    <div id="BackgroundPreviewStatus" style="align-items:center;background:rgba(0,0,0,.58);display:flex;inset:0;justify-content:center;padding:1em;position:absolute;text-align:center">Vorschaubild wird geladen …</div>
+                                </div>
+                                <button is="emby-button" id="RefreshBackgroundPreview" type="button" class="raised emby-button" style="margin-top:.75em">
+                                    <span>Anderes zufälliges Vorschaubild</span>
+                                </button>
+                                <div class="fieldDescription">Das Bild wird zufällig aus der ausgewählten Bibliothek geladen. Die Vorschau verändert nichts, bis du speicherst.</div>
+                            </div>
+
                             <div class="inputContainer">
                                 <label class="inputLabel" for="BackgroundOpacityPercent">Deckkraft: <output id="BackgroundOpacityPercentValue">100 %</output></label>
                                 <input id="BackgroundOpacityPercent" type="range" min="0" max="100" step="1" value="100" style="width:100%">
@@ -165,6 +178,12 @@
                 var form = document.getElementById("PunisherFinThemeSettingsForm");
                 var loading = false;
                 var loadedSettings = null;
+                var previewItemsByLibrary = {};
+                var previewGeneration = 0;
+                var previewLayer = 0;
+                var previewCurrentItem = null;
+                var previewCurrentBackdrop = 0;
+                var previewQualityTimer = null;
 
                 if (!view || !form) {
                     console.error("PunisherFinTheme: Die Einstellungsseite wurde nicht gefunden.");
@@ -224,6 +243,135 @@
                     ranges.forEach(function (range) {
                         updateRange(range[0], range[1], range[2]);
                     });
+                }
+
+                function numericRange(id, fallback) {
+                    var value = Number(element(id).value);
+                    return isFinite(value) ? value : fallback;
+                }
+
+                function applyPreviewEffects() {
+                    var opacity = Math.max(0, Math.min(100, numericRange("BackgroundOpacityPercent", 100))) / 100;
+                    var overlay = Math.max(0, Math.min(80, numericRange("BackgroundOverlayPercent", 22))) / 100;
+                    var filter = "blur(" + numericRange("BackgroundBlurPixels", 5) + "px) "
+                        + "brightness(" + numericRange("BackgroundBrightnessPercent", 68) + "%) "
+                        + "saturate(" + numericRange("BackgroundSaturationPercent", 110) + "%) "
+                        + "contrast(" + numericRange("BackgroundContrastPercent", 105) + "%)";
+                    var transition = "opacity " + Math.max(0, numericRange("BackgroundCrossfadeMilliseconds", 2500)) + "ms ease";
+                    var layers = [element("BackgroundPreviewLayer1"), element("BackgroundPreviewLayer2")];
+                    layers.forEach(function (layer, index) {
+                        layer.style.filter = filter;
+                        layer.style.transition = transition;
+                        layer.style.opacity = index === previewLayer && layer.style.backgroundImage ? String(opacity) : "0";
+                    });
+                    element("BackgroundPreviewOverlay").style.background = "rgba(0,0,0," + overlay + ")";
+                }
+
+                function previewImageUrl(item, backdropIndex) {
+                    return ApiClient.getUrl("/Items/" + item.Id + "/Images/Backdrop/" + backdropIndex, {
+                        quality: Math.max(30, Math.min(100, numericRange("BackgroundImageQuality", 90))),
+                        maxWidth: 1280
+                    });
+                }
+
+                function showPreviewItem(item, backdropIndex, generation) {
+                    var status = element("BackgroundPreviewStatus");
+                    var url = previewImageUrl(item, backdropIndex);
+                    var image = typeof window.Image === "function" ? new window.Image() : null;
+                    var requestedGeneration = generation === undefined ? previewGeneration : generation;
+                    var display = function () {
+                        if (requestedGeneration !== previewGeneration) {
+                            return;
+                        }
+                        var nextIndex = previewLayer === 0 ? 1 : 0;
+                        var nextLayer = element(nextIndex === 0 ? "BackgroundPreviewLayer1" : "BackgroundPreviewLayer2");
+                        nextLayer.style.transition = "none";
+                        nextLayer.style.opacity = "0";
+                        nextLayer.style.backgroundImage = "url(\"" + url.replace(/\"/g, "%22") + "\")";
+                        void nextLayer.offsetWidth;
+                        previewLayer = nextIndex;
+                        previewCurrentItem = item;
+                        previewCurrentBackdrop = backdropIndex;
+                        status.style.display = "none";
+                        applyPreviewEffects();
+                    };
+                    status.style.display = "flex";
+                    status.textContent = "Vorschaubild wird geladen …";
+                    if (!image) {
+                        display();
+                        return;
+                    }
+                    image.addEventListener("load", display);
+                    image.addEventListener("error", function () {
+                        if (requestedGeneration === previewGeneration) {
+                            status.textContent = "Das zufällige Vorschaubild konnte nicht geladen werden.";
+                        }
+                    });
+                    image.src = url;
+                }
+
+                function chooseRandomPreview(items, generation) {
+                    var choices = items.length > 1 && previewCurrentItem
+                        ? items.filter(function (item) { return item.Id !== previewCurrentItem.Id; })
+                        : items;
+                    var item = choices[Math.floor(Math.random() * choices.length)];
+                    var tags = item.BackdropImageTags || [];
+                    var backdropIndex = Math.floor(Math.random() * tags.length);
+                    showPreviewItem(item, backdropIndex, generation);
+                }
+
+                function loadRandomPreview(reloadItems) {
+                    var libraryId = element("BackgroundLibraryId").value;
+                    var userId = typeof ApiClient.getCurrentUserId === "function" ? ApiClient.getCurrentUserId() : "";
+                    var status = element("BackgroundPreviewStatus");
+                    var generation = ++previewGeneration;
+                    var cached = previewItemsByLibrary[String(libraryId).toLowerCase()];
+                    if (!libraryId || !userId) {
+                        status.style.display = "flex";
+                        status.textContent = "Bitte zuerst eine Bibliothek auswählen.";
+                        return;
+                    }
+                    if (cached && !reloadItems) {
+                        chooseRandomPreview(cached, generation);
+                        return;
+                    }
+                    status.style.display = "flex";
+                    status.textContent = "Zufälliges Bild aus der Bibliothek wird gesucht …";
+                    requestJson("/Items", {
+                        UserId: userId,
+                        ParentId: libraryId,
+                        Recursive: true,
+                        IncludeItemTypes: "Series,Movie",
+                        Fields: "BackdropImageTags",
+                        Limit: 10000
+                    }).then(function (result) {
+                        var items = (result.Items || result.items || []).filter(function (item) {
+                            return item.Id && item.BackdropImageTags && item.BackdropImageTags.length;
+                        });
+                        if (generation !== previewGeneration) {
+                            return;
+                        }
+                        previewItemsByLibrary[String(libraryId).toLowerCase()] = items;
+                        if (!items.length) {
+                            status.textContent = "In dieser Bibliothek wurde kein backdrop.jpg gefunden.";
+                            return;
+                        }
+                        chooseRandomPreview(items, generation);
+                    }).catch(function (error) {
+                        if (generation === previewGeneration) {
+                            status.textContent = "Die zufällige Hintergrundvorschau konnte nicht geladen werden.";
+                        }
+                        console.warn("PunisherFinTheme: Hintergrundvorschau konnte nicht geladen werden.", error);
+                    });
+                }
+
+                function reloadPreviewQuality() {
+                    window.clearTimeout(previewQualityTimer);
+                    previewQualityTimer = window.setTimeout(function () {
+                        if (previewCurrentItem) {
+                            showPreviewItem(previewCurrentItem, previewCurrentBackdrop, previewGeneration);
+                        }
+                    }, 300);
                 }
 
                 function normalizeLibraries(items) {
@@ -351,6 +499,8 @@
                     setRange("BackgroundChangeIntervalSeconds", 30, 30);
                     setRange("BackgroundCrossfadeMilliseconds", 2500, 2500);
                     setRange("BackgroundImageQuality", 90, 90);
+                    applyPreviewEffects();
+                    loadRandomPreview(true);
                 }
 
                 function requestJson(path, query) {
@@ -404,9 +554,11 @@
                 function loadOptionalInformation(settings) {
                     loadLibraries().then(function (libraries) {
                         populateLibraries(libraries, settings.BackgroundLibraryId, settings.BackgroundLibraryName);
+                        loadRandomPreview(false);
                     }).catch(function (error) {
                         console.warn("PunisherFinTheme: Bibliotheksauswahl konnte nicht aufgebaut werden.", error);
                         populateLibraries([], settings.BackgroundLibraryId, settings.BackgroundLibraryName);
+                        loadRandomPreview(false);
                     });
                     refreshDependencyState();
                 }
@@ -490,6 +642,10 @@
                     var input = element(range[0]);
                     var synchronize = function () {
                         updateRange(range[0], range[1], range[2]);
+                        applyPreviewEffects();
+                        if (range[0] === "BackgroundImageQuality") {
+                            reloadPreviewQuality();
+                        }
                     };
                     input.addEventListener("input", synchronize);
                     input.addEventListener("change", synchronize);
@@ -504,6 +660,13 @@
                         storeSettings(event);
                     }, true);
                     ranges.forEach(bindRange);
+                    element("BackgroundLibraryId").addEventListener("change", function () {
+                        previewCurrentItem = null;
+                        loadRandomPreview(true);
+                    });
+                    element("RefreshBackgroundPreview").addEventListener("click", function () {
+                        loadRandomPreview(false);
+                    });
                     element("ResetBackgroundSettings").addEventListener("click", function () {
                         resetBackgroundSettings();
                         syncRangeDisplays();
