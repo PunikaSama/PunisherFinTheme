@@ -2,6 +2,240 @@
 <html>
 <head>
     <title>PunisherFinTheme</title>
+    <style>
+        #PunisherFinThemeSettings .pft-design-section {
+            --pft-settings-accent: #ff5f87;
+            background: rgba(0, 0, 0, .28);
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: .65em;
+            margin: 1.75em 0;
+            padding: 1.25em;
+        }
+        #PunisherFinThemeSettings .pft-design-picker {
+            display: grid;
+            gap: 1em;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        #PunisherFinThemeSettings .pft-design-option {
+            display: block;
+            min-width: 0;
+            position: relative;
+        }
+        #PunisherFinThemeSettings .pft-design-option > input {
+            height: 1px;
+            opacity: 0;
+            position: absolute;
+            width: 1px;
+        }
+        #PunisherFinThemeSettings .pft-design-choice {
+            background: rgba(255, 255, 255, .045);
+            border: 2px solid rgba(255, 255, 255, .18);
+            border-radius: .65em;
+            cursor: pointer;
+            display: block;
+            height: 100%;
+            overflow: hidden;
+            transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+        }
+        #PunisherFinThemeSettings .pft-design-option > input:checked + .pft-design-choice {
+            border-color: var(--pft-settings-accent);
+            box-shadow: 0 0 0 1px var(--pft-settings-accent), 0 .5em 1.5em rgba(0, 0, 0, .35);
+        }
+        #PunisherFinThemeSettings .pft-design-option > input:focus-visible + .pft-design-choice {
+            outline: 3px solid var(--pft-settings-accent);
+            outline-offset: 3px;
+        }
+        #PunisherFinThemeSettings .pft-design-choice:hover {
+            border-color: var(--pft-settings-accent);
+            transform: translateY(-2px);
+        }
+        #PunisherFinThemeSettings .pft-design-thumb {
+            aspect-ratio: 16 / 9;
+            background: #111;
+            display: grid;
+            gap: .45em;
+            grid-template-columns: repeat(3, 1fr);
+            overflow: hidden;
+            padding: .65em;
+            position: relative;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb::before {
+            background: radial-gradient(circle at 72% 12%, var(--pft-settings-accent), transparent 45%);
+            content: "";
+            inset: 0;
+            opacity: .32;
+            position: absolute;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-card {
+            align-self: end;
+            background: linear-gradient(145deg, #4c5362, #171a20);
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: .35em;
+            height: 68%;
+            position: relative;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-card::after {
+            background: var(--pft-settings-accent);
+            border-radius: 50%;
+            content: "";
+            height: .8em;
+            position: absolute;
+            right: .3em;
+            top: .3em;
+            width: .8em;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic {
+            align-content: center;
+            grid-template-columns: 1fr;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-design-thumb-card {
+            background: linear-gradient(90deg, #171a20, #515b6d 55%, #15171c);
+            border-radius: .65em;
+            height: 62%;
+        }
+        #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-design-thumb-card::before {
+            background: linear-gradient(90deg, transparent, var(--pft-settings-accent), transparent);
+            bottom: 0;
+            content: "";
+            height: 2px;
+            left: 12%;
+            position: absolute;
+            right: 12%;
+        }
+        #PunisherFinThemeSettings .pft-design-meta {
+            display: block;
+            padding: .8em;
+        }
+        #PunisherFinThemeSettings .pft-design-name {
+            display: flex;
+            font-size: 1.05em;
+            font-weight: 700;
+            justify-content: space-between;
+            margin-bottom: .3em;
+        }
+        #PunisherFinThemeSettings .pft-design-badge {
+            background: var(--pft-settings-accent);
+            border-radius: 999px;
+            color: #fff;
+            font-size: .7em;
+            padding: .2em .6em;
+        }
+        #PunisherFinThemeSettings .pft-design-preview {
+            aspect-ratio: 16 / 9;
+            background: radial-gradient(circle at 82% 5%, color-mix(in srgb, var(--pft-settings-accent) 28%, transparent), transparent 36%), #0d0e11;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: .65em;
+            color: #fff;
+            margin-top: 1.25em;
+            overflow: hidden;
+            padding: clamp(.65em, 2vw, 1.25em);
+            position: relative;
+        }
+        #PunisherFinThemeSettings .pft-preview-header {
+            align-items: center;
+            display: flex;
+            font-size: clamp(.7em, 1.6vw, 1em);
+            font-weight: 800;
+            justify-content: space-between;
+            margin-bottom: 5%;
+        }
+        #PunisherFinThemeSettings .pft-preview-header span:last-child {
+            color: var(--pft-settings-accent);
+        }
+        #PunisherFinThemeSettings .pft-preview-content {
+            display: grid;
+            gap: 4%;
+            grid-template-columns: 1.2fr .8fr;
+        }
+        #PunisherFinThemeSettings .pft-preview-cards {
+            display: grid;
+            gap: 4%;
+            grid-template-columns: repeat(3, 1fr);
+        }
+        #PunisherFinThemeSettings .pft-preview-card,
+        #PunisherFinThemeSettings .pft-preview-episode {
+            background: linear-gradient(145deg, #4b5362, #15171c);
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: .35em;
+            box-shadow: 0 .4em 1em rgba(0, 0, 0, .32);
+            min-height: 5.5em;
+            overflow: hidden;
+            position: relative;
+        }
+        #PunisherFinThemeSettings .pft-preview-card::after {
+            background: var(--pft-settings-accent);
+            border-radius: 50%;
+            content: "12";
+            font-size: .58em;
+            height: 1.8em;
+            line-height: 1.8em;
+            position: absolute;
+            right: .35em;
+            text-align: center;
+            top: .35em;
+            width: 1.8em;
+        }
+        #PunisherFinThemeSettings .pft-preview-side {
+            display: flex;
+            flex-direction: column;
+            gap: .6em;
+        }
+        #PunisherFinThemeSettings .pft-preview-episode {
+            min-height: 3.3em;
+        }
+        #PunisherFinThemeSettings .pft-preview-actions {
+            display: flex;
+            gap: .45em;
+        }
+        #PunisherFinThemeSettings .pft-preview-button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .48);
+            border-radius: 999px;
+            color: #fff;
+            font-size: .65em;
+            padding: .55em .8em;
+        }
+        #PunisherFinThemeSettings .pft-preview-button:first-child {
+            background: var(--pft-settings-accent);
+            border-color: var(--pft-settings-accent);
+            flex: 1;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-content {
+            display: block;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-card {
+            border-radius: .7em;
+            min-height: 4.4em;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-card::before {
+            background: linear-gradient(90deg, transparent, var(--pft-settings-accent), transparent);
+            bottom: 0;
+            content: "";
+            height: 2px;
+            left: 10%;
+            position: absolute;
+            right: 10%;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-side {
+            margin-top: 4%;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-episode {
+            border-left: 3px solid var(--pft-settings-accent);
+            border-radius: .65em;
+            min-height: 2.5em;
+        }
+        #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-button {
+            border-radius: .55em;
+        }
+        @media (max-width: 600px) {
+            #PunisherFinThemeSettings .pft-design-picker {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="PunisherFinThemeSettings"
@@ -23,8 +257,59 @@
                         <div class="inputContainer">
                             <label class="inputLabel inputLabelUnfocused" for="AccentColor">Akzentfarbe</label>
                             <input is="emby-input" id="AccentColor" type="color" value="#FF5F87">
-                            <div class="fieldDescription">Wird für Fokusrahmen, Fortschritt und primäre Aktionen verwendet.</div>
+                            <div class="fieldDescription">Globale Farbe für Fokusrahmen, Fortschritt und primäre Aktionen in jedem Design.</div>
                         </div>
+
+                        <section id="DesignSection" class="pft-design-section" aria-labelledby="DesignSectionTitle">
+                            <h3 id="DesignSectionTitle" class="sectionTitle" style="margin-top:0">Design-Auswahl</h3>
+                            <p class="fieldDescription" style="margin-bottom:1.2em">Das PunisherFin-Design bleibt unverändert der Standard. Die Akzentfarbe oben gilt unabhängig von der Auswahl für jedes Design.</p>
+                            <div class="pft-design-picker" role="radiogroup" aria-label="Design auswählen">
+                                <label class="pft-design-option" for="DesignPunisherFin">
+                                    <input id="DesignPunisherFin" name="DesignPreset" type="radio" value="punisherfin">
+                                    <span class="pft-design-choice">
+                                        <span class="pft-design-thumb" aria-hidden="true">
+                                            <span class="pft-design-thumb-card"></span>
+                                            <span class="pft-design-thumb-card"></span>
+                                            <span class="pft-design-thumb-card"></span>
+                                        </span>
+                                        <span class="pft-design-meta">
+                                            <span class="pft-design-name">PunisherFin <span class="pft-design-badge">Standard</span></span>
+                                            <span class="fieldDescription">Das aktuelle Design – optisch unverändert.</span>
+                                        </span>
+                                    </span>
+                                </label>
+                                <label class="pft-design-option" for="DesignCinematic">
+                                    <input id="DesignCinematic" name="DesignPreset" type="radio" value="cinematic">
+                                    <span class="pft-design-choice">
+                                        <span class="pft-design-thumb pft-design-thumb-cinematic" aria-hidden="true">
+                                            <span class="pft-design-thumb-card"></span>
+                                        </span>
+                                        <span class="pft-design-meta">
+                                            <span class="pft-design-name">Cinematic</span>
+                                            <span class="fieldDescription">Breite Karten, Filmstreifen und Glasflächen.</span>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div id="DesignPreview" class="pft-design-preview" data-design="punisherfin" aria-label="Live-Vorschau des ausgewählten Designs">
+                                <div class="pft-preview-header"><span id="DesignPreviewTitle">PunisherFin</span><span>● Akzent</span></div>
+                                <div class="pft-preview-content">
+                                    <div class="pft-preview-cards" aria-hidden="true">
+                                        <div class="pft-preview-card"></div>
+                                        <div class="pft-preview-card"></div>
+                                        <div class="pft-preview-card"></div>
+                                    </div>
+                                    <div class="pft-preview-side" aria-hidden="true">
+                                        <div class="pft-preview-episode"></div>
+                                        <div class="pft-preview-actions">
+                                            <span class="pft-preview-button">▶ Abspielen</span>
+                                            <span class="pft-preview-button">♥</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fieldDescription" style="margin-top:.65em">Die Vorschau reagiert sofort. Auf Jellyfin wird das Design erst nach dem Speichern angewendet.</div>
+                        </section>
 
                         <div style="margin:2em 0 1.5em;padding:1.25em;border:1px solid rgba(255,255,255,.12);border-radius:.5em;background:rgba(255,255,255,.035)">
                             <h3 class="sectionTitle" style="margin-top:0">Branding</h3>
@@ -196,6 +481,34 @@
 
                 function validColor(value) {
                     return /^#[0-9a-f]{6}$/i.test(String(value || "")) ? value : "#FF5F87";
+                }
+
+                function normalizeDesign(value) {
+                    return String(value || "").toLowerCase() === "cinematic" ? "cinematic" : "punisherfin";
+                }
+
+                function selectedDesign() {
+                    return element("DesignCinematic").checked ? "cinematic" : "punisherfin";
+                }
+
+                function syncDesignPreview() {
+                    var design = selectedDesign();
+                    var accent = validColor(element("AccentColor").value);
+                    var style = element("DesignSection").style;
+                    element("DesignPreview").dataset.design = design;
+                    element("DesignPreviewTitle").textContent = design === "cinematic" ? "Cinematic" : "PunisherFin";
+                    if (typeof style.setProperty === "function") {
+                        style.setProperty("--pft-settings-accent", accent);
+                    } else {
+                        style["--pft-settings-accent"] = accent;
+                    }
+                }
+
+                function applyDesignSelection(value) {
+                    var design = normalizeDesign(value);
+                    element("DesignPunisherFin").checked = design === "punisherfin";
+                    element("DesignCinematic").checked = design === "cinematic";
+                    syncDesignPreview();
                 }
 
                 var ranges = [
@@ -529,6 +842,7 @@
                     loadedSettings = settings;
                     element("Enabled").checked = settings.Enabled !== false;
                     element("AccentColor").value = validColor(settings.AccentColor);
+                    applyDesignSelection(settings.DesignPreset);
                     element("EnablePunisherFinBranding").checked = settings.EnablePunisherFinBranding !== false;
                     element("ShowEpisodeOverview").checked = settings.ShowEpisodeOverview !== false;
                     element("CompactEpisodes").checked = settings.CompactEpisodes === true;
@@ -605,6 +919,7 @@
                     settings = loadedSettings || {};
                     settings.Enabled = element("Enabled").checked;
                     settings.AccentColor = validColor(element("AccentColor").value);
+                    settings.DesignPreset = selectedDesign();
                     settings.EnablePunisherFinBranding = element("EnablePunisherFinBranding").checked;
                     settings.ShowEpisodeOverview = element("ShowEpisodeOverview").checked;
                     settings.CompactEpisodes = element("CompactEpisodes").checked;
@@ -660,6 +975,10 @@
                         storeSettings(event);
                     }, true);
                     ranges.forEach(bindRange);
+                    element("DesignPunisherFin").addEventListener("change", syncDesignPreview);
+                    element("DesignCinematic").addEventListener("change", syncDesignPreview);
+                    element("AccentColor").addEventListener("input", syncDesignPreview);
+                    element("AccentColor").addEventListener("change", syncDesignPreview);
                     element("BackgroundLibraryId").addEventListener("change", function () {
                         previewCurrentItem = null;
                         loadRandomPreview(true);

@@ -19,6 +19,7 @@ public sealed class ThemeController : ControllerBase
 {
     private const string ScriptResource = "PunisherFinTheme.Web.punisherfin-theme.js";
     private const string StyleResource = "PunisherFinTheme.Web.punisherfin-theme.css";
+    private const string CinematicStyleResource = "PunisherFinTheme.Web.Designs.cinematic-theme.css";
     private const string LogoResource = "PunisherFinTheme.Web.punisherfin-logo.png";
     private readonly IUserManager _users;
     private readonly ILibraryManager _library;
@@ -73,6 +74,7 @@ public sealed class ThemeController : ControllerBase
         {
             Enabled = settings.Enabled,
             Accent = settings.AccentColor,
+            DesignPreset = settings.DesignPreset,
             Branding = settings.EnablePunisherFinBranding,
             EpisodeOverview = settings.ShowEpisodeOverview,
             CompactEpisodes = settings.CompactEpisodes,
@@ -96,6 +98,28 @@ public sealed class ThemeController : ControllerBase
             BackgroundQuality = settings.BackgroundImageQuality,
             Version = typeof(Plugin).Assembly.GetName().Version?.ToString() ?? "0"
         });
+    }
+
+    [HttpGet("designs")]
+    [AllowAnonymous]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(IReadOnlyList<DesignOption>), StatusCodes.Status200OK)]
+    public ActionResult<IReadOnlyList<DesignOption>> Designs()
+    {
+        return Ok(ThemeDesignCatalog.All);
+    }
+
+    [HttpGet("designs/{designId}.css")]
+    [AllowAnonymous]
+    [Produces("text/css")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult DesignStyles(string designId)
+    {
+        return ThemeDesignCatalog.Normalize(designId) == ThemeDesignCatalog.CinematicId
+            && string.Equals(designId, ThemeDesignCatalog.CinematicId, StringComparison.OrdinalIgnoreCase)
+                ? EmbeddedFile(CinematicStyleResource, "text/css; charset=utf-8")
+                : NotFound();
     }
 
     [HttpGet("libraries")]

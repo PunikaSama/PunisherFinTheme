@@ -10,6 +10,9 @@ public sealed class ClientThemeConfig
     [JsonPropertyName("accent")]
     public required string Accent { get; init; }
 
+    [JsonPropertyName("designPreset")]
+    public required string DesignPreset { get; init; }
+
     [JsonPropertyName("branding")]
     public bool Branding { get; init; }
 

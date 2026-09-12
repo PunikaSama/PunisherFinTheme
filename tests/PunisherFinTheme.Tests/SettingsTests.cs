@@ -1,4 +1,5 @@
 using PunisherFinTheme.Configuration;
+using PunisherFinTheme.Contracts;
 
 namespace PunisherFinTheme.Tests;
 
@@ -11,6 +12,7 @@ public sealed class SettingsTests
 
         Assert.True(settings.Enabled);
         Assert.Equal("#FF5F87", settings.AccentColor);
+        Assert.Equal(ThemeDesignCatalog.DefaultId, settings.DesignPreset);
         Assert.True(settings.EnablePunisherFinBranding);
         Assert.True(settings.ShowEpisodeOverview);
         Assert.False(settings.CompactEpisodes);
@@ -31,6 +33,21 @@ public sealed class SettingsTests
         Assert.Equal(22, settings.BackgroundOverlayPercent);
         Assert.Equal(2500, settings.BackgroundCrossfadeMilliseconds);
         Assert.Equal(90, settings.BackgroundImageQuality);
+    }
+
+    [Theory]
+    [InlineData("punisherfin", "punisherfin")]
+    [InlineData(" cinematic ", "cinematic")]
+    [InlineData("CINEMATIC", "cinematic")]
+    [InlineData("unknown", "punisherfin")]
+    [InlineData("", "punisherfin")]
+    public void Sanitize_AcceptsRegisteredDesignsAndFallsBackToDefault(string input, string expected)
+    {
+        var settings = new Settings { DesignPreset = input };
+
+        settings.Sanitize();
+
+        Assert.Equal(expected, settings.DesignPreset);
     }
 
     [Theory]

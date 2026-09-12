@@ -2,14 +2,23 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const crypto = require("node:crypto");
 
 const root = path.resolve(__dirname, "..");
 const settingsPath = path.join(root, "src", "PunisherFinTheme", "Configuration", "settings.html");
 const clientPath = path.join(root, "src", "PunisherFinTheme", "Web", "punisherfin-theme.js");
 const stylePath = path.join(root, "src", "PunisherFinTheme", "Web", "punisherfin-theme.css");
+const cinematicStylePath = path.join(root, "src", "PunisherFinTheme", "Web", "Designs", "cinematic-theme.css");
 const html = fs.readFileSync(settingsPath, "utf8");
 const client = fs.readFileSync(clientPath, "utf8");
 const styles = fs.readFileSync(stylePath, "utf8");
+const cinematicStyles = fs.readFileSync(cinematicStylePath, "utf8");
+
+const normalizedDefaultStyles = styles.replace(/\r\n/g, "\n");
+const defaultStyleHash = crypto.createHash("sha256").update(normalizedDefaultStyles).digest("hex");
+if (defaultStyleHash !== "750d6d71156a6ab8fda253b09770f13c0f51f8ae57f146e4a76c78e61498dccd") {
+    throw new Error("The existing PunisherFin default design must remain visually unchanged in the multi-design release.");
+}
 
 const opening = "<script type=\"text/javascript\">";
 const start = html.indexOf(opening);
@@ -24,6 +33,12 @@ new Function(client);
 for (const required of [
     "Enabled",
     "AccentColor",
+    "DesignPreset",
+    "DesignPunisherFin",
+    "DesignCinematic",
+    "DesignPreview",
+    "syncDesignPreview",
+    "selectedDesign",
     "EnablePunisherFinBranding",
     "ShowEpisodeOverview",
     "CompactEpisodes",
@@ -82,6 +97,7 @@ for (const forbidden of [
 }
 
 for (const required of [
+    "__punisherFinThemeV200",
     "__punisherFinThemeV140",
     "__punisherFinThemeV139",
     "__punisherFinThemeV138",
@@ -91,8 +107,13 @@ for (const required of [
     "__punisherFinThemeV134",
     "__punisherFinThemeV130",
     "document.getElementById(\"punisherfin-theme-styles\")",
+    "punisherfin-theme-design-styles",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
+    "/PunisherFinTheme/designs/cinematic.css",
+    "data-pft-design",
+    "normalizeDesign",
+    "ensureDesignStylesheet",
     "/PunisherFinTheme/logo.png",
     "MutationObserver",
     "accentChannel",
@@ -216,6 +237,29 @@ for (const required of [
 
 if (client.includes("video.loop = true")) {
     throw new Error("Video previews must be bounded clips, not unlimited looping streams.");
+}
+
+for (const required of [
+    ":root.pft-enabled[data-pft-design=\"cinematic\"]",
+    "--pft-accent",
+    ".homeSectionsContainer.pft-home-view",
+    ".pft-library-view",
+    "#itemDetailPage",
+    ".pft-season-card",
+    ".listItem-withContentWrapper",
+    ".videoPlayerContainer",
+    ".nowPlayingBar",
+    "#previewPopup",
+    "@media (max-width: 600px)",
+    "@media (prefers-reduced-motion: reduce)"
+]) {
+    if (!cinematicStyles.includes(required)) {
+        throw new Error(`Missing Cinematic design behavior: ${required}`);
+    }
+}
+
+if (/#(?:00a4dc|52b54b|ff5f87)\b/i.test(cinematicStyles)) {
+    throw new Error("Cinematic action colors must use the global accent variables.");
 }
 
 for (const forbidden of [

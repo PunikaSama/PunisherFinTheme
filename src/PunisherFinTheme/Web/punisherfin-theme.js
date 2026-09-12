@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138", "__punisherFinThemeV139"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138", "__punisherFinThemeV139", "__punisherFinThemeV140"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV140";
+    const runtimeKey = "__punisherFinThemeV200";
     if (window[runtimeKey]) {
         return;
     }
@@ -19,6 +19,8 @@
         reloadRequested: false,
         loading: false,
         stylesheet: null,
+        designStylesheet: null,
+        designGeneration: 0,
         observer: null,
         previewCache: new Map(),
         previewVideoItemCache: new Map(),
@@ -75,6 +77,68 @@
         link.href = href;
         document.head.appendChild(link);
         runtime.stylesheet = link;
+    }
+
+    function normalizeDesign(design) {
+        return String(design || "").toLowerCase() === "cinematic" ? "cinematic" : "punisherfin";
+    }
+
+    function removeDesignStylesheet() {
+        runtime.designGeneration += 1;
+        const existing = runtime.designStylesheet?.isConnected
+            ? runtime.designStylesheet
+            : document.getElementById("punisherfin-theme-design-styles");
+        existing?.remove();
+        runtime.designStylesheet = null;
+    }
+
+    function ensureDesignStylesheet(api, config) {
+        const design = config?.enabled ? normalizeDesign(config.designPreset) : "punisherfin";
+        if (design === "punisherfin") {
+            removeDesignStylesheet();
+            if (config?.enabled) {
+                root.setAttribute("data-pft-design", "punisherfin");
+            } else {
+                root.removeAttribute("data-pft-design");
+            }
+            return;
+        }
+
+        const href = api.getUrl("/PunisherFinTheme/designs/cinematic.css", { v: config.version || "1" });
+        const absoluteHref = new URL(href, window.location.href).href;
+        const existing = runtime.designStylesheet?.isConnected
+            ? runtime.designStylesheet
+            : document.getElementById("punisherfin-theme-design-styles");
+        if (existing?.href === absoluteHref) {
+            runtime.designStylesheet = existing;
+            root.setAttribute("data-pft-design", design);
+            return;
+        }
+
+        const generation = ++runtime.designGeneration;
+        const link = document.createElement("link");
+        link.id = "punisherfin-theme-design-styles";
+        link.rel = "stylesheet";
+        link.href = href;
+        link.addEventListener("load", () => {
+            if (generation !== runtime.designGeneration || normalizeDesign(runtime.config?.designPreset) !== design) {
+                link.remove();
+                return;
+            }
+            existing?.remove();
+            runtime.designStylesheet = link;
+            root.setAttribute("data-pft-design", design);
+        }, { once: true });
+        link.addEventListener("error", () => {
+            if (generation !== runtime.designGeneration) {
+                return;
+            }
+            link.remove();
+            runtime.designStylesheet = null;
+            root.setAttribute("data-pft-design", "punisherfin");
+            console.warn(`PunisherFinTheme: Design '${design}' konnte nicht geladen werden. PunisherFin bleibt aktiv.`);
+        }, { once: true });
+        document.head.appendChild(link);
     }
 
     function directTextNode(element) {
@@ -318,6 +382,10 @@
         runtime.config = config;
         root.classList.remove(...markerClasses);
         root.style.removeProperty("--pft-accent");
+        root.style.removeProperty("--pft-accent-rgb");
+        root.style.removeProperty("--pft-accent-soft");
+        root.style.removeProperty("--pft-accent-strong");
+        root.style.removeProperty("--pft-accent-contrast");
         root.style.removeProperty("--jf-palette-primary-mainChannel");
         root.style.removeProperty("--jf-palette-secondary-mainChannel");
 
@@ -325,6 +393,10 @@
             const accent = /^#[0-9a-f]{6}$/i.test(config.accent) ? config.accent : "#FF5F87";
             root.classList.add("pft-enabled");
             root.style.setProperty("--pft-accent", accent);
+            root.style.setProperty("--pft-accent-rgb", accentChannel(accent));
+            root.style.setProperty("--pft-accent-soft", `rgb(${accentChannel(accent)} / 22%)`);
+            root.style.setProperty("--pft-accent-strong", `color-mix(in srgb, ${accent} 84%, #000)`);
+            root.style.setProperty("--pft-accent-contrast", "#fff");
             root.style.setProperty("--jf-palette-primary-mainChannel", accentChannel(accent));
             root.style.setProperty("--jf-palette-secondary-mainChannel", accentChannel(accent));
             root.classList.toggle("pft-branding", config.branding === true);
@@ -338,6 +410,8 @@
             syncTransparentHeader();
             syncBranding();
         } else {
+            removeDesignStylesheet();
+            root.removeAttribute("data-pft-design");
             restoreTransparentHeader();
             restoreBranding();
             restoreDetailButtonTitles();
@@ -962,6 +1036,7 @@
             const config = await response.json();
             ensureStylesheet(api, config.version);
             applyConfig(config);
+            ensureDesignStylesheet(api, config);
         } catch (error) {
             console.warn("PunisherFinTheme: Konfiguration konnte nicht geladen werden.", error);
             applyConfig(null);
@@ -1024,9 +1099,15 @@
             restoreBranding();
             restoreDetailButtonTitles();
             root.style.removeProperty("--pft-accent");
+            root.style.removeProperty("--pft-accent-rgb");
+            root.style.removeProperty("--pft-accent-soft");
+            root.style.removeProperty("--pft-accent-strong");
+            root.style.removeProperty("--pft-accent-contrast");
             root.style.removeProperty("--jf-palette-primary-mainChannel");
             root.style.removeProperty("--jf-palette-secondary-mainChannel");
             root.classList.remove(...markerClasses);
+            root.removeAttribute("data-pft-design");
+            removeDesignStylesheet();
             document.querySelectorAll(".pft-home-view, .pft-library-view").forEach(element => {
                 element.classList.remove(...pageClasses);
             });

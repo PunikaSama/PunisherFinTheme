@@ -2,12 +2,20 @@
   {
     "guid": "4763374d-d1ce-4404-b769-3625dacdcb84",
     "name": "PunisherFinTheme",
-    "overview": "PunisherFin-inspired styling for Jellyfin Web.",
-    "description": "Restyles home and library cards, episode rows, and detail actions while preserving Jellyfin's native behavior.",
+    "overview": "Selectable, accent-aware designs for Jellyfin Web.",
+    "description": "Offers complete PunisherFin and Cinematic designs for cards, episodes, details, previews, and players while preserving Jellyfin's native behavior.",
     "owner": "PunisherSama",
     "category": "General",
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
+      {
+        "version": "2.0.0.0",
+        "changelog": "Introduces a safe multi-design system while keeping the existing PunisherFin appearance unchanged and selected by default. A new Cinematic design provides landscape-first cards, film-inspired surfaces, redesigned episode rows, detail actions, video controls, audio controls, and InPlayerEpisodePreview styling. The settings page now includes accessible design cards and an isolated live component preview. The accent color remains a single global preference shared by every design, unknown design IDs fall back to PunisherFin, and failed optional stylesheet loads cannot break the interface.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v2.0.0.0/PunisherFinTheme_2.0.0.0.zip",
+        "checksum": "af4fe94d1be385dd6193f1073ea31b87",
+        "timestamp": "2026-09-12 15:29:21"
+      },
       {
         "version": "1.8.0.0",
         "changelog": "Adds an isolated live preview to the random-background settings. The preview selects a random backdrop from the currently selected Jellyfin library and updates opacity, brightness, blur, saturation, contrast, overlay darkness, crossfade duration, and image quality before settings are saved. Changing libraries automatically loads a matching preview, and a dedicated button selects another random image without altering the active site background.",

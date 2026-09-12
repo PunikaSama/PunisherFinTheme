@@ -2,11 +2,13 @@
 
 ![PunisherFinTheme banner](PunisherFinThemeBanner.png)
 
-PunisherFinTheme brings a focused PunisherFin-inspired design to Jellyfin 12 Web while preserving Jellyfin's native behavior.
+PunisherFinTheme brings selectable, accent-aware designs to Jellyfin 12 Web while preserving Jellyfin's native behavior. The original PunisherFin design remains unchanged and is still the default.
 
 ## Features
 
 - Modern home and library layouts for desktop and mobile
+- Selectable PunisherFin and Cinematic designs with a live settings preview
+- One global accent color shared by every design
 - Wide artwork and optional muted video previews on hover or TV focus
 - Responsive episode lists and redesigned playback controls
 - Accent-color integration for the InPlayerEpisodePreview plugin

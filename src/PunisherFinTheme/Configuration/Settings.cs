@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using MediaBrowser.Model.Plugins;
+using PunisherFinTheme.Contracts;
 
 namespace PunisherFinTheme.Configuration;
 
@@ -8,6 +9,8 @@ public sealed partial class Settings : BasePluginConfiguration
     public bool Enabled { get; set; } = true;
 
     public string AccentColor { get; set; } = "#FF5F87";
+
+    public string DesignPreset { get; set; } = ThemeDesignCatalog.DefaultId;
 
     public bool EnablePunisherFinBranding { get; set; } = true;
 
@@ -57,6 +60,7 @@ public sealed partial class Settings : BasePluginConfiguration
         AccentColor = HexColorRegex().IsMatch(candidate)
             ? candidate.ToUpperInvariant()
             : "#FF5F87";
+        DesignPreset = ThemeDesignCatalog.Normalize(DesignPreset);
 
         BackgroundLibraryId = Guid.TryParse(BackgroundLibraryId, out Guid libraryId)
             ? libraryId.ToString("D")

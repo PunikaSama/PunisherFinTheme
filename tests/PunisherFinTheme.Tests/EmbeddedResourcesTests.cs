@@ -12,6 +12,7 @@ public sealed class EmbeddedResourcesTests
 
         Assert.Contains("PunisherFinTheme.Configuration.settings.html", resources);
         Assert.Contains("PunisherFinTheme.Web.punisherfin-theme.css", resources);
+        Assert.Contains("PunisherFinTheme.Web.Designs.cinematic-theme.css", resources);
         Assert.Contains("PunisherFinTheme.Web.punisherfin-theme.js", resources);
         Assert.Contains("PunisherFinTheme.Web.punisherfin-logo.png", resources);
     }

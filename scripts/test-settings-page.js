@@ -67,7 +67,7 @@ async function main() {
     const script = html.slice(start, end);
     const elements = {};
 
-    for (const match of html.matchAll(/<(input|select|form|button|div|small|output)[^>]*\sid="([^"]+)"[^>]*>/gi)) {
+    for (const match of html.matchAll(/<(input|select|form|button|div|section|span|small|output)[^>]*\sid="([^"]+)"[^>]*>/gi)) {
         elements[match[2]] = new FakeElement(match[2], match[1]);
     }
 
@@ -83,6 +83,7 @@ async function main() {
     const expected = {
         Enabled: true,
         AccentColor: "#19AABB",
+        DesignPreset: "cinematic",
         EnablePunisherFinBranding: true,
         ShowEpisodeOverview: true,
         CompactEpisodes: true,
@@ -173,6 +174,10 @@ async function main() {
     await settle();
 
     assert.equal(elements.Enabled.checked, true, "Saved enabled state must be restored");
+    assert.equal(elements.DesignCinematic.checked, true, "Saved design must be restored");
+    assert.equal(elements.DesignPreview.dataset.design, "cinematic", "Saved design must update the live preview");
+    assert.equal(elements.DesignPreviewTitle.textContent, "Cinematic", "Live preview must identify the selected design");
+    assert.equal(elements.DesignSection.style["--pft-settings-accent"], expected.AccentColor, "Live preview must use the saved global accent");
     assert.equal(elements.EnablePunisherFinBranding.checked, true, "Saved branding state must be restored");
     assert.equal(elements.CompactEpisodes.checked, true, "Saved checkbox state must be restored");
     assert.equal(elements.EnableVideoPreviews.checked, true, "Video previews must be enabled by default and restored");
@@ -199,7 +204,15 @@ async function main() {
         "Preview opacity must update while dragging"
     );
 
+    elements.AccentColor.value = "#7733CC";
+    elements.AccentColor.dispatch("input");
+    assert.equal(elements.DesignSection.style["--pft-settings-accent"], "#7733CC", "Global accent must update the design preview immediately");
+
     elements.Enabled.checked = false;
+    elements.DesignCinematic.checked = false;
+    elements.DesignPunisherFin.checked = true;
+    elements.DesignPunisherFin.dispatch("change");
+    assert.equal(elements.DesignSection.style["--pft-settings-accent"], "#7733CC", "Switching designs must not reset the global accent preview");
     elements.EnablePunisherFinBranding.checked = false;
     elements.StyleHome.checked = false;
     elements.EnableVideoPreviews.checked = false;
@@ -209,6 +222,8 @@ async function main() {
     assert.ok(saved, "Submit must call updatePluginConfiguration");
     assert.equal(saved.pluginId, "4763374d-d1ce-4404-b769-3625dacdcb84");
     assert.equal(saved.settings.Enabled, false, "Changed checkbox state must be saved");
+    assert.equal(saved.settings.DesignPreset, "punisherfin", "Changed design must be saved independently");
+    assert.equal(saved.settings.AccentColor, "#7733CC", "Changing designs must preserve the global accent color");
     assert.equal(saved.settings.EnablePunisherFinBranding, false, "Changed branding state must be saved");
     assert.equal(saved.settings.StyleHome, false, "Every changed checkbox state must be saved");
     assert.equal(saved.settings.EnableVideoPreviews, false, "Video preview preference must be saved");
