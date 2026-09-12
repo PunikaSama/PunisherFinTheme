@@ -107,6 +107,95 @@
     color: var(--pft-accent) !important;
 }
 
+/* Search, form focus, and native selections use the configured global accent. */
+:root.pft-enabled ::selection {
+    background: color-mix(in srgb, var(--pft-accent) 72%, #000) !important;
+    color: #fff !important;
+}
+
+:root.pft-enabled :is(.emby-input, .emby-select, .emby-textarea):is(:focus, :focus-visible),
+:root.pft-enabled :is(.MuiInputBase-root, [class*="MuiInputBase-root"]):focus-within,
+:root.pft-enabled :is(.MuiOutlinedInput-root, [class*="MuiOutlinedInput-root"]).Mui-focused {
+    border-color: var(--pft-accent) !important;
+    box-shadow: 0 0 0 1px var(--pft-accent) !important;
+    outline-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(.MuiOutlinedInput-root, [class*="MuiOutlinedInput-root"]).Mui-focused :is(.MuiOutlinedInput-notchedOutline, [class*="MuiOutlinedInput-notchedOutline"]),
+:root.pft-enabled :is(.MuiInput-underline, [class*="MuiInput-underline"]):after {
+    border-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled #searchPage :is(.searchfields-txtSearch, #searchTextInput):is(:focus, :focus-visible) {
+    border-color: var(--pft-accent) !important;
+    box-shadow: 0 0 0 1px var(--pft-accent) !important;
+}
+
+:root.pft-enabled #searchPage .searchSuggestions .button-link,
+:root.pft-enabled #searchPage .searchSuggestions .button-link:visited {
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled #searchPage .searchSuggestions .button-link:is(:hover, :focus-visible, :active) {
+    background: color-mix(in srgb, var(--pft-accent) 18%, transparent) !important;
+    border-radius: var(--pft-radius);
+    color: color-mix(in srgb, var(--pft-accent) 78%, #fff) !important;
+    outline: 2px solid var(--pft-accent) !important;
+    outline-offset: 1px;
+}
+
+/* Jellyfin assigns five fixed cyan/teal colors to cards without artwork.
+   Keep the variants distinguishable while deriving every one from the accent. */
+:root.pft-enabled .defaultCardBackground1 {
+    background-color: color-mix(in srgb, var(--pft-accent) 34%, #11151b) !important;
+}
+
+:root.pft-enabled .defaultCardBackground2 {
+    background-color: color-mix(in srgb, var(--pft-accent) 72%, #20242a) !important;
+}
+
+:root.pft-enabled .defaultCardBackground3 {
+    background-color: color-mix(in srgb, var(--pft-accent) 88%, #11151b) !important;
+}
+
+:root.pft-enabled .defaultCardBackground4 {
+    background-color: color-mix(in srgb, var(--pft-accent) 46%, #11151b) !important;
+}
+
+:root.pft-enabled .defaultCardBackground5 {
+    background-color: color-mix(in srgb, var(--pft-accent) 62%, #11151b) !important;
+}
+
+:root.pft-enabled .defaultCardBackground .cardImageIcon,
+:root.pft-enabled .cardPadder:has(+ .defaultCardBackground) .cardImageIcon {
+    color: rgba(255, 255, 255, .78) !important;
+}
+
+:root.pft-enabled :is(.iconOsdProgressInner, .playbackProgress > div) {
+    background: var(--pft-accent) !important;
+    background-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled div[data-role="controlgroup"] a.ui-btn-active {
+    background: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+}
+
+/* Remaining common Jellyfin selection and navigation states. */
+:root.pft-enabled :is(.alphaPickerButton-selected, .alphaPickerButton.selected, .navMenuOption-selected, .listItem.selected, .listItem-border, .selectionCommandsPanel),
+:root.pft-enabled :is(.MuiChip-root.Mui-selected, [class*="MuiChip-root"][aria-selected="true"]) {
+    border-color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(.alphaPickerButton-selected, .alphaPickerButton.selected, .navMenuOption-selected) {
+    color: var(--pft-accent) !important;
+}
+
+:root.pft-enabled :is(.button-submit, .button-accent, .fab, .btnSubmit):not(:disabled) {
+    background-color: var(--pft-accent) !important;
+    border-color: var(--pft-accent) !important;
+}
+
 :root.pft-enabled .jstree-default .jstree-wholerow-clicked {
     background: var(--pft-accent) !important;
 }

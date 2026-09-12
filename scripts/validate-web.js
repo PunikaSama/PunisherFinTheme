@@ -18,7 +18,7 @@ const settingsStyles = fs.readFileSync(settingsStylePath, "utf8");
 
 const normalizedDefaultStyles = styles.replace(/\r\n/g, "\n");
 const defaultStyleHash = crypto.createHash("sha256").update(normalizedDefaultStyles).digest("hex");
-if (defaultStyleHash !== "d9bc8afce5ad912304a5c1022dc33f8b491967978863569c297aa6ccd8467375") {
+if (defaultStyleHash !== "dbaa52f9d1216bbbed911232b9a1d769c997cfeefe9dc33dfb7f4da61c10d5a2") {
     throw new Error("The reviewed PunisherFin default design baseline changed unexpectedly.");
 }
 
@@ -118,7 +118,7 @@ for (const forbidden of [
 }
 
 for (const required of [
-    "__punisherFinThemeV212",
+    "__punisherFinThemeV213",
     "__punisherFinThemeV140",
     "__punisherFinThemeV139",
     "__punisherFinThemeV138",
@@ -185,6 +185,23 @@ for (const required of [
 ]) {
     if (!client.includes(required)) {
         throw new Error(`Missing webclient behavior: ${required}`);
+    }
+}
+
+for (const required of [
+    "#searchPage .searchSuggestions .button-link",
+    ".searchfields-txtSearch",
+    ".defaultCardBackground1",
+    ".defaultCardBackground2",
+    ".defaultCardBackground3",
+    ".defaultCardBackground4",
+    ".defaultCardBackground5",
+    ".MuiOutlinedInput-notchedOutline",
+    ".alphaPickerButton-selected",
+    ".button-submit"
+]) {
+    if (!styles.includes(required)) {
+        throw new Error(`Missing global accent coverage: ${required}`);
     }
 }
 
