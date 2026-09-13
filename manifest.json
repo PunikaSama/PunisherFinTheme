@@ -3,11 +3,19 @@
     "guid": "4763374d-d1ce-4404-b769-3625dacdcb84",
     "name": "PunisherFinTheme",
     "overview": "Selectable, accent-aware designs for Jellyfin Web.",
-    "description": "Offers complete PunisherFin and Cinema Deck designs for cards, episodes, details, previews, and players while preserving Jellyfin's native behavior.",
+    "description": "Offers complete PunisherFin, Cinema Deck, and Crystal Glass designs for cards, episodes, details, previews, and players while preserving Jellyfin's native behavior.",
     "owner": "PunisherSama",
     "category": "General",
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherFinTheme/main/PunisherFinThemeBanner.png",
     "versions": [
+      {
+        "version": "2.2.0.0",
+        "changelog": "Adds Crystal Glass as a third fully selectable design with translucent frosted shelves, layered glass cards, luminous borders, rounded controls, glass episode tiles, player surfaces, responsive mobile styling, and a dedicated bilingual live preview. The original PunisherFin default design remains unchanged.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherFinTheme/releases/download/v2.2.0.0/PunisherFinTheme_2.2.0.0.zip",
+        "checksum": "0d674291cf734c058361f85822ed8662",
+        "timestamp": "2026-09-13 15:08:00"
+      },
       {
         "version": "2.1.4.0",
         "changelog": "Adds a persistent English/German language selector to the PunisherFinTheme settings page, with English as the default. All option labels, design previews, background controls, live slider values, library and preview states, dependency status messages, and error dialogs switch immediately while preserving unsaved settings and are saved with the plugin configuration.",

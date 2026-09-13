@@ -20,6 +20,7 @@ public sealed class ThemeController : ControllerBase
     private const string ScriptResource = "PunisherFinTheme.Web.punisherfin-theme.js";
     private const string StyleResource = "PunisherFinTheme.Web.punisherfin-theme.css";
     private const string CinematicStyleResource = "PunisherFinTheme.Web.Designs.cinematic-theme.css";
+    private const string GlassStyleResource = "PunisherFinTheme.Web.Designs.glass-theme.css";
     private const string SettingsStyleResource = "PunisherFinTheme.Web.settings-design.css";
     private const string LogoResource = "PunisherFinTheme.Web.punisherfin-logo.png";
     private readonly IUserManager _users;
@@ -127,10 +128,17 @@ public sealed class ThemeController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult DesignStyles(string designId)
     {
-        return ThemeDesignCatalog.Normalize(designId) == ThemeDesignCatalog.CinematicId
-            && string.Equals(designId, ThemeDesignCatalog.CinematicId, StringComparison.OrdinalIgnoreCase)
-                ? EmbeddedFile(CinematicStyleResource, "text/css; charset=utf-8")
-                : NotFound();
+        if (string.Equals(designId, ThemeDesignCatalog.CinematicId, StringComparison.OrdinalIgnoreCase))
+        {
+            return EmbeddedFile(CinematicStyleResource, "text/css; charset=utf-8");
+        }
+
+        if (string.Equals(designId, ThemeDesignCatalog.GlassId, StringComparison.OrdinalIgnoreCase))
+        {
+            return EmbeddedFile(GlassStyleResource, "text/css; charset=utf-8");
+        }
+
+        return NotFound();
     }
 
     [HttpGet("libraries")]

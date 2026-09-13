@@ -9,7 +9,7 @@ public sealed class DesignCatalogTests
     {
         DesignOption[] designs = ThemeDesignCatalog.All.ToArray();
 
-        Assert.Equal(2, designs.Length);
+        Assert.Equal(3, designs.Length);
         Assert.Single(designs, design => design.IsDefault);
         Assert.Equal(ThemeDesignCatalog.DefaultId, designs.Single(design => design.IsDefault).Id);
         Assert.Equal(designs.Length, designs.Select(design => design.Id).Distinct(StringComparer.Ordinal).Count());

@@ -24,6 +24,7 @@ public static class ThemeDesignCatalog
 {
     public const string DefaultId = "punisherfin";
     public const string CinematicId = "cinematic";
+    public const string GlassId = "glass";
 
     public static IReadOnlyList<DesignOption> All { get; } =
     [
@@ -41,19 +42,31 @@ public static class ThemeDesignCatalog
             Name = "Cinema Deck",
             Description = "Eigenständige Kino-Oberfläche mit kompakten Filmkarten, Bildtiteln und ruhigen Panels.",
             Stylesheet = "/PunisherFinTheme/designs/cinematic.css"
+        },
+        new DesignOption
+        {
+            Id = GlassId,
+            Name = "Crystal Glass",
+            Description = "Schwebende Glasflächen mit Unschärfe, Lichtkanten, weichen Rundungen und Tiefenwirkung.",
+            Stylesheet = "/PunisherFinTheme/designs/glass.css"
         }
     ];
 
     public static string Normalize(string? id)
     {
-        return string.Equals(id?.Trim(), CinematicId, StringComparison.OrdinalIgnoreCase)
-            ? CinematicId
-            : DefaultId;
+        string normalized = id?.Trim().ToLowerInvariant() ?? string.Empty;
+        return normalized switch
+        {
+            CinematicId => CinematicId,
+            GlassId => GlassId,
+            _ => DefaultId
+        };
     }
 
     public static bool IsKnown(string? id)
     {
         return string.Equals(id, DefaultId, StringComparison.Ordinal)
-            || string.Equals(id, CinematicId, StringComparison.Ordinal);
+            || string.Equals(id, CinematicId, StringComparison.Ordinal)
+            || string.Equals(id, GlassId, StringComparison.Ordinal);
     }
 }

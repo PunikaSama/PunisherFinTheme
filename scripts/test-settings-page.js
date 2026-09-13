@@ -235,7 +235,15 @@ async function main() {
     elements.AccentColor.dispatch("input");
     assert.equal(elements.DesignSection.style["--pft-settings-accent"], "#7733CC", "Global accent must update the design preview immediately");
 
+    elements.DesignCinematic.checked = false;
+    elements.DesignGlass.checked = true;
+    elements.DesignGlass.dispatch("change");
+    assert.equal(elements.DesignPreview.dataset.design, "glass", "Crystal Glass must update the live preview");
+    assert.equal(elements.DesignPreviewTitle.textContent, "Crystal Glass", "Crystal Glass preview must show its design name");
+    assert.equal(elements.DesignSection.style["--pft-settings-accent"], "#7733CC", "Crystal Glass must preserve the global accent preview");
+
     elements.Enabled.checked = false;
+    elements.DesignGlass.checked = false;
     elements.DesignCinematic.checked = false;
     elements.DesignPunisherFin.checked = true;
     elements.DesignPunisherFin.dispatch("change");

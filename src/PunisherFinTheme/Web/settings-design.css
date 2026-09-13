@@ -10,7 +10,7 @@
 #PunisherFinThemeSettings .pft-design-picker {
     display: grid;
     gap: clamp(.9em, 2vw, 1.4em);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 #PunisherFinThemeSettings .pft-design-option {
@@ -185,6 +185,48 @@
 #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-shelf { gap: 2.5%; grid-template-columns: 1.35fr 1fr 1fr; height: 35%; }
 #PunisherFinThemeSettings .pft-design-thumb-cinematic .pft-mini-shelf i { background: linear-gradient(120deg, #303b4d, #11151d); border-radius: 2px; }
 
+#PunisherFinThemeSettings .pft-design-thumb-glass {
+    background:
+        radial-gradient(circle at 78% 18%, color-mix(in srgb, var(--pft-settings-accent) 58%, #8fe8ff), transparent 28%),
+        radial-gradient(circle at 18% 84%, rgba(92, 171, 255, .48), transparent 34%),
+        linear-gradient(145deg, #13273b, #07101b 72%);
+    overflow: hidden;
+}
+#PunisherFinThemeSettings .pft-design-thumb-glass .pft-mini-orb {
+    background: color-mix(in srgb, var(--pft-settings-accent) 62%, #70dcff);
+    border-radius: 50%;
+    filter: blur(12px);
+    height: 45%;
+    opacity: .58;
+    position: absolute;
+    right: -5%;
+    top: 10%;
+    width: 34%;
+}
+#PunisherFinThemeSettings .pft-design-thumb-glass .pft-mini-nav,
+#PunisherFinThemeSettings .pft-design-thumb-glass .pft-mini-shelf i {
+    backdrop-filter: blur(10px) saturate(145%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .055));
+    border: 1px solid rgba(255, 255, 255, .3);
+    box-shadow: inset 0 1px rgba(255, 255, 255, .3), 0 .3em .8em rgba(0, 5, 15, .3);
+}
+#PunisherFinThemeSettings .pft-design-thumb-glass .pft-mini-nav {
+    border-radius: 0 0 .75em .75em;
+    margin: 0 4%;
+}
+#PunisherFinThemeSettings .pft-design-thumb-glass .pft-mini-hero { height: 34%; }
+#PunisherFinThemeSettings .pft-design-thumb-glass .pft-mini-heading {
+    background: linear-gradient(90deg, var(--pft-settings-accent), rgba(255, 255, 255, .82));
+    height: 2%;
+    width: 15%;
+}
+#PunisherFinThemeSettings .pft-design-thumb-glass .pft-mini-shelf {
+    gap: 4%;
+    grid-template-columns: repeat(3, 1fr);
+    height: 37%;
+}
+#PunisherFinThemeSettings .pft-design-thumb-glass .pft-mini-shelf i { border-radius: .75em; }
+
 #PunisherFinThemeSettings .pft-design-meta { display: block; min-height: 4.4em; padding: .9em 1em 1em; }
 #PunisherFinThemeSettings .pft-design-name { align-items: center; display: flex; font-size: 1.05em; font-weight: 700; justify-content: space-between; margin-bottom: .3em; }
 #PunisherFinThemeSettings .pft-design-badge { background: var(--pft-settings-accent); border-radius: 999px; color: #fff; font-size: .7em; padding: .2em .6em; }
@@ -248,6 +290,51 @@
 #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-side { border-left: 1px solid rgba(255, 255, 255, .16); padding-left: 10%; }
 #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-episode { background: rgba(255, 255, 255, .055); border-left: 2px solid var(--pft-settings-accent); border-radius: 0; }
 #PunisherFinThemeSettings .pft-design-preview[data-design="cinematic"] .pft-preview-button { border-radius: 2px; text-transform: uppercase; }
+
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] {
+    background:
+        radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--pft-settings-accent) 48%, #75dfff), transparent 31%),
+        radial-gradient(circle at 12% 88%, rgba(66, 147, 255, .38), transparent 38%),
+        linear-gradient(145deg, #13283d, #07101b 72%);
+    border-color: rgba(255, 255, 255, .3);
+    border-radius: 1.5em;
+    box-shadow: inset 0 1px rgba(255, 255, 255, .25), 0 1em 2.5em rgba(0, 5, 15, .4);
+}
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] .pft-preview-header {
+    backdrop-filter: blur(14px);
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 999px;
+    padding: .55em .9em;
+}
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] .pft-preview-hero { margin-left: 2%; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] .pft-preview-cards { gap: 5%; }
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] :is(.pft-preview-card, .pft-preview-episode) {
+    backdrop-filter: blur(14px) saturate(145%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .055));
+    border-color: rgba(255, 255, 255, .32);
+    border-radius: 1em;
+    box-shadow: inset 0 1px rgba(255, 255, 255, .3), 0 .55em 1.2em rgba(0, 5, 15, .35);
+}
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] .pft-preview-card:nth-child(2) { transform: translateY(-8%); }
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] .pft-preview-card::after {
+    background: color-mix(in srgb, var(--pft-settings-accent) 72%, rgba(255, 255, 255, .25));
+    border: 1px solid rgba(255, 255, 255, .42);
+}
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] .pft-preview-button {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, .12);
+    border-color: rgba(255, 255, 255, .32);
+    border-radius: 999px;
+    box-shadow: inset 0 1px rgba(255, 255, 255, .24);
+}
+#PunisherFinThemeSettings .pft-design-preview[data-design="glass"] .pft-preview-button:first-child {
+    background: color-mix(in srgb, var(--pft-settings-accent) 68%, rgba(255, 255, 255, .16));
+}
+
+@media (max-width: 900px) and (min-width: 601px) {
+    #PunisherFinThemeSettings .pft-design-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 @media (max-width: 600px) {
     #PunisherFinThemeSettings .pft-design-picker { grid-template-columns: 1fr; }

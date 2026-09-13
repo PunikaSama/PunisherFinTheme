@@ -1,11 +1,11 @@
 (function () {
     "use strict";
 
-    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138", "__punisherFinThemeV139", "__punisherFinThemeV140", "__punisherFinThemeV200", "__punisherFinThemeV210", "__punisherFinThemeV211", "__punisherFinThemeV212"].forEach(key => {
+    ["__punisherFinThemeV121", "__punisherFinThemeV130", "__punisherFinThemeV134", "__punisherFinThemeV135", "__punisherFinThemeV136", "__punisherFinThemeV137", "__punisherFinThemeV138", "__punisherFinThemeV139", "__punisherFinThemeV140", "__punisherFinThemeV200", "__punisherFinThemeV210", "__punisherFinThemeV211", "__punisherFinThemeV212", "__punisherFinThemeV213"].forEach(key => {
         window[key]?.stop?.();
         delete window[key];
     });
-    const runtimeKey = "__punisherFinThemeV213";
+    const runtimeKey = "__punisherFinThemeV220";
     if (window[runtimeKey]) {
         return;
     }
@@ -82,7 +82,8 @@
     }
 
     function normalizeDesign(design) {
-        return String(design || "").toLowerCase() === "cinematic" ? "cinematic" : "punisherfin";
+        const normalized = String(design || "").toLowerCase();
+        return normalized === "cinematic" || normalized === "glass" ? normalized : "punisherfin";
     }
 
     function removeDesignStylesheet() {
@@ -106,7 +107,7 @@
             return;
         }
 
-        const href = api.getUrl("/PunisherFinTheme/designs/cinematic.css", { v: config.version || "1" });
+        const href = api.getUrl(`/PunisherFinTheme/designs/${design}.css`, { v: config.version || "1" });
         const absoluteHref = new URL(href, window.location.href).href;
         const existing = runtime.designStylesheet?.isConnected
             ? runtime.designStylesheet

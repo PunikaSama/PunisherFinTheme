@@ -9,11 +9,13 @@ const settingsPath = path.join(root, "src", "PunisherFinTheme", "Configuration",
 const clientPath = path.join(root, "src", "PunisherFinTheme", "Web", "punisherfin-theme.js");
 const stylePath = path.join(root, "src", "PunisherFinTheme", "Web", "punisherfin-theme.css");
 const cinematicStylePath = path.join(root, "src", "PunisherFinTheme", "Web", "Designs", "cinematic-theme.css");
+const glassStylePath = path.join(root, "src", "PunisherFinTheme", "Web", "Designs", "glass-theme.css");
 const settingsStylePath = path.join(root, "src", "PunisherFinTheme", "Web", "settings-design.css");
 const html = fs.readFileSync(settingsPath, "utf8");
 const client = fs.readFileSync(clientPath, "utf8");
 const styles = fs.readFileSync(stylePath, "utf8");
 const cinematicStyles = fs.readFileSync(cinematicStylePath, "utf8");
+const glassStyles = fs.readFileSync(glassStylePath, "utf8");
 const settingsStyles = fs.readFileSync(settingsStylePath, "utf8");
 
 const normalizedDefaultStyles = styles.replace(/\r\n/g, "\n");
@@ -45,10 +47,12 @@ for (const required of [
     "DesignPreset",
     "DesignPunisherFin",
     "DesignCinematic",
+    "DesignGlass",
     "DesignPreview",
     "pft-design-home",
     "pft-mini-hero",
     "Cinema Deck",
+    "Crystal Glass",
     "syncDesignPreview",
     "ensureSettingsStylesheet",
     "/PunisherFinTheme/settings.css",
@@ -118,6 +122,7 @@ for (const required of [
     ".pft-design-home",
     ".pft-mini-shelf",
     ".pft-design-preview[data-design=\"cinematic\"]",
+    ".pft-design-preview[data-design=\"glass\"]",
     "var(--pft-settings-accent)",
     "@media (max-width: 600px)"
 ]) {
@@ -138,6 +143,7 @@ for (const forbidden of [
 }
 
 for (const required of [
+    "__punisherFinThemeV220",
     "__punisherFinThemeV213",
     "__punisherFinThemeV140",
     "__punisherFinThemeV139",
@@ -151,7 +157,7 @@ for (const required of [
     "punisherfin-theme-design-styles",
     "/PunisherFinTheme/config",
     "/PunisherFinTheme/styles.css",
-    "/PunisherFinTheme/designs/cinematic.css",
+    "/PunisherFinTheme/designs/${design}.css",
     "data-pft-design",
     "normalizeDesign",
     "ensureDesignStylesheet",
@@ -324,6 +330,29 @@ for (const required of [
 
 if (/#(?:00a4dc|52b54b|ff5f87)\b/i.test(cinematicStyles)) {
     throw new Error("Cinematic action colors must use the global accent variables.");
+}
+
+for (const required of [
+    ":root.pft-enabled[data-pft-design=\"glass\"]",
+    "--pft-accent",
+    "backdrop-filter",
+    ".homeSectionsContainer.pft-home-view",
+    ".pft-library-view",
+    "#itemDetailPage",
+    ".listItem-withContentWrapper",
+    ".videoPlayerContainer",
+    ".nowPlayingBar",
+    "#previewPopup",
+    "@media (max-width: 600px)",
+    "@media (prefers-reduced-motion: reduce)"
+]) {
+    if (!glassStyles.includes(required)) {
+        throw new Error(`Missing Crystal Glass design behavior: ${required}`);
+    }
+}
+
+if (/#(?:00a4dc|52b54b|ff5f87)\b/i.test(glassStyles)) {
+    throw new Error("Crystal Glass action colors must use the global accent variables.");
 }
 
 for (const forbidden of [

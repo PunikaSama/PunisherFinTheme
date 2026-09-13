@@ -54,6 +54,8 @@ public sealed class SettingsTests
     [InlineData("punisherfin", "punisherfin")]
     [InlineData(" cinematic ", "cinematic")]
     [InlineData("CINEMATIC", "cinematic")]
+    [InlineData(" glass ", "glass")]
+    [InlineData("GLASS", "glass")]
     [InlineData("unknown", "punisherfin")]
     [InlineData("", "punisherfin")]
     public void Sanitize_AcceptsRegisteredDesignsAndFallsBackToDefault(string input, string expected)
