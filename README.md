@@ -20,7 +20,7 @@ PunisherFinTheme brings selectable, accent-aware designs to Jellyfin 12 Web whil
 
 ## Requirements
 
-- Jellyfin Server 12.0.x
+- Jellyfin Server 12.1.x
 - [File Transformation 3.0.0.0](https://github.com/IAmParadox27/jellyfin-plugin-file-transformation/releases/tag/3.0.0.0)
 
 ## Installation
